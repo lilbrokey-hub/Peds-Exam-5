@@ -1,8 +1,681 @@
-const QUESTION_BANK = [
-  { id: 1, question: '...', topic: 'genetic' },  
-  { id: 2, question: '...', topic: 'behavioral' },  
-  ...
-  { id: 200, question: '...', topic: 'all' }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pediatric Unit 5 • Interactive Mastery Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        :root { --tw-color-primary: #10b981; }
+        * { transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .tail-container * { font-family: 'Inter', system-ui, sans-serif; }
+        .header-font { font-family: 'Space Grotesk', sans-serif; }
+        .card-hover { transition: all 0.3s; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 25px 25px 0 -10px rgb(16 185 129); }
+        .quiz-option { transition: all 0.2s ease; }
+        .quiz-option:hover { background-color: #10b981; color: white; transform: scale(1.02); }
+        .active-nav { border-bottom: 3px solid #10b981; color: #10b981; }
+        .modal { animation: modalPop 0.3s ease forwards; }
+        @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+        .music-player { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3); }
+        .music-track { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; margin: 8px 0; cursor: pointer; transition: all 0.3s; border-left: 4px solid transparent; }
+        .music-track:hover { background: rgba(255,255,255,0.2); transform: translateX(8px); }
+        .music-track.playing { background: rgba(255,255,255,0.3); border-left: 4px solid #fff; }
+    </style>
+</head>
+<body class="tail-container bg-slate-950 text-slate-200">
+    <!-- NAVBAR -->
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">🏥</div>
+                <h1 class="header-font text-3xl tracking-tighter">Pediatric Unit 5</h1>
+                <span class="px-3 py-1 text-xs font-semibold bg-emerald-500 text-white rounded-3xl">Mastery Hub</span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <a onclick="navigateToSection('home')" class="cursor-pointer hover:text-emerald-400 flex items-center gap-x-1 active-nav" id="nav-home"><i class="fa-solid fa-house"></i> Home</a>
+                <a onclick="navigateToSection('quizzes')" class="cursor-pointer hover:text-emerald-400 flex items-center gap-x-1" id="nav-quizzes"><i class="fa-solid fa-clipboard-check"></i> Quizzes</a>
+                <a onclick="navigateToSection('music')" class="cursor-pointer hover:text-emerald-400 flex items-center gap-x-1" id="nav-music"><i class="fa-solid fa-music"></i> Music</a>
+            </div>
+            
+            <div class="flex items-center gap-x-4">
+                <div class="flex items-center bg-slate-800 rounded-3xl px-4 py-2 text-xs font-medium">
+                    <div class="mr-2">Progress</div>
+                    <div class="flex-1 w-24 bg-slate-700 rounded-full h-2">
+                        <div id="progress-bar" class="bg-gradient-to-r from-emerald-400 to-cyan-400 h-2 rounded-full w-0"></div>
+                    </div>
+                    <span id="progress-text" class="ml-3 text-emerald-400 font-semibold">0%</span>
+                </div>
+                
+                <button onclick="showResourcesModal()" class="flex items-center gap-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-3xl font-semibold text-sm">
+                    <i class="fa-solid fa-book"></i> Resources
+                </button>
+            </div>
+            
+            <button onclick="toggleMobileMenu()" class="md:hidden text-2xl"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-t border-slate-800 px-8 py-4">
+            <div class="flex flex-col gap-y-4 text-sm font-medium">
+                <a onclick="navigateToSection('home');toggleMobileMenu()" class="flex items-center gap-x-2">🏥 Home</a>
+                <a onclick="navigateToSection('quizzes');toggleMobileMenu()" class="flex items-center gap-x-2">📋 Quizzes</a>
+                <a onclick="navigateToSection('music');toggleMobileMenu()" class="flex items-center gap-x-2">🎹 Music</a>
+            </div>
+        </div>
+    </nav>
 
-// Rest of the content that follows...
+    <!-- HERO / HOME -->
+    <section id="home" class="max-w-screen-2xl mx-auto px-8 py-16">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-7">
+                <div class="inline-flex items-center gap-x-2 bg-emerald-900/50 text-emerald-400 text-sm font-medium px-4 py-2 rounded-3xl mb-6">
+                    <i class="fa-solid fa-graduation-cap"></i> NURS 2209 • Unit 5
+                </div>
+                <h1 class="header-font text-6xl leading-none tracking-tighter mb-6">Master Pediatric Disorders</h1>
+                <p class="text-xl text-slate-400 max-w-lg mb-8"><span class="text-emerald-400 font-semibold">Deep learning, not memorization</span> — Understand pathophysiology with 200 NCLEX-style questions, detailed rationales, and study music.</p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="navigateToSection('quizzes')" class="flex items-center justify-center gap-x-3 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-3xl font-semibold text-lg shadow-lg shadow-emerald-500/30">
+                        <i class="fa-solid fa-clipboard-check text-2xl"></i> START QUIZ
+                    </button>
+                    <button onclick="navigateToSection('music')" class="flex items-center justify-center gap-x-3 border border-emerald-400 hover:border-emerald-500 text-emerald-400 px-8 py-4 rounded-3xl font-semibold text-lg">
+                        <i class="fa-solid fa-music"></i> Study Music
+                    </button>
+                </div>
+                
+                <div class="mt-12 grid grid-cols-3 gap-6 text-sm">
+                    <div class="flex items-center gap-x-3"><div class="w-8 h-8 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center">📚</div><div>Evidence-based learning</div></div>
+                    <div class="flex items-center gap-x-3"><div class="w-8 h-8 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center">🎯</div><div>200 NCLEX questions</div></div>
+                    <div class="flex items-center gap-x-3"><div class="w-8 h-8 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center">🎧</div><div>Study music included</div></div>
+                </div>
+            </div>
+            
+            <div class="md:col-span-5 relative">
+                <div class="bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-3xl p-1 shadow-2xl">
+                    <div class="bg-slate-900 rounded-3xl p-8 text-center">
+                        <div class="text-8xl mb-6">🏥🧬🦠🛡️</div>
+                        <h3 class="text-3xl header-font mb-2">Complete Pediatric Learning</h3>
+                        <p class="text-slate-400">Master genetic, behavioral, infectious, and abuse disorders</p>
+                        
+                        <div class="mt-8 flex justify-center gap-8 text-xs">
+                            <div class="text-center"><div class="text-emerald-400 text-4xl font-bold">200</div><div class="text-slate-400">Questions</div></div>
+                            <div class="text-center"><div class="text-emerald-400 text-4xl font-bold">4</div><div class="text-slate-400">Topics</div></div>
+                            <div class="text-center"><div class="text-emerald-400 text-4xl font-bold">10</div><div class="text-slate-400">Study Songs</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MUSIC PLAYER SECTION -->
+    <section id="music" class="hidden max-w-screen-2xl mx-auto px-8 py-20 bg-slate-900/50">
+        <div class="text-center mb-12">
+            <span class="px-6 py-2 bg-emerald-500 text-white text-sm font-bold rounded-3xl">🎹 STUDY MUSIC</span>
+            <h2 class="header-font text-5xl mt-4">Piano Study Music</h2>
+            <p class="text-slate-400 mt-3">Focus • Relax • Learn — Piano covers for deep study sessions</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="music-player">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">Now Playing</h3>
+                    <div class="text-4xl">🎵</div>
+                </div>
+                
+                <div class="bg-black/30 rounded-xl p-6 mb-6">
+                    <div id="current-song-title" class="text-xl font-semibold text-white mb-2">Select a Song</div>
+                    <div id="current-song-artist" class="text-slate-300 text-sm mb-4">Classical Piano</div>
+                    <audio id="audio-player" class="w-full mb-4" controls><source src="" type="audio/mpeg"></audio>
+                    <div class="flex gap-3">
+                        <button onclick="previousTrack()" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 rounded-lg font-semibold">⏮️ Previous</button>
+                        <button onclick="togglePlay()" class="flex-1 bg-white/30 hover:bg-white/40 text-white py-2 rounded-lg font-semibold">▶️ Play</button>
+                        <button onclick="nextTrack()" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 rounded-lg font-semibold">⏭️ Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="music-player">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">Playlist</h3>
+                    <div class="text-4xl">🎼</div>
+                </div>
+                
+                <div id="playlist-container" class="space-y-2 max-h-[500px] overflow-y-auto">
+                    <!-- Playlist items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIZZES SECTION -->
+    <section id="quizzes" class="hidden max-w-screen-2xl mx-auto px-8 py-20 bg-slate-950">
+        <div class="text-center mb-16">
+            <span class="px-6 py-2 bg-emerald-500 text-white text-sm font-bold rounded-3xl">📋 NCLEX-STYLE PRACTICE</span>
+            <h2 class="header-font text-5xl mt-4">200-Question Practice Bank</h2>
+            <p class="text-slate-400 mt-3">Random 10-question exams • Instant feedback • Detailed rationales</p>
+        </div>
+        
+        <div class="max-w-2xl mx-auto">
+            <div id="quiz-setup" class="bg-slate-900 rounded-3xl p-10">
+                <h3 class="text-2xl mb-8 text-center">Choose Your Focus Area</h3>
+                
+                <div class="grid grid-cols-2 gap-4 mb-12">
+                    <button onclick="startQuiz('all')" class="h-28 rounded-3xl border-2 border-dashed border-emerald-400 hover:border-emerald-500 hover:bg-emerald-500/10 flex flex-col items-center justify-center">
+                        <span class="text-4xl mb-2">📚</span><span class="font-semibold">All Topics</span>
+                    </button>
+                    <button onclick="startQuiz('genetic')" class="h-28 rounded-3xl border-2 border-dashed border-blue-400 hover:border-blue-500 hover:bg-blue-500/10 flex flex-col items-center justify-center">
+                        <span class="text-4xl mb-2">🧬</span><span class="font-semibold">Genetics</span>
+                    </button>
+                    <button onclick="startQuiz('behavioral')" class="h-28 rounded-3xl border-2 border-dashed border-purple-400 hover:border-purple-500 hover:bg-purple-500/10 flex flex-col items-center justify-center">
+                        <span class="text-4xl mb-2">🧠</span><span class="font-semibold">Behavioral</span>
+                    </button>
+                    <button onclick="startQuiz('infectious')" class="h-28 rounded-3xl border-2 border-dashed border-red-400 hover:border-red-500 hover:bg-red-500/10 flex flex-col items-center justify-center">
+                        <span class="text-4xl mb-2">🦠</span><span class="font-semibold">Infectious</span>
+                    </button>
+                    <button onclick="startQuiz('abuse')" class="col-span-2 h-28 rounded-3xl border-2 border-dashed border-orange-400 hover:border-orange-500 hover:bg-orange-500/10 flex items-center justify-center">
+                        <span class="text-4xl mr-4">🛡️</span><span class="font-semibold">Abuse & Neglect</span>
+                    </button>
+                </div>
+                
+                <p class="text-center text-xs text-slate-400">From NURS 2209 course materials, Lippincott, and NCLEX high-yield concepts</p>
+            </div>
+            
+            <!-- Quiz UI -->
+            <div id="quiz-active" class="hidden">
+                <div class="flex justify-between mb-6 bg-slate-900 p-4 rounded-3xl">
+                    <div class="font-medium">Question <span id="question-number">1</span>/10</div>
+                    <div id="timer" class="font-mono text-emerald-400 font-bold">15:00</div>
+                </div>
+                
+                <div id="question-text" class="text-2xl font-medium mb-8 leading-tight bg-slate-900 p-6 rounded-3xl"></div>
+                <div id="options-container" class="space-y-4 mb-8"></div>
+                
+                <div class="flex justify-between gap-4">
+                    <button onclick="previousQuestion()" class="flex-1 px-6 py-3 text-sm font-medium border border-slate-700 rounded-3xl hover:border-emerald-400">← Previous</button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-3xl font-semibold">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Results -->
+            <div id="quiz-results" class="hidden bg-slate-900 rounded-3xl p-10">
+                <div id="score-header" class="text-center mb-10"></div>
+                <div id="review-container" class="space-y-8 max-h-[420px] overflow-auto"></div>
+                <button onclick="restartQuiz()" class="w-full mt-8 py-5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-3xl font-semibold">Take Another Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESOURCES MODAL -->
+    <div onclick="if(event.target.id==='resources-modal')hideResourcesModal()" id="resources-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
+        <div onclick="event.stopImmediatePropagation()" class="modal bg-slate-900 rounded-3xl max-w-2xl w-full mx-4 p-8">
+            <h2 class="text-3xl header-font mb-8">📚 Supplemental Resources</h2>
+            
+            <div class="grid grid-cols-1 gap-6">
+                <div class="bg-slate-800 p-6 rounded-3xl">
+                    <h3 class="font-bold text-emerald-400 mb-2">🎥 Ninja Nerd Lectures</h3>
+                    <p class="text-sm text-slate-400">Free high-yield videos covering pediatric nursing topics. Visit ninjanerd.org</p>
+                </div>
+                
+                <div class="bg-slate-800 p-6 rounded-3xl">
+                    <h3 class="font-bold text-emerald-400 mb-2">📖 Lippincott Maternity & Pediatric Nursing</h3>
+                    <p class="text-sm text-slate-400">Chapters 49, 50, 37 (pp. 1190-1200), FASD p.796 — Exact readings from NURS 2209</p>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-3xl">
+                    <h3 class="font-bold text-emerald-400 mb-2">💡 Study Strategy</h3>
+                    <p class="text-sm text-slate-400"><strong>Optimal approach:</strong> Read concepts → Take quizzes → Listen to music while reviewing → Repeat daily</p>
+                </div>
+            </div>
+            
+            <button onclick="hideResourcesModal()" class="mt-8 w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-3xl font-semibold">Close</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-12 text-center text-xs text-slate-400">
+        Made by Nicholas Brokaw • NURS 2209 • Tifton, GA
+        <br>
+        <span class="text-emerald-400">Deep learning powered by: pathophysiology focus • clinical reasoning • spaced repetition • active recall</span>
+    </footer>
+
+    <script>
+        // Global Variables
+        let currentQuestionIndex = 0, selectedQuizType = 'all', quizQuestions = [], userAnswers = [], timerInterval = null, secondsLeft = 900, currentTrackIndex = 0;
+
+        // Music Playlist (10 study piano songs with YouTube URLs or public domain sources)
+        const MUSIC_PLAYLIST = [
+            { title: "Peaceful Piano Focus", artist: "Classical Study", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "Relaxing Learning", artist: "Piano Dreams", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { title: "Deep Concentration", artist: "Soft Keys", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { title: "Mindful Studying", artist: "Classical Piano", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { title: "Focus Flow", artist: "Piano Study Mix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { title: "Tranquil Melodies", artist: "Calm Piano", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { title: "Gentle Study Vibes", artist: "Serene Piano", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { title: "Background Calm", artist: "Soft Study Music", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+            { title: "Concentrated Learning", artist: "Piano Focus", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+            { title: "Perfect Study Companion", artist: "Classical Focus", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" }
+        ];
+
+        // 200-QUESTION NCLEX PRACTICE BANK (Full implementation shown, truncated for space)
+        const QUESTION_BANK = [
+            // GENETIC DISORDERS (50 Q)
+            {id:1,topic:"genetic",q:"Down syndrome Trisomy 21 highest risk cardiac defect?",options:["ASD","Endocardial cushion defect","TOF","CoA"],correct:1,rationale:"Endocardial cushion defects 50% Down syndrome. Screen all newborns."},
+            {id:2,topic:"genetic",q:"Turner syndrome 45,X classic features?",options:["Tall, gynecomastia, infertile","Short, webbed neck, ovarian dysgenesis","ID, hypotonia","Behavioral deficits"],correct:1,rationale:"Turner: Females, short stature avg 4'8\", webbed neck, cardiac/renal anomalies."},
+            {id:3,topic:"genetic",q:"Fragile X leading inherited cause?",options:["Autism","Intellectual disability","CP","Muscular dystrophy"],correct:1,rationale:"Fragile X most common inherited ID cause. X-linked. Long face, large ears."},
+            {id:4,topic:"genetic",q:"PKU initial treatment?",options:["High-protein diet","Phenylalanine-restricted diet","Antibiotics","Surgery"],correct:1,rationale:"Restricted diet MUST start first weeks life to prevent ID. Lifelong management."},
+            {id:5,topic:"genetic",q:"Neurofibromatosis type 1 malignancy risk?",options:["Lymphoma","Wilms tumor","Optic nerve glioma & CNS tumors","Hepatoblastoma"],correct:2,rationale:"NF1: 15% lifetime malignancy risk. Optic pathway gliomas. Regular screening."},
+            {id:6,topic:"genetic",q:"Klinefelter 47,XXY presentation?",options:["Short, webbed neck","Tall, gynecomastia, infertile, small testes","ID with characteristic faces","Autism spectrum"],correct:1,rationale:"47,XXY: Tall stature, gynecomastia, azoospermia, small testes. Behavioral issues."},
+            {id:7,topic:"genetic",q:"Maternal age >35, paternal >50 risk for?",options:["Trisomy 18","Trisomy 13","Down syndrome Trisomy 21","Turner syndrome"],correct:2,rationale:"Advanced age increases nondisjunction risk → trisomy 21. Prenatal screening."},
+            {id:8,topic:"genetic",q:"Trisomy 18 Edwards syndrome features?",options:["Large ears, normal growth","Micrognathia, clenched fists, rocker-bottom feet, CHD","Webbed neck, short stature","Behavioral deficits only"],correct:1,rationale:"Trisomy 18: Severe ID, micrognathia, clenched fists, rocker-bottom feet, CHD."},
+            {id:9,topic:"genetic",q:"Trisomy 13 Patau most characteristic?",options:["Cleft palate/lip, polydactyly, cardiac defects","Webbed neck, short stature","Long face, large ears, macroorchidism","Behavioral problems"],correct:0,rationale:"Trisomy 13: Cleft, polydactyly, cardiac anomalies, holoprosencephaly, eye abnormalities."},
+            {id:10,topic:"genetic",q:"Autosomal recessive two carrier parents risk?",options:["25% affected","50% affected","75% affected","100% affected"],correct:0,rationale:"Aa x Aa: 25% affected (aa), 50% carrier (Aa), 25% unaffected (AA)."},
+            {id:11,topic:"genetic",q:"Achondroplasia (most common form of dwarfism) presents with:",options:["Proportionate short stature","Disproportionate dwarfism with short limbs and normal trunk length","Tall stature with long limbs","Variable stature depending on parent height"],correct:1,rationale:"Achondroplasia: Autosomal dominant. Disproportionate dwarfism (short limbs, average trunk), normal intelligence. Complications: hydrocephalus, spinal stenosis."},
+            {id:12,topic:"genetic",q:"Duchenne muscular dystrophy (X-linked recessive): Carrier mother and unaffected father have sons risk of:",options:["0% affected","25% affected","50% affected","100% affected"],correct:2,rationale:"X-linked recessive: Carrier mother (XAXa) x Unaffected father (XAY): 50% sons affected (XaY), 50% sons unaffected (XAY)."},
+            {id:13,topic:"genetic",q:"Early clinical signs of Duchenne muscular dystrophy include:",options:["Hypermobility and hypertonicity","Difficulty climbing stairs, rising from floor, progressive leg weakness","Spasticity and increased deep tendon reflexes","Static developmental delay"],correct:1,rationale:"DMD: X-linked, onset age 3-5 years. Gower's sign (uses arms to rise), waddling gait, calf hypertrophy, progressive proximal weakness. Death by late teens."},
+            {id:14,topic:"genetic",q:"Hemophilia A inheritance pattern and nursing consideration:",options:["Autosomal dominant; males affected more than females","X-linked recessive; carrier females rarely affected unless severely skewed X-inactivation","Autosomal recessive; equal gender affection","X-linked dominant; lethal in males"],correct:1,rationale:"Hemophilia A: Factor VIII deficiency, X-linked recessive. Males primarily affected. Females usually carriers. Factor replacement therapy essential."},
+            {id:15,topic:"genetic",q:"Sickle cell disease inheritance pattern:",options:["X-linked recessive","Autosomal dominant","Autosomal recessive","Mitochondrial inheritance"],correct:2,rationale:"Autosomal recessive: HbS gene on chromosome 11. Both parents carry gene. 25% affected (HbSS), 50% carrier (HbAS), 25% unaffected (HbAA)."},
+            {id:16,topic:"genetic",q:"Child with sickle cell disease experiencing vaso-occlusive crisis: Initial nursing action?",options:["Restrict fluid intake","Administer oxygen, IV fluids, analgesia, monitor vitals","Apply ice packs to affected areas","Encourage weight-bearing and mobility"],correct:1,rationale:"Vaso-occlusive crisis treatment: O2 (if hypoxic), hydration (maintain urine output), strong analgesia, warmth. Avoid tourniquets/ice. Monitor for acute chest syndrome."},
+            {id:17,topic:"genetic",q:"Beta-thalassemia major presents with:",options:["Mild anemia with normal growth","Severe hemolytic anemia, hepatosplenomegaly, growth delay, cardiac complications","Acute fever and bone pain episodes only","Progressive muscle weakness"],correct:1,rationale:"Beta-thalassemia major (Cooley anemia): Severe hemolytic anemia, hepatosplenomegaly, bone deformities, cardiac complications from iron overload. Transfusion-dependent."},
+            {id:18,topic:"genetic",q:"Marfan syndrome clinical features include:",options:["Coarse facial features, intellectual disability, aggression","Tall stature, arachnodactyly, lens dislocation, aortic root dilation","Short limbs with proportionate trunk","Hypermobility limited to fingers only"],correct:1,rationale:"Marfan (FBN1 mutation): Tall, arachnodactyly (long fingers/toes), lens dislocation, aortic root dilation (sudden death risk). Skeletal/cardiac/ocular involvement."},
+            {id:19,topic:"genetic",q:"Ehlers-Danlos syndrome Type III (hypermobility type) features:",options:["Severe bruising, joint dislocations, thin translucent skin","Hypermobility, velvety skin, easy bruising, normal life expectancy","Severe vessel fragility with frequent ruptures","Bone deformities and short stature"],correct:1,rationale:"EDS Type III: Joint hypermobility, velvety skin, easy bruising, normal intelligence, good life expectancy. Type IV (vascular) is life-threatening."},
+            {id:20,topic:"genetic",q:"Osteogenesis imperfecta (brittle bone disease) Type I presents with:",options:["Lethal in utero","Recurrent fractures, blue sclerae, progressive hearing loss, normal intellect","Severe intellectual disability as primary feature","Affects only ribs and spine"],correct:1,rationale:"OI Type I: Autosomal dominant (COL1A1 mutation). Recurrent fractures, blue sclerae (collagen defect indicator), conductive hearing loss. Types II/III more severe."},
+            
+            {id:21,topic:"genetic",q:"Phenylketonuria (PKU) newborn screening must occur before:",options:["End of first week","Hospital discharge (48 hours)","Age 1 month","Age 6 months"],correct:1,rationale:"PKU: Elevated phenylalanine damages developing brain. Screening before hospital discharge critical. Diet must start immediately."},
+            {id:22,topic:"genetic",q:"Familial hypercholesterolemia increases risk of:",options:["Normal cholesterol levels","Premature coronary artery disease and MI in childhood","Tall stature development","Intellectual disability"],correct:1,rationale:"Familial hypercholesterolemia: Autosomal dominant. Very high LDL levels from infancy. Risk of MI in childhood/teens if untreated. Statin therapy essential."},
+            {id:23,topic:"genetic",q:"Huntington disease (autosomal dominant CAG repeat) typically manifests:",options:["Infancy","Childhood (before age 10)","Adulthood (usually 30s-40s)","Never manifests in carriers"],correct:2,rationale:"Huntington: CAG repeat expansion on chromosome 4. Delayed onset usually 30s-40s. Progressive movement disorder, behavioral changes, dementia. No cure."},
+            {id:24,topic:"genetic",q:"Autosomal dominant polycystic kidney disease (ADPKD) prenatal diagnosis management:",options:["Deliver immediately after diagnosis","Monitor renal function, blood pressure control, genetic counseling","Recommend pregnancy termination","No follow-up needed until symptoms"],correct:1,rationale:"ADPKD: Monitor renal function, hypertension (major complication), educate about inheritance. Many reach ESRD by adulthood. Genetic counseling essential."},
+            {id:25,topic:"genetic",q:"Genetic anticipation is demonstrated in:",options:["All genetic diseases equally","Huntington disease with earlier onset and more severe symptoms in successive generations","Non-heritable conditions that appear genetic","Random variation in inheritance patterns"],correct:1,rationale:"Genetic anticipation: Disorder becomes more severe/earlier onset in successive generations due to trinucleotide repeat expansion (Huntington, Fragile X)."},
+            {id:26,topic:"genetic",q:"Genomic imprinting affects expression in:",options:["Only X-linked disorders","Prader-Willi (paternal deletion) and Angelman (maternal deletion) syndromes","Only autosomal recessive disorders","Mitochondrial diseases only"],correct:1,rationale:"Imprinting: Same chr15 deletion produces different phenotype based on parent-of-origin. PWS (paternal) vs Angelman (maternal)."},
+            {id:27,topic:"genetic",q:"Pierre-Robin sequence presents with:",options:["Intellectual disability as primary feature","Micrognathia → glossoptosis → airway obstruction sequence","Tall stature with feature hypermobility","Progressive muscle weakness from birth"],correct:1,rationale:"Pierre-Robin: Micrognathia (small jaw) causes tongue positioning that obstructs airway. Can be isolated or part of syndrome. Prone positioning helps."},
+            {id:28,topic:"genetic",q:"Treacher Collins syndrome is autosomal dominant affecting:",options:["Kidney function","Craniofacial structures (zygomatic bones, mandible, ears)","Only dental development","Cardiac system"],correct:1,rationale:"Treacher Collins (TCOF1): Bilateral craniofacial malformations, micrognathia, malar hypoplasia, ear abnormalities, conductive hearing loss. Intelligence normal."},
+            {id:29,topic:"genetic",q:"Williams syndrome (7q11.23 deletion) characteristic features:",options:["Coarse facial features, intellectual disability, aggression","Elfin facies, supravalvular aortic stenosis, friendly/hypersocial personality, ADHD-like","Tall stature with long limbs","Webbed neck and short stature"],correct:1,rationale:"Williams: Elfin faces (periorbital fullness, full lips), supravalvular AS, friendly/overly social (hypersociability), mild-moderate ID, hyperacusis."},
+            {id:30,topic:"genetic",q:"Prader-Willi vs Angelman syndrome: Different phenotypes due to:",options:["Different genes on chromosome 15","Genomic imprinting (parent-of-origin effect) of 15q11-13 deletion","Severity of deletion differs","Age of onset differs"],correct:1,rationale:"Imprinting: Paternal deletion chr15 → PWS (obesity, hypogonadism). Maternal deletion → Angelman (happy puppet, ataxia, seizures)."},
+            
+            {id:31,topic:"genetic",q:"Mitochondrial inheritance pattern characteristics:",options:["Maternal only; all children of affected mother affected","Paternal only; all children of affected father affected","Autosomal dominant with variable penetrance","X-linked recessive pattern"],correct:0,rationale:"Mitochondrial: Maternal inheritance only. Mutations in mitochondrial DNA. All children of affected mother affected, none from affected father."},
+            {id:32,topic:"genetic",q:"X-linked dominant inheritance example:",options:["Hemophilia A","Duchenne muscular dystrophy","Incontinentia pigmenti (usually lethal in males)","Cystic fibrosis"],correct:2,rationale:"X-linked dominant: Incontinentia pigmenti usually lethal in males. Affected females: all daughters affected, no sons affected."},
+            {id:33,topic:"genetic",q:"Gene therapy shows most promise for:",options:["All genetic disorders simultaneously","Monogenic disorders like sickle cell disease, hemophilia, spinal muscular atrophy","Polygenic disorders only","Environmental disorders without genetic component"],correct:1,rationale:"Gene therapy: Most promising for single-gene disorders. Clinical trials underway for SCD, hemophilia, SMA. Ethical considerations ongoing."},
+            {id:34,topic:"genetic",q:"Carrier screening primary purpose:",options:["Identify all possible diseases in general population","Identify at-risk carriers BEFORE conception or early pregnancy","Diagnose existing genetic disease","Treat identified genetic disease"],correct:1,rationale:"Carrier screening: Identifies risk before conception/pregnancy in at-risk populations (ethnicity, family history). Allows informed reproductive decision-making."},
+            {id:35,topic:"genetic",q:"CRISPR-Cas9 gene-editing technology potential:",options:["Limited to research only","Corrects genetic mutations in somatic and germline cells","No clinical benefit currently","Causes new mutations in all attempts"],correct:1,rationale:"CRISPR: Gene-editing technology showing promise for genetic disease treatment. Ethical considerations for germline editing ongoing."},
+            {id:36,topic:"genetic",q:"Newborn screening programs include testing for:",options:["Only sickle cell disease screening","PKU, sickle cell, congenital hypothyroidism, galactosemia, MSUD, and others","No genetic metabolic conditions","Infectious diseases only"],correct:1,rationale:"Newborn screening (varies by state): PKU, sickle cell, hypothyroidism, galactosemia, MSUD. Critical for early intervention."},
+            {id:37,topic:"genetic",q:"Preimplantation genetic testing (PGT) is used in:",options:["All pregnancies routinely","High-risk couples to select unaffected embryos via IVF","Diagnosis of current pregnancy only","Treatment of existing genetic disease"],correct:1,rationale:"PGT: IVF-based technique to screen embryos before implantation. Used in at-risk couples for severe monogenic disorders."},
+            {id:38,topic:"genetic",q:"Non-invasive prenatal testing (NIPT) detects:",options:["Only maternal infections","Fetal DNA in maternal blood for trisomy 21, 18, 13, sex chromosome abnormalities","Structural defects only on ultrasound","Environmental chemical exposures"],correct:1,rationale:"NIPT (cell-free DNA): Screens maternal blood for fetal DNA. Detects aneuploidies. Screening test, NOT diagnostic—requires confirmatory testing."},
+            {id:39,topic:"genetic",q:"Genetic counseling should address:",options:["Medical aspects of disease only","Inheritance patterns, risks, testing/treatment options, psychosocial support, family implications","Treatment options exclusively","Has minimal counseling benefit"],correct:1,rationale:"Genetic counseling: Comprehensive. Discuss inheritance, recurrence risks, testing/treatment options, psychosocial support, family planning implications."},
+            {id:40,topic:"genetic",q:"Ethical considerations in genetic testing include:",options:["No ethical concerns with testing","Right to know/not know, privacy protection, discrimination risk, access/equity","Always test everyone without consent","Cost of testing irrelevant to access"],correct:1,rationale:"Genetic testing ethics: Informed consent, privacy, discrimination protection, right to know/not know results, equitable access."},
+            
+            {id:41,topic:"genetic",q:"Spinal muscular atrophy (SMA) Type I presents with:",options:["Normal motor development","Onset before 6 months, severe weakness, respiratory support needed, fatal without treatment","Mild weakness improving with age","Only affects muscle tone"],correct:1,rationale:"SMA Type I (Werdnig-Hoffmann): Autosomal recessive SMN1 gene. Onset <6mo, severe, requires respiratory support. Gene therapy (Zolgensma) approved."},
+            {id:42,topic:"genetic",q:"Haemophilus influenzae type B (Hib) now rare in vaccinated populations due to:",options:["No vaccine available","Routine Hib conjugate vaccine in immunization schedule","Only adults need protection","Natural immunity develops without vaccine"],correct:1,rationale:"Hib vaccine (routine childhood): Conjugate vaccine highly effective. Routine vaccination has nearly eliminated Hib invasive disease."},
+            {id:43,topic:"genetic",q:"Lysosomal storage diseases are caused by:",options:["Lack of growth hormone","Deficiency in lysosomal enzymes leading to cellular accumulation","Too much insulin production","Neurological overstimulation"],correct:1,rationale:"Lysosomal storage: Enzyme deficiency → substrate accumulation in lysosomes. Examples: Gaucher, Tay-Sachs, mucopolysaccharidoses."},
+            {id:44,topic:"genetic",q:"Tay-Sachs disease (autosomal recessive) most affects:",options:["Ashkenazi Jewish populations (highest carrier frequency)","All populations equally","Only African descent populations","Only Northern European descent"],correct:0,rationale:"Tay-Sachs: Hexosaminidase A deficiency. Highest carrier frequency Ashkenazi Jews (~1:30). Onset <6mo, developmental regression, seizures, blindness, death by age 3-5."},
+            {id:45,topic:"genetic",q:"Gaucher disease (most common lysosomal storage disorder) features:",options:["Liver/spleen normal size","Hepatosplenomegaly, bone disease, anemia, thrombocytopenia","Only lung involvement","Exclusively neurological symptoms"],correct:1,rationale:"Gaucher disease: β-glucosidase deficiency. Hepatosplenomegaly (massive), bone pain/pathologic fractures, anemia, thrombocytopenia. Enzyme replacement available."},
+            {id:46,topic:"genetic",q:"Mucopolysaccharidosis (MPS) Type I (Hurler syndrome) includes:",options:["Isolated bone growth abnormality","Growth delay, coarse features, cardiac defects, intellectual disability, death by early childhood","Only mild vision problems","Normal development with age"],correct:1,rationale:"MPS I (Hurler): α-L-iduronidase deficiency. Coarse features, growth delay, hepatosplenomegaly, cardiac defects, ID, death by ~10 years without treatment."},
+            {id:47,topic:"genetic",q:"Cystic fibrosis (CF) is caused by:",options:["Lack of growth hormone","CFTR protein mutation → thick mucus in lungs/GI tract","Autoimmune destruction of pancreas","Tuberculosis infection"],correct:1,rationale:"CF: Autosomal recessive CFTR gene mutation. Thick mucus → lung infections (Pseudomonas, Burkholderia), pancreatic insufficiency, meconium ileus."},
+            {id:48,topic:"genetic",q:"Cystic fibrosis newborn screening method:",options:["Clinical symptoms only","Immunoreactive trypsinogen (IRT) elevated on newborn blood spot with confirmatory genetic testing","Lung function testing at birth","No screening available"],correct:1,rationale:"CF newborn screening: IRT elevated on blood spot screening. Confirmatory genetic testing (CFTR mutations). Early diagnosis improves outcomes."},
+            {id:49,topic:"genetic",q:"Hemophilia B (Factor IX deficiency) inheritance:",options:["Autosomal dominant","X-linked recessive (like Hemophilia A)","Mitochondrial","Autosomal recessive"],correct:1,rationale:"Hemophilia B (Christmas disease): X-linked recessive Factor IX deficiency. Less common than Factor VIII deficiency. Similar management with factor replacement."},
+            {id:50,topic:"genetic",q:"Von Willebrand disease most common inherited:",options:["Intellectual disability","Bleeding disorder (autosomal dominant/recessive)","Muscle disorder","Hearing loss"],correct:1,rationale:"Von Willebrand disease: Most common inherited bleeding disorder. Affects von Willebrand factor/Factor VIII. Presents with mucosal bleeding, epistaxis, heavy menses."},
+          
+            // Continue with questions 11-200...
+            // BEHAVIORAL/DEVELOPMENTAL (50 Q starting at 51)
+            {id:51,topic:"behavioral",q:"Intellectual disability requires limitations in?",options:["IQ only","Intellectual AND adaptive functioning","Adaptive only","Speech only"],correct:1,rationale:"ID requires BOTH intellectual (IQ <70) AND adaptive (communication, self-care, social)."},
+            {id:52,topic:"behavioral",q:"ADHD treatment combines?",options:["Stimulants only","Behavioral therapy alone","Behavioral therapy + medication","No treatment"],correct:2,rationale:"ADHD: Behavioral interventions + stimulants/non-stimulants when needed."},
+            {id:53,topic:"behavioral",q:"Autism Spectrum core domains?",options:["Social only","Social communication AND restricted/repetitive behaviors","Behavioral only","Speech only"],correct:1,rationale:"ASD: (1) Social communication; (2) Restricted/repetitive patterns."},
+            {id:54,topic:"behavioral",q:"Early intervention services begin?",options:["Age 5","Age 3","Before age 3 when delay identified","School entry"],correct:2,rationale:"Critical period: Brain most plastic <age 3. Early intervention improves outcomes."},
+            {id:55,topic:"behavioral",q:"FASD caused by?",options:["Genetic mutation","Prenatal ANY amount alcohol","Postnatal substance abuse","Nutrition only"],correct:1,rationale:"FASD: Prenatal alcohol. NO safe amount. Preventable disorder."},
+            {id:56,topic:"behavioral",q:"FAS features?",options:["Normal growth/cognition","Growth restriction, facial dysmorphia, brain abnormalities","Behavioral only","Seizures only"],correct:1,rationale:"FAS: Growth deficiency, characteristic faces, CNS dysfunction (ID, behavioral)."},
+            {id:57,topic:"behavioral",q:"Spastic CP presents with?",options:["Decreased tone","Increased tone, hyperreflexia, scissoring gait","Variable tone","Normal tone"],correct:1,rationale:"Spastic CP (70%): UMN lesion → hypertonicity, hyperreflexia, scissoring gait."},
+            {id:58,topic:"behavioral",q:"Down syndrome features?",options:["Normal intellect","ID, hypotonia, characteristic faces, CHD, hypothyroidism","Cardiac only","Neurodegeneration"],correct:1,rationale:"Trisomy 21: ID (variable), hypotonia, facial features, cardiac, hypothyroidism."},
+            {id:59,topic:"behavioral",q:"Fragile X behavioral features?",options:["Compliant","Autism-like, social anxiety, sensory sensitivities, hyperactivity","Aggressive","Depression only"],correct:1,rationale:"Fragile X: ID (severe possible), autism spectrum, social anxiety, ADHD-like."},
+            {id:60,topic:"behavioral",q:"Selective mutism nursing intervention?",options:["Force speaking","Accept silence, reduce anxiety, predictability","Punishment","Assume hearing loss"],correct:1,rationale:"Selective mutism: Anxiety disorder. Child CAN speak. Treatment: desensitization, CBT."},
+            {id:61,topic:"behavioral",q:"Dyslexia is a specific learning disability affecting:",options:["All cognitive abilities equally","Reading and written language processing specifically (decoding, fluency)","Only spelling ability","Mathematics exclusively"],correct:1,rationale:"Dyslexia: Neurobiological reading disorder affecting phonological processing, decoding, fluency. Normal intelligence. Early identification essential."},
+            {id:62,topic:"behavioral",q:"Oppositional Defiant Disorder (ODD) shows pattern of:",options:["Compliance with all rules and authority","Frequent arguing, defiance, anger outbursts, vindictiveness, refusing tasks","Only academic underperformance","Withdrawal and depression"],correct:1,rationale:"ODD: Pattern of hostile, defiant behavior (>6mo). Argues, refuses, blames others, vindictive. More disruptive toward adults than peers. Often comorbid with ADHD."},
+            {id:63,topic:"behavioral",q:"Conduct disorder differs from ODD in that it includes:",options:["Only argumentativeness and defiance","Violation of others' rights: aggression, cruelty, theft, destruction, truancy, running away","Just rule refusal at home/school","Academic underachievement only"],correct:1,rationale:"Conduct disorder: Repetitive pattern violating others' basic rights (physical aggression, theft, destruction, truancy). More serious than ODD. Poor prognosis untreated."},
+            {id:64,topic:"behavioral",q:"Anxiety disorders in children may present as:",options:["Just worry and nervousness","Physical symptoms (stomachache, headache, chest pain), avoidance, worry, sleep issues, school refusal","Only nightmares and night terrors","Aggression as sole manifestation"],correct:1,rationale:"Child anxiety: Often somatic (GI complaints, chest pain, headaches). May present as school refusal. Can escalate to panic attacks. CBT first-line."},
+            {id:65,topic:"behavioral",q:"Depression in children age-appropriate signs include:",options:["Only sadness and crying","Irritability (more common than sadness in children), anhedonia, sleep/appetite changes, difficulty concentrating","Suicidal ideation always present","Aggression as the only symptom"],correct:1,rationale:"Child depression: Often presents as irritability rather than sadness. Anhedonia, sleep/appetite changes, fatigue, concentration issues. Suicide risk assessment critical."},
+            {id:66,topic:"behavioral",q:"Specific learning disorder (SLD) is characterized by:",options:["Low intelligence/intellectual disability","Persistent difficulty learning specific academic skill despite adequate instruction and normal intelligence","Laziness or lack of motivation","All children with learning difficulties have SLD"],correct:1,rationale:"SLD: Neurodevelopmental disorder affecting specific academic domain (reading, math, writing) despite normal intelligence and adequate instruction."},
+            {id:67,topic:"behavioral",q:"Pica (persistent eating of non-food items) increases risk for:",options:["Vitamin excess toxicity","Lead poisoning, intestinal obstruction, parasitic infection, anemia","Weight gain and obesity","Behavioral problems only"],correct:1,rationale:"Pica: Screen for lead exposure, iron deficiency, developmental delay. Risks: lead poisoning, GI obstruction, parasites. Redirect, monitor, treat underlying causes."},
+            {id:68,topic:"behavioral",q:"Rumination disorder involves:",options:["Worry and anxiety about daily events","Regurgitation of food without nausea/disgust, rechewing, reswallowing (not GERD/medical)","Only severe constipation","Purposeful food refusal and restriction"],correct:1,rationale:"Rumination: Repeated regurgitation/rechewing of food (not medical condition), usually age 4+. Often self-soothing in bored/stressed child. Usually involuntary."},
+            {id:69,topic:"behavioral",q:"Avoidant/Restrictive Food Intake Disorder (ARFID) differs from anorexia nervosa because:",options:["Identical condition with different name","Involves limited selection due to sensory/fear, NOT weight/body image concerns","Anorexia only involves emotional issues","No meaningful difference exists"],correct:1,rationale:"ARFID: Persistent food selectivity (sensory sensitivities, fear of choking, negative experiences) causing inadequate nutrition. NOT body image/weight driven."},
+            {id:70,topic:"behavioral",q:"Body Dysmorphic Disorder (BDD) involves:",options:["Accurate perception of actual body flaws","Preoccupation with perceived flaws that are unobservable/slight, causing significant distress/impairment","Weight concerns and dieting exclusively","Minimal mental health impact"],correct:1,rationale:"BDD: Preoccupation with appearance flaw (unobservable/slight), repetitive behaviors (mirror checking, grooming, reassurance-seeking). Significant distress, suicide risk."},
+            
+            {id:71,topic:"behavioral",q:"Eating disorder NOT Otherwise Specified (EDNOS) includes:",options:["No valid eating disorder category","Atypical presentations not meeting full criteria for anorexia/bulimia/BED but clinically significant","Picky eating in young children","Food allergies only"],correct:1,rationale:"EDNOS: Clinically significant eating disturbances not fully meeting anorexia/bulimia/BED criteria. May involve binge-eating-purging cycles, restriction without meeting full criteria."},
+            {id:72,topic:"behavioral",q:"Trichotillomania (hair-pulling disorder) is classified as:",options:["Volitional bad habit","Body-focused repetitive behavior (BFRB) that causes distress/impairment","Normal childhood behavior","Purely aesthetic concern"],correct:1,rationale:"Trichotillomania: Recurrent hair-pulling causing noticeable hair loss and distress. Commonly comorbid with anxiety, OCD, stress. Treatment: HRT, SSRIs."},
+            {id:73,topic:"behavioral",q:"Tourette Syndrome involves:",options:["Voluntary tics only","Multiple motor and vocal tics for >1 year causing distress/impairment","No neurological basis","Only affects speech"],correct:1,rationale:"Tourette Syndrome: Multiple motor + vocal tics lasting >1 year, waxing/waning. Onset childhood. Often comorbid with ADHD, OCD. Management: behavioral, medication."},
+            {id:74,topic:"behavioral",q:"Sleep disorders in children can manifest as:",options:["Only daytime sleepiness","Bedtime resistance, night terrors, sleepwalking, OSA, insomnia affecting daytime function/behavior","Only nightmares","Purely psychological without physiological component"],correct:1,rationale:"Child sleep disorders: Bedtime resistance, night terrors, sleepwalking, OSA, insomnia. Impact behavior, learning, mood. Early intervention important."},
+            {id:75,topic:"behavioral",q:"Reactive attachment disorder (RAD) develops from:",options:["Genetic factors exclusively","Severe deprivation/neglect, limited caregiving, institutional care without attachment figure","Normal attachment variations","Parental anxiety only"],correct:1,rationale:"RAD: Results from severe deprivation (neglect, institutional care without consistent caregiver). Presents with minimal emotion, limited response to comfort."},
+            {id:76,topic:"behavioral",q:"Disinhibited social engagement disorder (DSED) presents with:",options:["Age-appropriate stranger anxiety","Overly friendly, lack of stranger wariness, willingness to go with unfamiliar adults","Shyness and social withdrawal","Normal attachment patterns"],correct:1,rationale:"DSED: Lack of selective attachment, overly friendly with strangers, reduced stranger wariness. Results from deprivation/abuse. Different from RAD."},
+            {id:77,topic:"behavioral",q:"Sensory processing disorder (SPD) affects:",options:["Only vision and hearing","How brain integrates sensory input (hypersensitivity, hyposensitivity, sensory seeking)","Emotional processing exclusively","No neurological basis"],correct:1,rationale:"SPD: Difficulty organizing sensory input → over/under-responsiveness. Hypersensitivity (covers ears, tags irritating), hyposensitivity (high pain tolerance). Often comorbid ASD/ADHD."},
+            {id:78,topic:"behavioral",q:"Nonverbal learning disability (NLD) involves difficulties with:",options:["Language development only","Nonverbal cues, spatial skills, motor coordination, visual-spatial processing despite normal verbal abilities","All verbal communication","Reading only"],correct:1,rationale:"NLD: Impaired nonverbal processing despite verbal strengths. Difficulty interpreting facial expressions, body language, spatial relationships, motor coordination."},
+            {id:79,topic:"behavioral",q:"Childhood disintegrative disorder (CDD) differs from autism because:",options:["Identical conditions with different names","Apparently normal development then significant regression after age 2-4 years","No regression occurs in CDD","Only genetic differences"],correct:1,rationale:"CDD: Apparently normal development (speech, social, play) then marked regression after age 2-4 years. Develops autism-like symptoms. Very rare. Poor prognosis."},
+            {id:80,topic:"behavioral",q:"Rett disorder/Rett syndrome (MECP2 mutation) presents with:",options:["Progressive development from birth","Apparently normal development, then regression around age 6-18 months with loss of purposeful hand skills","No neurological involvement","Static developmental delay"],correct:1,rationale:"Rett syndrome: MECP2 (X-linked). Normal early development then regression (6-18mo). Loss of purposeful hand skills, development of stereotypic hand movements. Seizures common."},
+            
+            {id:81,topic:"behavioral",q:"Expressive language disorder affects ability to:",options:["Understand language only","Produce/express language in spoken/written form while comprehension may be relatively intact","Both comprehension and expression equally","Reading skills only"],correct:1,rationale:"Expressive language disorder: Difficulty with language production (vocabulary, sentence structure, word finding) despite adequate comprehension."},
+            {id:82,topic:"behavioral",q:"Receptive language disorder involves difficulty with:",options:["Speaking and expressing thoughts","Understanding and processing language (comprehension)","Writing skills exclusively","Phonological processing only"],correct:1,rationale:"Receptive language disorder: Difficulty understanding spoken/written language despite normal hearing. Impacts following directions, comprehension."},
+            {id:83,topic:"behavioral",q:"Pragmatic language disorder affects:",options:["Sound production only","Social use of language (conversation rules, tone, context, nonverbal cues)","Grammar and syntax exclusively","Reading comprehension only"],correct:1,rationale:"Pragmatic language disorder: Difficulty using language socially appropriately (turn-taking, topic maintenance, understanding sarcasm, interpreting nonverbal cues)."},
+            {id:84,topic:"behavioral",q:"Apraxia of speech is:",options:["Weakness of speech muscles","Motor planning difficulty producing speech sounds correctly despite muscle strength intact","Hearing loss affecting speech","Intellectual disability causing speech delays"],correct:1,rationale:"Apraxia: Motor speech disorder—difficulty with planning/sequencing speech movements. Sounds inconsistent, improves with repetition. Different from dysarthria (muscle weakness)."},
+            {id:85,topic:"behavioral",q:"Selective mutism in school setting nursing approach:",options:["Force child to participate verbally","Accept nonverbal communication, gradually expose to speaking situations, reduce anxiety triggers","Diagnose as oppositional defiance disorder","Refer for psychiatric hospitalization"],correct:1,rationale:"Selective mutism: Accept alternatives (writing, nodding), gradual exposure to speaking (whispering before full voice), reduce performance pressure."},
+            {id:86,topic:"behavioral",q:"Stuttering in young children:",options:["Always indicates serious pathology","May be normal disfluency before age 3-4, but persistent stuttering needs speech therapy","Sign of intellectual disability","Will resolve without intervention in all cases"],correct:1,rationale:"Stuttering: Normal disfluency common age 2-5 years but persistent stuttering needs early intervention. Early therapy improves outcomes."},
+            {id:87,topic:"behavioral",q:"Intellectual disability severity classification based on:",options:["Age at onset only","IQ score ranges: Mild (50-69), Moderate (35-49), Severe (20-34), Profound (<20)","Adaptive functioning only","No valid classification system"],correct:1,rationale:"ID severity: IQ ranges + adaptive functioning level. Mild (IQ 50-69), Moderate (35-49), Severe (20-34), Profound (<20)."},
+            {id:88,topic:"behavioral",q:"Universal newborn hearing screening identifies:",options:["No hearing problems can be identified at birth","Permanent congenital hearing loss early for intervention","Only mild hearing loss","Temporary fluid in ears only"],correct:1,rationale:"Newborn hearing screening: Identifies congenital permanent hearing loss. Early identification → early intervention → better speech/language outcomes."},
+            {id:89,topic:"behavioral",q:"Cochlear implants are indicated for:",options:["All hearing loss","Bilateral severe-profound sensorineural hearing loss unresponsive to hearing aids","Only temporary hearing loss","Mild conductive loss"],correct:1,rationale:"Cochlear implants: Bilateral severe-profound SNHL unresponsive to amplification. Devices bypass damaged inner ear, stimulate auditory nerve directly."},
+            {id:90,topic:"behavioral",q:"Vision screening in children should begin at:",options:["School age only","Infancy and regularly throughout development (birth, 6mo, 1yr, 3yr, school entry)","Age 5 at school entry","Only if child reports problems"],correct:1,rationale:"Vision screening: Start infancy (red reflex, tracking), 6mo, 1yr, 3yr, school entry. Early detection prevents amblyopia, supports development."},
+            
+            {id:91,topic:"behavioral",q:"Strabismus (eye misalignment) if untreated can cause:",options:["No long-term effects","Amblyopia ('lazy eye'), vision loss in affected eye from disuse during critical period","Only aesthetic concerns","Temporary vision correction needed"],correct:1,rationale:"Strabismus: Untreated → brain suppresses image from misaligned eye → amblyopia develops. Early intervention (glasses, patching, surgery) critical before age 7."},
+            {id:92,topic:"behavioral",q:"Amblyopia ('lazy eye') intervention includes:",options:["Glasses prescription for both eyes only","Glasses + patching stronger eye to force weaker eye use + vision therapy","No treatment effective","Only surgery"},correct:1,rationale:"Amblyopia treatment: Correct refractive error (glasses), patch/penalize stronger eye (atropine drops), vision therapy. Critical before age 7-8 (critical period)."},
+            {id:93,topic:"behavioral",q:"Cerebral palsy classification by motor type includes:",options:["Only spasticity type","Spastic (70%), ataxic (10%), dyskinetic, mixed, hypotonic types","Only movement abnormality","No valid classification"],correct:1,rationale:"CP classification: Spastic (UMN), ataxic (cerebellum), dyskinetic (basal ganglia), mixed, hypotonic. Severity: mild, moderate, severe."},
+            {id:94,topic:"behavioral",q:"Ataxic cerebral palsy involves:",options:["Increased muscle tone and hyperreflexia","Cerebellar damage → incoordination, balance problems, tremor, hypotonia","Abnormal involuntary movements","Muscle weakness only"],correct:1,rationale:"Ataxic CP: Cerebellar involvement → poor coordination, wide-based gait, intention tremor, hypotonia. Often worst prognosis functionally."},
+            {id:95,topic:"behavioral",q:"Dyskinetic cerebral palsy features:",options:["Increased muscle tone","Basal ganglia damage → involuntary movements (chorea, athetosis, dystonia), variable tone","Lack of coordination","Fixed tone"],correct:1,rationale:"Dyskinetic CP: Basal ganglia involvement → involuntary movements (writhing, jerky), fluctuating tone, difficulty with voluntary movement control."},
+            {id:96,topic:"behavioral",q:"Gross Motor Function Classification System (GMFCS) for CP assesses:",options:["Intelligence only","Functional motor abilities and mobility (Levels I-V: I=walks independently to V=needs mobility device)","Speech and language only","Vision and hearing"],correct:1,rationale:"GMFCS: Predicts mobility (I walks independently, V requires assistance/device). Helps guide therapy, anticipate needs, predict prognosis."},
+            {id:97,topic:"behavioral",q:"Developmental coordination disorder (DCD) presents with:",options:["Normal coordination with behavioral issues","Persistent motor clumsiness, difficulty learning motor skills, impacts school/daily function","Only fine motor issues","Intellectual disability"],correct:1,rationale:"DCD: Motor coordination difficulties impacting academic/daily function. Motor skills below age expectations. Not due to neuro condition/ID but primary motor disorder."},
+            {id:98,topic:"behavioral",q:"Hypotonia ('floppy baby syndrome') in infants indicates:",options:["Normal infant tone","Decreased muscle tone from central or peripheral cause requiring investigation","Just developmental delay without pathology","No cause needs identification"],correct:1,rationale:"Hypotonia: Abnormal finding requiring evaluation. Central (brain/spinal cord): Down syndrome, CP, encephalopathy. Peripheral: SMA, muscular dystrophy."},
+            {id:99,topic:"behavioral",q:"Hypertonia (increased muscle tone) presents as:",options:["Loose, floppy limbs","Stiff, resistant limbs, difficulty with movement, hyperreflexia (spasticity) or smooth resistance (rigidity)","Normal muscle tone variation","No clinical significance"],correct:1,rationale:"Hypertonia: Increased tone from UMN lesion (spasticity—clasp-knife) or extrapyramidal (rigidity—lead-pipe). Affects movement, requires intervention."},
+            {id:100,topic:"behavioral",q:"Primitive reflexes persistent past normal age indicates:",options:["Normal development","Possible neurological involvement (CP, developmental delay, injury) requiring further evaluation","No clinical significance","Expected finding in all children"],correct:1,rationale:"Primitive reflexes (Moro, rooting, stepping, grasping) should integrate by 3-6 months. Persistence → neurological concern (CP, birth injury, developmental delay)."},
+
+            // INFECTIOUS DISEASES (50 Q starting at 101)
+            {id:101,topic:"infectious",q:"#1 effective prevention infectious disease?",options:["Antibiotics","Hand hygiene","Isolation only","Masks alone"],correct:1,rationale:"Hand hygiene proven most effective breaking transmission chains."},
+            {id:102,topic:"infectious",q:"Varicella progression?",options:["Pustules → vesicles","Macules → papules → vesicles → crusts","Crusts → vesicles","Vesicles → macules"],correct:1,rationale:"Varicella: Macules → papules → vesicles (clear) → crusts. Infectious 2 days pre-rash."},
+            {id:103,topic:"infectious",q:"Incubation period definition?",options:["Symptoms to diagnosis","Exposure to first symptoms","Diagnosis to recovery","Recovery to reinfection"],correct:1,rationale:"Incubation: Time pathogen exposure to symptom onset. Varies by agent."},
+            {id:104,topic:"infectious",q:"Prodromal period means?",options:["No symptoms","Non-specific early symptoms before characteristic signs","Communicability period","Recovery phase"],correct:1,rationale:"Prodromal: Early non-specific symptoms (fever, malaise) before characteristic manifestations."},
+            {id:105,topic:"infectious",q:"Communicability period when?",options:["Child has symptoms","Person CAN transmit pathogen","Person immune","Person recovers"],correct:1,rationale:"Communicability: Period person transmits infection. Varies by disease."},
+            {id:106,topic:"infectious",q:"Varicella vaccine effectiveness?",options:["Always prevents","90% prevents, reduces severity","No protection","Only adults"],correct:1,rationale:"Varicella vaccine: ~90% effective preventing infection, 95-98% severe disease."},
+            {id:107,topic:"infectious",q:"Hand, foot, mouth (enterovirus) features?",options:["Respiratory only","Painful vesicles mouth/hands/feet, mild fever","Rash only","GI only"],correct:1,rationale:"HFMD: Coxsackie virus. Painful vesicles/ulcers mouth, hands, feet. 7-10 days."},
+            {id:108,topic:"infectious",q:"Measles rash progression?",options:["Trunk first","Face/hairline first, spreads downward","Extremities first","Random"],correct:1,rationale:"Measles rash: Hairline/face day 3-4, spreads downward. Spares palms/soles."},
+            {id:109,topic:"infectious",q:"Mumps commonly causes?",options:["Respiratory only","Parotitis swollen salivary glands","Rash","Diarrhea"],correct:1,rationale:"Mumps: Bilateral parotitis (swollen cheeks). Risk: orchitis, meningitis, deafness."},
+            {id:110,topic:"infectious",q:"Rubella 3-day measles presents?",options:["High fever, severe rash","Low-grade fever, pink maculopapular rash, lymphadenopathy","Severe cough","No rash"],correct:1,rationale:"Rubella: Low-grade fever, pink rash (face→trunk→extremities). Posterior cervical lymph nodes."},
+            {id:111,topic:"infectious",q:"Pertussis (whooping cough) disease progression stages:",options:["One continuous stage","Catarrhal (runny nose, mild cough), Paroxysmal (severe cough fits, 'whoop'), Convalescent (gradual recovery)","Only severe coughing stage","No staging system"],correct:1,rationale:"Pertussis stages: (1) Catarrhal (1-2 weeks: rhinorrhea, mild cough); (2) Paroxysmal (2-8 weeks: severe cough fits, 'whoop', apnea, post-tussive vomiting); (3) Convalescent."},
+            {id:112,topic:"infectious",q:"Poliovirus primary transmission route:",options:["Respiratory droplets only","Fecal-oral route (primary), respiratory secondary","Blood-borne exposure","Direct skin contact"],correct:1,rationale:"Polio: Fecal-oral transmission primarily, respiratory secondary. Highly contagious. IPV vaccine highly effective. Wild polio nearly eradicated globally."},
+            {id:113,topic:"infectious",q:"Rotavirus infection causes acute:",options:["Respiratory illness","Watery diarrhea with vomiting, fever (3-8 days), dehydration risk","Rash prominent feature","Abdominal pain without diarrhea"],correct:1,rationale:"Rotavirus: Leading cause acute gastroenteritis infants/young children. Watery diarrhea, vomiting, fever. RotaTeq/Rotarix vaccines effective prevention."},
+            {id:114,topic:"infectious",q:"Fifth disease (erythema infectiosum) is caused by:",options:["Measles virus","Rubella virus","Parvovirus B19","Varicella zoster virus"],correct:2,rationale:"Fifth disease: Parvovirus B19. Characteristic 'slapped cheek' appearance with lacy reticular rash on trunk/extremities. Often asymptomatic in older children."},
+            {id:115,topic:"infectious",q:"Scarlet fever (invasive Group A Streptococcal infection) features:",options:["No rash appearance","Fine sandpaper-like rash, strawberry tongue, pastia's lines (skin fold accentuation), pharyngitis","Blistering rash","Urticarial (hive-like) rash"],correct:1,rationale:"Scarlet fever: GAS pharyngitis with characteristic rash (sandpaper texture), strawberry tongue, pastia's lines. Penicillin treatment prevents rheumatic fever."},
+            {id:116,topic:"infectious",q:"Respiratory syncytial virus (RSV) bronchiolitis in infants presents with:",options:["High fever with mild cough","Wheezing, respiratory distress, hypoxemia, excessive secretions, worst <6 months","Rash predominant","Diarrhea and vomiting"],correct:1,rationale:"RSV bronchiolitis: Wheezing, respiratory distress, hypoxia. Worst in infants <6 months. Supportive care (O2, fluids), avoid antibiotics. Ribavirin in severe cases."},
+            {id:117,topic:"infectious",q:"Influenza virus prevention and treatment:",options:["No prevention measures available","Annual vaccine, antiviral treatment/prophylaxis (neuraminidase inhibitors) in high-risk during season","Only isolation prevents illness","Antibiotics prevent infection"],correct:1,rationale:"Influenza prevention: Annual vaccine, neuraminidase inhibitors (oseltamivir) prophylaxis/treatment if exposed/symptomatic in high-risk patients."},
+            {id:118,topic:"infectious",q:"Tuberculosis latent infection vs active disease:",options:["Identical conditions","Latent: infected (positive test) but asymptomatic, no disease; Active: symptomatic with transmission risk","Latent always becomes active","Active TB never comes from latent infection"],correct:1,rationale:"TB: Latent infection (positive TST, asymptomatic, not infectious) can progress to active disease (symptomatic, infectious, needs treatment)."},
+            {id:119,topic:"infectious",q:"Tuberculosis transmission occurs via:",options:["Saliva or casual contact","Airborne droplet nuclei from respiratory secretions (cough, sneeze, singing)","Blood exposure primarily","Fecal-oral route"],correct:1,rationale:"TB transmission: Airborne droplet nuclei. Respiratory isolation needed until child treated 2 weeks (becomes non-infectious)."},
+            {id:120,topic:"infectious",q:"Tuberculin skin test (TST/Mantoux test) induration at 48-72 hours:",options:["<5mm always negative; 5-14mm low risk; ≥15mm positive","≥5mm positive (varies by risk factors: <5/≥5/≥10/≥15mm based on risk)","Size irrelevant, only if vesiculation present","Can never be falsely positive"],correct:1,rationale:"TST interpretation: ≥15mm low-risk children; ≥10mm higher-risk; ≥5mm immunocompromised/high-risk. Requires confirmatory testing if positive."},
+            
+            {id:121,topic:"infectious",q:"Pneumocystis pneumonia (PCP) prophylaxis indicated for:",options:["All children with fever","CD4 <200 cells/mm3 in HIV patients, certain immunocompromised states","Never needed in children","Only in hospitalized patients"],correct:1,rationale:"PCP prophylaxis: CD4 <200 cells/mm3 in HIV. TMP-SMX first-line. Important prophylaxis in severely immunocompromised children."},
+            {id:122,topic:"infectious",q:"Mycoplasma pneumoniae ('walking pneumonia') typical presentation:",options:["Severe respiratory distress","Subacute cough, mild fever, wheezing/crackles, normal/minimal CXR changes vs respiratory symptoms","High fever with focal consolidation","Only affects lower lobes"],correct:1,rationale:"Mycoplasma: Subacute onset, persistent cough, variable fever, symptoms worse than exam findings. Azithromycin or fluoroquinolone treatment."},
+            {id:123,topic:"infectious",q:"Cytomegalovirus (CMV) in immunocompromised children can cause:",options:["Only mild cold symptoms","Severe pneumonia, retinitis, colitis, encephalitis in immunocompromised","Never serious in children","No treatment available"],correct:1,rationale:"CMV: Severe disease in immunocompromised (especially CD4 <50 in HIV). Pneumonia, retinitis, colitis, encephalitis. Ganciclovir/valganciclovir treatment."},
+            {id:124,topic:"infectious",q:"Epstein-Barr virus (EBV) infectious mononucleosis presents with:",options:["Mild URI symptoms","Fever, pharyngitis, bilateral cervical lymphadenopathy, splenomegaly, atypical lymphocytes on CBC","No systemic symptoms","Rash as primary feature"],correct:1,rationale:"Infectious mononucleosis (EBV): Fever, sore throat, lymphadenopathy, splenomegaly. Heterophile antibodies positive (monospot). Self-limiting 1-2 months."},
+            {id:125,topic:"infectious",q:"Cytomegalovirus (CMV) congenital infection consequences:",options:["Always asymptomatic","Hearing loss, vision loss, developmental delay, seizures, intellectual disability from intrauterine infection","Never causes long-term problems","Only affects lung development"],correct:1,rationale:"Congenital CMV: Most common intrauterine infection. Consequences: hearing loss (sensorineural), visual impairment, ID, seizures, growth delay."},
+            {id:126,topic:"infectious",q:"Hepatitis A virus (HAV) transmission route:",options:["Blood-borne primarily","Fecal-oral (contaminated food/water), no chronic infection","Sexual transmission","Respiratory droplets"],correct:1,rationale:"HAV: Fecal-oral transmission. No chronic infection. Self-limited illness. Vaccine effective prevention. Good prognosis in children."},
+            {id:127,topic:"infectious",q:"Hepatitis B virus (HBV) exposed newborn management:",options:["No intervention needed","HBIG + HBV vaccine series starting at birth (within 12 hours) for exposed infants of HBsAg+ mothers","Only vaccination needed","No effective prevention"],correct:1,rationale:"HBV exposure prevention: Newborns of HBsAg+ mothers receive HBIG (hepatitis B immune globulin) + HBV vaccine series. Prevents 95% vertical transmission."},
+            {id:128,topic:"infectious",q:"Hepatitis C virus (HCV) transmission in children occurs via:",options:["Casual contact","Blood exposure (shared needles, vertical transmission if mother viremic)","Respiratory droplets","Fecal-oral route"],correct:1,rationale:"HCV transmission: Primarily blood-borne (IVDU, transfusion), vertical transmission from viremic mothers (5-10%). Sexual/casual contact rare."},
+            {id:129,topic:"infectious",q:"Dengue fever vector and presentation:",options:["Respiratory droplet transmission","Aedes mosquito vector; fever, headache, myalgia, rash, thrombocytopenia, hemorrhagic potential","Fecal-oral transmission","Tick-borne illness"],correct:1,rationale:"Dengue: Aedes mosquito vector. Fever, myalgia, headache, rash. Risk of dengue hemorrhagic fever/shock. No specific treatment, supportive care."},
+            {id:130,topic:"infectious",q:"Malaria parasitic infection transmission:",options:["Direct person-to-person contact","Anopheles mosquito vector; Plasmodium species cause fever cycles, anemia, organ dysfunction","Airborne droplets","Contaminated food only"],correct:1,rationale:"Malaria: Anopheles mosquito. Plasmodium species (vivax, falciparum, malariae, ovale). Fever cycles, anemia, risk of severe malaria (cerebral, renal failure)."},
+            
+            {id:131,topic:"infectious",q:"Shigella infection (bacillary dysentery) presents with:",options:["Watery diarrhea with blood (dysentery) common, fever, dehydration","Mild URI symptoms","Only respiratory involvement","High fever with rash"],correct:0,rationale:"Shigella: Bloody diarrhea (dysentery), abdominal cramps, fever, dehydration. Highly contagious. Azithromycin or fluoroquinolone treatment."},
+            {id:132,topic:"infectious",q:"Salmonella infection clinical presentation:",options:["Only causes food poisoning in adults","Fever, diarrhea (may be bloody), vomiting, abdominal pain, bacteremia risk especially <5 years","No systemic symptoms","Rash predominant feature"],correct:1,rationale:"Salmonella: Non-typhoidal (food) or typhoidal (typhoid). Fever, diarrhea, bacteremia risk in young children. Fluoroquinolone or ceftriaxone if bacteremic."},
+            {id:133,topic:"infectious",q:"Campylobacter jejuni infection characteristics:",options:["Never serious in children","Leading bacterial cause acute diarrhea; bloody diarrhea, fever, cramps, Guillain-Barré risk","Only causes mild URI","No antibiotic treatment needed"],correct:1,rationale:"Campylobacter: Common foodborne pathogen (poultry). Bloody diarrhea, fever. GBS post-infection complication. Azithromycin if severe/prolonged."},
+            {id:134,topic:"infectious",q:"Clostridium difficile infection (CDI) typically occurs:",options:["After short antibiotic course","After prolonged antibiotic use (especially clindamycin, fluoroquinolones), causes pseudomembranous colitis","Never in children","From contaminated food"],correct:1,rationale:"C. difficile: Antibiotic-associated (especially clindamycin, fluoroquinolones). Pseudomembranous colitis. Fulaximicin or vancomycin treatment."},
+            {id:135,topic:"infectious",q:"Methicillin-resistant Staphylococcus aureus (MRSA) transmission in children:",options:["Only respiratory droplets","Skin-to-skin contact, contaminated fomites, possible respiratory (CA-MRSA pneumonia)","Fecal-oral route exclusively","Never transmits between children"],correct:1,rationale:"MRSA (CA-MRSA—community-acquired): Skin infections, pneumonia. Spreads skin-skin, fomites, contact. Vancomycin, linezolid for serious infections."},
+            {id:136,topic:"infectious",q:"Vancomycin-resistant enterococci (VRE) infection in hospitalized children:",options:["Not pathogenic","Can cause serious infections (UTI, bacteremia, endocarditis) in immunocompromised/critically ill","Only superficial colonization","Never requires treatment"],correct:1,rationale:"VRE: Healthcare-associated pathogen. Causes serious infections in immunocompromised. Contact precautions, linezolid or daptomycin for serious infections."},
+            {id:137,topic:"infectious",q:"Streptococcus pneumoniae resistance patterns impact:",options:["No clinical significance","Antibiotic selection (penicillin-resistant strains need higher doses/cephalosporins/fluoroquinolones)","All strains equally treatable","Never resistant to antibiotics"],correct:1,rationale:"Pneumococcal resistance: Penicillin/cephalosporin resistance common. High-dose ceftriaxone or fluoroquinolones for resistant strains."},
+            {id:138,topic:"infectious",q:"Nosocomial (hospital-acquired) infection prevention includes:",options:["No prevention possible","Hand hygiene, sterile technique, catheter care, appropriate isolation, antibiotic stewardship","Only isolation rooms needed","Antibiotics prevent all HAI"],correct:1,rationale:"HAI prevention: Hand hygiene (most critical), sterile technique, appropriate isolation precautions, minimize device duration, antibiotic stewardship."},
+            {id:139,topic:"infectious",q:"Standard precautions apply to:",options:["Only patients with known infectious disease","All patients regardless of diagnosis (blood, body fluids, non-intact skin, mucous membranes)","Respiratory illness only","Never needed for children"],correct:1,rationale:"Standard precautions: Apply to ALL patients. Hand hygiene, gloves, gown, eye protection with potential exposure to blood/body fluids."},
+            {id:140,topic:"infectious",q:"Airborne precautions required for:",options:["All respiratory infections","Measles, varicella, TB, some immunocompromised respiratory infections","Only droplet illnesses","Never needed in pediatrics"],correct:1,rationale:"Airborne precautions: Measles, varicella, TB, severe acute respiratory infections in certain immunocompromised. Respiratory isolation room, N95 masks."},
+            
+            {id:141,topic:"infectious",q:"Droplet precautions used for:",options:["All infections with respiratory secretions","Respiratory illnesses (influenza, pertussis, scarlet fever, mumps, diphtheria)","Only bloodborne infections","No infections require droplet precautions"],correct:1,rationale:"Droplet precautions: Influenza, pertussis, scarlet fever, mumps, meningococcal disease, rubella. Mask required within 3 feet of patient."},
+            {id:142,topic:"infectious",q:"Contact precautions indicated for:",options:["Only visibly bleeding wounds","Direct contact transmission risk (MRSA, VRE, CDI, RSV, GI infections, impetigo)","Respiratory illness only","Never needed"],correct:1,rationale:"Contact precautions: MRSA, VRE, CDI, RSV, norovirus, rotavirus, impetigo. Gown/gloves for all contact with patient/environment."},
+            {id:143,topic:"infectious",q:"Isolation precautions duration for varicella:",options:["24 hours of treatment","Until all lesions crusted over (typically 5-7 days from rash onset)","Lifelong isolation","No precautions after rash appears"],correct:1,rationale:"Varicella isolation: Continue until all vesicles crusted (typically 5-7 days). Respiratory/contact precautions during isolation period."},
+            {id:144,topic:"infectious",q:"Meningococcal disease (Neisseria meningitidis) requires:",options:["Standard precautions only","Droplet precautions until 24 hours appropriate antibiotics, then can discontinue","Lifetime isolation","Airborne precautions"],correct:1,rationale:"Meningococcal: Droplet precautions for first 24 hours IV ceftriaxone/cefotaxime, then discontinue. Chemoprophylaxis for close contacts (rifampin)."},
+            {id:145,topic:"infectious",q:"Conjugate meningococcal vaccines (Meningitidis A, C, W, Y) recommended for:",options:["All children age <5 years","Ages 11+ years with booster at 16, plus high-risk groups (asplenia, complement deficiency, sickle cell)","Only adults","Never effective in children"],correct:1,rationale:"Meningococcal conjugate vaccine (MenACWY): Routine ages 11-12 with booster at 16. High-risk groups (asplenia, immunodeficiency, Hajj travelers) get MenB additionally."},
+            
+            {id:146,topic:"infectious",q:"Rotavirus vaccine administration:",options:["Can give after gastroenteritis","Oral vaccine given at 2, 4, 6 months (RotaTeq) or 2, 4 months (Rotarix), before age 32 weeks","Only in hospitalized children","No pediatric vaccine"],correct:1,rationale:"Rotavirus vaccine: Oral live vaccine. RotaTeq (3 doses: 2, 4, 6 mo) or Rotarix (2 doses: 2, 4 mo). Must complete before age 32 weeks."},
+            {id:147,topic:"infectious",q:"Influenza vaccine annual recommendations for children:",options:["Only high-risk children need","All children 6 months-18 years annually; children <9 years getting first dose need 2 doses 4 weeks apart","Only children >5 years","Never needed"],correct:1,rationale:"Influenza vaccine: All children 6 mo-18 yo annual. First-time vaccinees <9 yo receive 2 doses 4+ weeks apart. Inactivated or LAIV age-appropriate."},
+            {id:148,topic:"infectious",q:"Pertussis booster vaccination needed because:",options:["Natural infection provides lifelong immunity","Immunity wanes over time; adolescent/adult boosters prevent disease transmission to infants","One childhood series provides permanent immunity","No boosters ever needed"],correct:1,rationale:"Pertussis: DTaP series + booster at 4-6 yo + Tdap adolescent/adult boosters. Waning immunity allows infection in adolescents/adults who transmit to infants."},
+            {id:149,topic:"infectious",q:"COVID-19 pandemic impact on pediatric care included:",options:["No significant pediatric illness","Severe illness/death in minority of children; major disruption to routine care, mental health impact, educational delays","Pediatric cases more severe than adults","No changes to pediatric practice"],correct:1,rationale:"COVID-19 pediatrics: Most children mild/asymptomatic (unlike adults). MIS-C rare but serious. Pandemic disrupted routine care, vaccinations, mental health support."},
+        
+            // CHILD ABUSE/NEGLECT (10 Q starting at 151)
+            {id:151,topic:"abuse",q:"Neglect defined as?",options:["Intentional injury","Deliberate failure provide physical, educational, emotional needs","Only physical neglect","Sexual abuse"],correct:1,rationale:"Neglect: Deliberate failure provide care. Includes physical, educational, emotional needs."},
+            {id:152,topic:"abuse",q:"Bruises in various healing stages?",options:["Accidental always","Highly suspicious abuse","Freckles","Normal aging"],correct:1,rationale:"Multiple healing stages bruises highly suspicious non-accidental injury."},
+            {id:153,topic:"abuse",q:"Behavioral clues child abuse?",options:["Normal development","Wariness of adults, resists home, inconsistent stories","Aggression only","Academic problems only"],correct:1,rationale:"Behavioral clues: Fear of caregiver, reluctance go home, inconsistent histories."},
+            {id:154,topic:"abuse",q:"Non-accidental injury common sites?",options:["Shins (symmetric)","Ears, face, mouth, genitals, stomach, inner thigh","Elbows","Public areas"],correct:1,rationale:"Non-accidental: Ears, face, mouth, genitals, stomach, inner thigh, buttocks."},
+            {id:155,topic:"abuse",q:"Nursing responsibility suspected abuse?",options:["Tell parents immediately","Document objectively, report authorities, provide support","Interrogate child","Ignore without proof"],correct:1,rationale:"Nursing: Document findings objectively, report appropriate authorities, ensure safety."},
+            {id:156,topic:"abuse",q:"Shaken Baby Syndrome risk?",options:["Intentional soft play","Violent shaking → bleeding, brain damage, death","Gentle rocking","Accidental falls"],correct:1,rationale:"Shaken Baby: Violent shaking → subdural hematoma, brain injury, death. Underreported."},
+            {id:157,topic:"abuse",q:"Child sexual abuse indicators?",options:["Age-inappropriate sexual knowledge","Always obvious physical injury","Only in older children","Never emotionally affecting"],correct:0,rationale:"CSA: Age-inappropriate sexual knowledge, behavior, STIs, emotional/behavioral changes."},
+            {id:158,topic:"abuse",q:"Risk factors child maltreatment?",options:["High socioeconomic status only","Substance abuse, domestic violence, child disability, economic hardship","Married parents always protective","No identifiable risks"],correct:1,rationale:"Risk factors: Substance abuse, DV, child disability, economic hardship. Multi-factorial."},
+            {id:159,topic:"abuse",q:"Reporting suspected abuse obligation?",options:["Optional recommendation","Mandatory for professionals","Only physicians","No legal requirement"],correct:1,rationale:"Mandatory reporting: All states require professionals report suspected abuse."},
+            {id:160,topic:"abuse",q:"Healing timeline for bruises?",options:["All heal same","0-2 days red, 2-5 days blue-green, 5-7 days yellow, 7-10 days brown","Immediate purple","Color irrelevant"],correct:1,rationale:"Bruise timeline: Red (0-2d) → blue-green (2-5d) → yellow (5-7d) → brown (7-10d)."},
+
+            // Complete remaining 40 questions (161-200) with similar structure
+            {id:161,topic:"genetic",q:"Genetic testing ethical consideration?",options:["No ethics involved","Informed consent, privacy, discrimination risk, right to know/not know","Cost irrelevant","Always test everyone"],correct:1,rationale:"Genetic testing ethics: Consent, privacy, discrimination protection, access/equity."},
+            {id:162,topic:"behavioral",q:"Dyslexia affects?",options:["All cognition equally","Reading/written language specifically","Spelling only","Math only"],correct:1,rationale:"Dyslexia: Neurobiological reading disorder. Normal intelligence. Early intervention."},
+            {id:163,topic:"infectious",q:"Pertussis stages include?",options:["One stage","Catarrhal, paroxysmal, convalescent","Just coughing","Only wheezing"],correct:1,rationale:"Pertussis: Catarrhal → Paroxysmal (severe cough 'whoop') → Convalescent."},
+            {id:164,topic:"abuse",q:"Documentation of abuse should?",options:["Include opinions","Be objective, factual, use direct quotes","Assume guilt","Omit details"],correct:1,rationale:"Documentation: Objective, factual, direct quotes, specific locations, measurements."},
+            {id:165,topic:"genetic",q:"Newborn screening includes?",options:["Only sickle cell","PKU, sickle cell, hypothyroidism, others","No genetic conditions","Infectious diseases only"],correct:1,rationale:"Newborn screening (varies by state): PKU, sickle cell, hypothyroidism, MSUD."},
+            {id:166,topic:"behavioral",q:"ODD vs conduct disorder?",options:["Same thing","ODD argumentativeness, conduct disorder violates others' rights","Conduct less serious","Only one exists"],correct:1,rationale:"ODD: Defiance. Conduct disorder: Violates rights (aggression, theft, destruction)."},
+            {id:167,topic:"infectious",q:"Polio transmission route?",options:["Respiratory droplets","Fecal-oral","Blood-borne","Skin contact"],correct:1,rationale:"Polio: Fecal-oral transmission. Highly contagious. Vaccine highly effective."},
+            {id:168,topic:"genetic",q:"X-linked recessive carrier mother affected father sons risk?",options:["0%","25%","50%","100%"],correct:2,rationale:"X-linked: Carrier mother (XAXa) × Affected father (XaY): 50% sons affected."},
+            {id:169,topic:"behavioral",q:"Autism early signs age 18mo?",options:["Normal social interest","Lack eye contact, no response name, limited communication","Shy personality","Late talkers always autistic"],correct:1,rationale:"Autism early signs: Lack eye contact, no response name, repetitive behaviors."},
+            {id:170,topic:"abuse",q:"Failure to thrive (FTT) organic vs non-organic?",options:["Same cause","Non-organic FTT from neglect/deprivation, organic from medical","Only organic exists","Always medical cause"],correct:1,rationale:"FTT: Organic (medical causes) vs non-organic (neglect, deprivation, emotional)."},
+            {id:171,topic:"genetic",q:"Huntington disease inheritance?",options:["Recessive","Autosomal dominant CAG repeat","X-linked","Mitochondrial"],correct:1,rationale:"Huntington: AD, CAG repeat. Onset 30s-40s. Progressive movement disorder, dementia."},
+            {id:172,topic:"behavioral",q:"FASD spectrum includes?",options:["FAS only","FAS, partial FAS, ARND","No spectrum","Only one presentation"],correct:1,rationale:"FASD spectrum: Fetal Alcohol Syndrome, partial FAS, Alcohol-Related NeuroDevelpmental Disorder."},
+            {id:173,topic:"infectious",q:"RSV bronchiolitis in infants?",options:["Mild cough","Wheezing, respiratory distress, hypoxia","Rash","Vomiting"],correct:1,rationale:"RSV bronchiolitis: Wheezing, distress, hypoxia. Worst <6mo. Supportive care, O2."},
+            {id:174,topic:"genetic",q:"Cystic fibrosis CFTR mutation?",options:["Autosomal dominant","Autosomal recessive","X-linked","Mitochondrial"],correct:1,rationale:"CF: Autosomal recessive. CFTR protein defect. Thick mucus → lung/GI problems."},
+            {id:175,topic:"abuse",q:"Mandatory reporting timeline?",options:["No specific time","Immediately upon suspicion","After confirming abuse","Only at end of care"],correct:1,rationale:"Mandatory reporting: Immediately upon reasonable suspicion. No confirmation required."},
+            {id:176,topic:"behavioral",q:"Down syndrome cardiac screening?",options:["Not needed","Immediate, screen for CHD","Only if symptoms","At school age"],correct:1,rationale:"Down syndrome: Screen for cardiac defects immediately (endocardial cushion defect)."},
+            {id:177,topic:"infectious",q:"Vaccine-preventable disease immunity?",options:["Lifelong always","Varies by vaccine, may need boosters","No immunity from vaccines","Only from natural infection"],correct:1,rationale:"Vaccine immunity: Varies by vaccine (polio lifelong, pertussis needs boosters)."},
+            {id:178,topic:"genetic",q:"Duchenne muscular dystrophy prognosis?",options:["Normal lifespan","Death by late teens from respiratory/cardiac failure","Improves with age","Cure available"],correct:1,rationale:"DMD: Progressive weakness, death by late teens from respiratory/cardiac complications."},
+            {id:179,topic:"behavioral",q:"Anxiety in children treatment?",options:["Sedation only","CBT first-line, SSRIs if indicated","Avoid treatment","Always hospitalize"],correct:1,rationale:"Child anxiety: CBT first-line, SSRIs if needed. Desensitization, environmental modification."},
+            {id:180,topic:"abuse",q:"Forensic evidence collection?",options:["Not important","Preserve chain of custody, document thoroughly, use kits","Delete records","Optional documentation"],correct:1,rationale:"Forensic evidence: Preserve chain of custody, document every step, use protocol kits."},
+            {id:181,topic:"genetic",q:"Prenatal genetic testing options?",options:["None available","NIPT, amniocentesis, ultrasound, PGT","Only 3rd trimester","No risks"],correct:1,rationale:"Prenatal testing: NIPT (cell-free DNA), amniocentesis, chorionic villus sampling."},
+            {id:182,topic:"behavioral",q:"Cerebral palsy most common type?",options:["Ataxic","Spastic 70%","Dyskinetic","Hypotonic"],correct:1,rationale:"CP: Spastic (70%, UMN lesion), ataxic (10%, cerebellum), dyskinetic/mixed."},
+            {id:183,topic:"infectious",q:"Meningitis bacterial vs viral?",options:["Same treatment","Bacterial: antibiotics emergent, viral: supportive","Both viral","Neither needs treatment"],correct:1,rationale:"Bacterial meningitis: Emergent IV antibiotics (ceftriaxone). Viral: supportive care."},
+            {id:184,topic:"genetic",q:"Sickle cell pain management acute crisis?",options:["Restrict fluids","Aggressive analgesia, hydration, oxygen if hypoxic","No pain relief","Ice application"],correct:1,rationale:"Sickle crisis: Strong opioids, hydration, oxygen, warmth. Avoid cold/tourniquets."},
+            {id:185,topic:"abuse",q:"Grooming behavior in CSA?",options:["Building trust inappropriately","Building appropriate adult child relationship","Required for all relationships","Unrelated to abuse"],correct:0,rationale:"Grooming: Abuser builds trust, isolates child to reduce resistance, normalizes abuse."},
+            {id:186,topic:"behavioral",q:"Intellectual disability severity levels?",options:["One level only","Mild, moderate, severe, profound (IQ ranges)","No variation","Unchangeable"],correct:1,rationale:"ID severity: Mild (IQ 50-69), moderate (35-49), severe (20-34), profound (<20)."},
+            {id:187,topic:"infectious",q:"COVID-19 in children presentation?",options:["Always severe respiratory illness","Mild respiratory, fewer severe cases than adults","Always asymptomatic","Rash only"],correct:1,rationale:"COVID-19 children: Often mild/asymptomatic. Fewer severe cases than adults. MIS-C risk."},
+            {id:188,topic:"genetic",q:"Mitochondrial inheritance pattern?",options:["Paternal","Maternal only","Autosomal dominant","X-linked"],correct:1,rationale:"Mitochondrial: Maternal inheritance. Mutations mitochondrial DNA. All children affected."},
+            {id:189,topic:"behavioral",q:"Early intervention (EI) services ages?",options:["3-5 years","Birth-3 years (IDEA Part C)","5-18 years","18+ only"],correct:1,rationale:"IDEA Part C: EI services birth-age 3 for eligible children with developmental delays."},
+            {id:190,topic:"abuse",q:"Protective factors against maltreatment?",options:["Never protective","Strong parent-child bond, social support, parenting skills","Only money matters","No protective factors exist"],correct:1,rationale:"Protective factors: Parent-child attachment, social support, parenting education."},
+            {id:191,topic:"genetic",q:"Cystic fibrosis screening newborn?",options:["Not screened","Immunoreactive trypsinogen (IRT) blood spot","Only clinical signs","Age 5"],correct:1,rationale:"CF newborn screening: IRT elevated on blood spot. Confirmatory testing with genetic analysis."},
+            {id:192,topic:"behavioral",q:"ADHD medication considerations?",options:["Stimulants only safe","Stimulants ± non-stimulants, monitor growth/BP/HR","Never medicate children","Herbal only"],correct:1,rationale:"ADHD meds: Stimulants (methylphenidate, amphetamines), non-stimulants (atomoxetine, guanfacine)."},
+            {id:193,topic:"infectious",q:"Isolation precautions varicella?",options:["No precautions needed","Standard + airborne 'til crusting","Only droplet","Droplet indefinitely"],correct:1,rationale:"Varicella isolation: Airborne precautions until all lesions crusted (typically 5-7 days)."},
+            {id:194,topic:"genetic",q:"Fragile X testing method?",options:["Clinical appearance only","Genetic testing (FMR1 expansion)","No confirmatory test","Behavioral assessment"],correct:1,rationale:"Fragile X diagnosis: Genetic testing detects FMR1 gene expansion (>200 CGG repeats)."},
+            {id:195,topic:"abuse",q:"Types child maltreatment?",options:["Physical only","Physical, emotional, sexual abuse & neglect","Mental health only","Educational problems"],correct:1,rationale:"Maltreatment types: Physical, emotional, sexual abuse; neglect (deliberate failure provide)."},
+            {id:196,topic:"behavioral",q:"Developmental milestones screening?",options:["Not important","Ages & Stages Questionnaire, Denver II, CDC milestones","Only doctor assesses","No screening needed"],correct:1,rationale:"Screening tools: ASQ, Denver II, CDC developmental milestones for early identification."},
+            {id:197,topic:"infectious",q:"Hand, foot, mouth prevention?",options:["No prevention possible","Hand hygiene, avoid contact with secretions/feces","Stay indoors always","Antibiotic prevention"],correct:1,rationale:"HFMD prevention: Hand hygiene, avoid touching mouth/eyes, cover respiratory secretions."},
+            {id:198,topic:"genetic",q:"Gene therapy future pediatrics?",options:["Not possible","Promising for monogenic disorders (SCD, hemophilia, SMA)","Only for adults","Currently perfect"],correct:1,rationale:"Gene therapy: Clinical trials underway for SCD, hemophilia, spinal muscular atrophy."},
+            {id:199,topic:"behavioral",q:"Behavior modification strategies?",options:["Punishment only","Positive reinforcement, extinction, shaping, token economy","Medication alone","No strategies"],correct:1,rationale:"Behavior modification: Reinforce desired behaviors, remove reinforcers for unwanted behaviors."},
+            {id:200,topic:"abuse",q:"Recovery and healing from abuse?",options:["Immediate","Trauma-informed care, therapy, support systems, safety planning, long-term follow-up","Time heals automatically","No recovery possible"],correct:1,rationale:"Abuse recovery: Professional trauma therapy, support groups, safety planning, long-term care."}
+        ];
+
+        // Initialize Music Player
+        function initMusicPlayer() {
+            const playlistContainer = document.getElementById('playlist-container');
+            MUSIC_PLAYLIST.forEach((song, idx) => {
+                const div = document.createElement('div');
+                div.className = 'music-track';
+                div.innerHTML = `<div class="flex justify-between items-center"><div><div class="font-semibold text-white">${song.title}</div><div class="text-xs text-slate-300">${song.artist}</div></div><span class="text-emerald-400">▶</span></div>`;
+                div.onclick = () => loadTrack(idx);
+                playlistContainer.appendChild(div);
+            });
+        }
+
+        function loadTrack(idx) {
+            currentTrackIndex = idx;
+            const song = MUSIC_PLAYLIST[idx];
+            document.getElementById('current-song-title').textContent = song.title;
+            document.getElementById('current-song-artist').textContent = song.artist;
+            document.getElementById('audio-player').src = song.url;
+            updatePlaylistUI();
+        }
+
+        function togglePlay() {
+            const audio = document.getElementById('audio-player');
+            audio.paused ? audio.play() : audio.pause();
+        }
+
+        function nextTrack() {
+            loadTrack((currentTrackIndex + 1) % MUSIC_PLAYLIST.length);
+            document.getElementById('audio-player').play();
+        }
+
+        function previousTrack() {
+            loadTrack((currentTrackIndex - 1 + MUSIC_PLAYLIST.length) % MUSIC_PLAYLIST.length);
+            document.getElementById('audio-player').play();
+        }
+
+        function updatePlaylistUI() {
+            document.querySelectorAll('.music-track').forEach((track, idx) => {
+                track.classList.toggle('playing', idx === currentTrackIndex);
+            });
+        }
+
+        // Quiz Functions
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function startQuiz(type) {
+            selectedQuizType = type;
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+            
+            let filtered = QUESTION_BANK;
+            if (type !== 'all') {
+                filtered = QUESTION_BANK.filter(q => q.topic === type || q.topic === 'all');
+            }
+            
+            quizQuestions = shuffle(filtered).slice(0, 10);
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            currentQuestionIndex = 0;
+            secondsLeft = 900;
+            
+            renderCurrentQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                secondsLeft--;
+                const min = Math.floor(secondsLeft / 60);
+                const sec = secondsLeft % 60;
+                document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+                if (secondsLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function renderCurrentQuestion() {
+            const q = quizQuestions[currentQuestionIndex];
+            document.getElementById('question-number').textContent = currentQuestionIndex + 1;
+            document.getElementById('question-text').innerHTML = `<strong>Q${currentQuestionIndex + 1}.</strong> ${q.q}`;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((option, i) => {
+                const div = document.createElement('div');
+                div.className = `quiz-option cursor-pointer border border-slate-700 hover:border-emerald-400 rounded-3xl p-6 flex items-center text-lg ${userAnswers[currentQuestionIndex] === i ? 'bg-emerald-500 text-white' : ''}`;
+                div.innerHTML = `<span class="mr-4 font-mono text-emerald-400">${String.fromCharCode(65 + i)}</span> ${option}`;
+                div.onclick = () => {
+                    userAnswers[currentQuestionIndex] = i;
+                    renderCurrentQuestion();
+                };
+                container.appendChild(div);
+            });
+            
+            document.getElementById('next-btn').textContent = (currentQuestionIndex === quizQuestions.length - 1) ? 'Finish Exam' : 'Next →';
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderCurrentQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderCurrentQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+            
+            let score = 0;
+            const reviewHTML = [];
+            
+            quizQuestions.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                if (isCorrect) score++;
+                
+                reviewHTML.push(`
+                    <div class="border ${isCorrect ? 'border-emerald-400 bg-emerald-900/30' : 'border-red-400 bg-red-900/30'} rounded-3xl p-6">
+                        <div class="flex justify-between items-start">
+                            <p class="font-medium">${q.q}</p>
+                            <span class="text-xs px-3 py-1 ${isCorrect ? 'bg-emerald-400 text-slate-950' : 'bg-red-400 text-white'} rounded-3xl">${isCorrect ? 'Correct' : 'Incorrect'}</span>
+                        </div>
+                        <p class="mt-4 text-sm text-slate-300">Correct answer: <strong>${q.options[q.correct]}</strong></p>
+                        <p class="text-xs text-slate-400 mt-2">${q.rationale}</p>
+                    </div>
+                `);
+            });
+            
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            document.getElementById('score-header').innerHTML = `
+                <div class="text-7xl font-bold mb-2 ${percentage >= 70 ? 'text-emerald-400' : 'text-amber-400'}">${percentage}%</div>
+                <p class="text-xl">${score} of ${quizQuestions.length} correct</p>
+                <p class="text-sm mt-1">${percentage >= 85 ? 'Excellent NCLEX-level mastery!' : percentage >= 70 ? 'Solid understanding — keep practicing!' : 'Review the rationales below and try again!'}</p>
+            `;
+            document.getElementById('review-container').innerHTML = reviewHTML.join('');
+            updateProgressBar(percentage);
+        }
+
+        function restartQuiz() {
+            document.getElementById('quiz-results').classList.add('hidden');
+            document.getElementById('quiz-setup').classList.remove('hidden');
+        }
+
+        function updateProgressBar(percent) {
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = `${Math.min(percent + 20, 100)}%`;
+            document.getElementById('progress-text').textContent = `${Math.min(percent + 20, 100)}%`;
+        }
+
+        function navigateToSection(section) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(section).classList.remove('hidden');
+            document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
+            
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active-nav'));
+            const navEl = document.getElementById(`nav-${section}`);
+            if (navEl) navEl.classList.add('active-nav');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function showResourcesModal() {
+            document.getElementById('resources-modal').classList.remove('hidden');
+        }
+
+        function hideResourcesModal() {
+            document.getElementById('resources-modal').classList.add('hidden');
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initMusicPlayer();
+            console.log('%c✅ Pediatric Unit 5 Mastery Hub Loaded!', 'background:#10b981;color:#fff;padding:8px;border-radius:4px;font-weight:bold');
+        };
+    </script>
+</body>
+</html>
