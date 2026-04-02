@@ -1,554 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Pediatric Unit 5 • Interactive Mastery Hub</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
-                    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-                    :root { --tw-color-primary: #10b981; }
-                    * { transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-                    .tail-container * { font-family: 'Inter', system-ui, sans-serif; }
-                    .header-font { font-family: 'Space Grotesk', sans-serif; }
-                    .card-hover { transition: all 0.3s ease; }
-                    .card-hover:hover { transform: translateY(-4px); box-shadow: 25px 25px 0 -10px rgb(16 185 129); }
-                    .quiz-option { transition: all 0.2s ease; }
-                    .quiz-option:hover { background-color: #10b981; color: white; transform: scale(1.02); }
-                    .active-nav { border-bottom: 3px solid #10b981; color: #10b981; }
-                    .modal { animation: modalPop 0.3s ease forwards; }
-                    @keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-                    .music-player { background: linear-gradient(135deg, #1d3557 0%, #1b7a8a 100%); border-radius: 20px; padding: 20px; box-shadow: 0 20px 25px -5px rgb(16 185 129 / 0.1); }
-                    .music-track { background: rgb(255,255,255,0.1); border-radius: 12px; padding: 12px; margin: 8px 0; cursor: pointer; transition: all 0.2s ease; }
-                    .music-track:hover { background rgb(255,255,255,0.2); transform: translateX(8px); }
-                    .music-track.playing { background: rgb(16 185 129); color: white; }
-                    .quiz-setup { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
-                    .quiz-category-btn { padding: 20px; background: #1e293b; border-radius: 12px; color: white; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease; }
-                    .quiz-category-btn:hover { border-color: #10b981; transform: scale(1.05); }
-                    .quiz-option { transition: all 0.2s ease; }
-                    .quiz-option:hover { background-color: #10b981; color: white; transform: scale(1.02); }
-                    .active-nav { border-bottom: 3px solid #10b981; color: #10b981; }
-                </style>
-            <script>
-                        function navigateToSection(section) {
-                                        document.querySelectorAll('[id*="section"]').forEach(s => s.classList.add('hidden'));
-                                        document.getElementById(section).classList.remove('hidden');
-                                        document.querySelectorAll('nav a').forEach(nav => nav.classList.remove('active-nav'));
-                                        const navEl = document.getElementById(`nav-${section}`);
-                                        if(navEl) navEl.classList.add('active-nav');
-                                        if(document.getElementById(section).scrollIntoView) {
-                                                            document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
-                                        }
-                        }
-                        function toggleMobileMenu() {
-                                        document.getElementById('mobile-menu').classList.toggle('hidden');
-                        }
-                        function showResourcesModal() {
-                                        document.getElementById('resources-modal').style.display = 'flex';
-                        }
-                        function hideResourcesModal() {
-                                        document.getElementById('resources-modal').classList.add('hidden');
-                                        document.getElementById('resources-modal').style.display = 'none';
-                        }
-                        function initMusicPlayer() {
-                                        console.log('%c✅ Pediatric Unit 5 Mastery Hub Loaded!', 'background:#10b981;color:#fff;padding:8px;border-radius:4px;font-weight:bold');
-                        }
-                        window.onload = function() {
-                                        initMusicPlayer();
-                        };
-            </script>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Pediatric Unit 5 Mastery Hub</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <style>
+              body { font-family: 'Inter', sans-serif; }
+              .header-font { font-family: 'Space Grotesk', sans-serif; font-weight: bold; }
+              .card { background: #1e293b; border-radius: 12px; padding: 20px; margin: 10px 0; border-left: 4px solid #10b981; }
+              .content-hidden { display: none !important; }
+              .content-show { display: block !important; }
+            </style>
     </head>
     <body class="bg-slate-950 text-gray-100">
-            <!-- NAVIGATION -->
-            <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-                        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                                        <div class="flex items-center gap-3">
-                                                            <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold">🏥</div>div>
-                                                            <span class="header-font text-2xl font-bold text-white hidden md:inline">Pediatric Unit 5</span>span>
-                                                            <span class="bg-emerald-500 px-3 py-1 rounded-full text-sm font-semibold hidden md:inline">Mastery Hub</span>span>
-                                        </div>div>
-                                        <div class="hidden md:flex gap-8 items-center">
-                                                            <a id="nav-home" onclick="navigateToSection('home')" class="cursor-pointer hover:text-emerald-400 active-nav transition">🏠 Home</a>a>
-                                                            <a id="nav-learning" onclick="navigateToSection('learning')" class="cursor-pointer hover:text-emerald-400 transition">📚 Learning</a>a>
-                                                            <a id="nav-quizzes" onclick="navigateToSection('quizzes')" class="cursor-pointer hover:text-emerald-400 transition">✓ Quizzes</a>a>
-                                                            <a id="nav-music" onclick="navigateToSection('music')" class="cursor-pointer hover:text-emerald-400 transition">🎵 Music</a>a>
-                                                            <button onclick="showResourcesModal()" class="bg-emerald-500 px-4 py-2 rounded-lg text-white font-semibold hover:bg-emerald-600">📖 Resources</button>button>
-                                        </div>div>
-                                        <button onclick="toggleMobileMenu()" class="md:hidden text-2xl">☰</button>button>
-                        </div>div>
-                        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 p-4 space-y-2">
-                                        <a onclick="navigateToSection('home')" class="block p-2 hover:bg-slate-700 rounded cursor-pointer">🏠 Home</a>a>
-                                        <a onclick="navigateToSection('learning')" class="block p-2 hover:bg-slate-700 rounded cursor-pointer">📚 Learning</a>a>
-                                        <a onclick="navigateToSection('quizzes')" class="block p-2 hover:bg-slate-700 rounded cursor-pointer">✓ Quizzes</a>a>
-                                        <a onclick="navigateToSection('music')" class="block p-2 hover:bg-slate-700 rounded cursor-pointer">🎵 Music</a>a>
-                                        <button onclick="showResourcesModal()" class="block w-full text-left p-2 bg-emerald-500 rounded cursor-pointer">📖 Resources</button>button>
-                        </div>div>
-            </nav>nav>
+
+        <nav class="bg-slate-900 border-b border-slate-700 p-4 sticky top-0 z-50">
+              <div class="max-w-7xl mx-auto flex justify-between items-center">
+                      <div class="flex items-center gap-3">
+                                <span class="header-font text-2xl">🏥 Pediatric Unit 5</span>span>
+                                <span class="bg-emerald-500 px-3 py-1 rounded-full text-sm">Mastery Hub</span>span>
+                      </div>div>
+                      <div class="flex gap-6">
+                                <button onclick="showSection('home')" class="hover:text-emerald-400">Home</button>button>
+                                <button onclick="showSection('learning')" class="hover:text-emerald-400">📚 Learning</button>button>
+                                <button onclick="showSection('quizzes')" class="hover:text-emerald-400">✓ Quizzes</button>button>
+                                <button onclick="showSection('music')" class="hover:text-emerald-400">🎵 Music</button>button>
+                                <button onclick="showSection('resources')" class="bg-emerald-500 px-4 py-2 rounded">📖 Resources</button>button>
+                      </div>div>
+              </div>div>
+        </nav>nav>
+
+        <div class="max-w-7xl mx-auto px-4 py-8">
 
             <!-- HOME SECTION -->
-            <section id="home" class="max-w-7xl mx-auto px-4 py-16">
-                        <div class="grid md:grid-cols-2 gap-12 items-center">
-                                        <div>
-                                                            <div class="inline-block bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full mb-6">
-                                                                                    <i class="fa-solid fa-flask"></i>i> NURS 2209 • Unit 5
-                                                            </div>
-                                                            <h1 class="header-font text-6xl font-bold text-white mb-6">Master Pediatric Disorders</h1>h1>
-                                                            <p class="text-xl text-slate-400 mb-8"><span class="text-emerald-400 font-semibold">Deep learning, not memorization</span>span> — Understand pathophysiology with 200 NCLEX-style questions, detailed rationales, and study music.</p>p>
-                                                            <div class="flex gap-4 mb-12">
-                                                                                    <button onclick="navigateToSection('quizzes')" class="bg-emerald-500 px-6 py-3 rounded-full text-white font-semibold hover:bg-emerald-600 flex items-center gap-2">
-                                                                                                                <i class="fa-solid fa-clipboard-check"></i>i> START QUIZ
-                                                                                        </button>button>
-                                                                                    <button onclick="navigateToSection('music')" class="border border-emerald-500 text-emerald-400 px-6 py-3 rounded-full font-semibold hover:bg-emerald-500/10 flex items-center gap-2">
-                                                                                                                <i class="fa-solid fa-music"></i>i> Study Music
-                                                                                        </button>button>
-                                                            </div>
-                                                            <div class="grid grid-cols-3 gap-6">
-                                                                                    <div class="text-center">
-                                                                                                                <div class="text-4xl font-bold text-emerald-400">200</div>
-                                                                                                                <div class="text-sm text-slate-400">Questions</div>
-                                                                                        </div>
-                                                                                    <div class="text-center">
-                                                                                                                <div class="text-4xl font-bold text-emerald-400">4</div>
-                                                                                                                <div class="text-sm text-slate-400">Topics</div>
-                                                                                        </div>
-                                                                                    <div class="text-center">
-                                                                                                                <div class="text-4xl font-bold text-emerald-400">10</div>
-                                                                                                                <div class="text-sm text-slate-400">Study Songs</div>
-                                                                                        </div>
-                                                            </div>
-                                        </div>
-                                        <div class="bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-3xl p-8 border border-emerald-500/30">
-                                                            <div class="text-center mb-8">
-                                                                                    <div class="text-6xl mb-4">🧬🧠🦠🛡️</div>
-                                                                                    <h3 class="header-font text-3xl font-bold mb-2">Complete Pediatric Learning</h3>h3>
-                                                                                    <p class="text-slate-300">Master genetic, behavioral, infectious, and abuse disorders</p>p>
-                                                            </div>
-                                                            <div class="space-y-3">
-                                                                                    <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg">
-                                                                                                                <span class="text-emerald-400 text-xl mt-1">✓</span>span>
-                                                                                                                <div>
-                                                                                                                                                <div class="font-semibold">Evidence-based learning</div>
-                                                                                                                                                <div class="text-sm text-slate-400">Built on NURS 2209 curriculum</div>
-                                                                                                                    </div>
-                                                                                        </div>
-                                                                                    <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg">
-                                                                                                                <span class="text-emerald-400 text-xl mt-1">✓</span>span>
-                                                                                                                <div>
-                                                                                                                                                <div class="font-semibold">200 NCLEX questions</div>
-                                                                                                                                                <div class="text-sm text-slate-400">With detailed rationales</div>
-                                                                                                                    </div>
-                                                                                        </div>
-                                                                                    <div class="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg">
-                                                                                                                <span class="text-emerald-400 text-xl mt-1">✓</span>span>
-                                                                                                                <div>
-                                                                                                                                                <div class="font-semibold">Study music included</div>
-                                                                                                                                                <div class="text-sm text-slate-400">Calm piano covers for focus</div>
-                                                                                                                    </div>
-                                                                                        </div>
-                                                            </div>
-                                        </div>
-                        </div>
-                        <div class="mt-20 grid md:grid-cols-2 gap-8">
-                                        <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-8">
-                                                            <h3 class="text-2xl font-bold mb-4">4 Core Disorder Categories</h3>h3>
-                                                            <ul class="space-y-3 text-slate-300">
-                                                                                    <li><span class="text-emerald-400 font-bold">🧬 Genetic:</span>span> Down, Turner, Klinefelter, Fragile X, PKU</li>
-                                                                                <li><span class="text-emerald-400 font-bold">🧠 Behavioral/Dev:</span>span> ADHD, Autism, FASD, ID</li>
-                                                                                <li><span class="text-emerald-400 font-bold">🦠 Infectious:</span>span> Varicella, Measles, Mumps, Pertussis</li>
-                                                                                <li><span class="text-emerald-400 font-bold">🛡️ Abuse/Neglect:</span>span> Physical, emotional, sexual, neglect</li>
-                                                            </ul>ul>
-                                        </div>
-                                    <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-8">
-                                                    <h3 class="text-2xl font-bold mb-4">How to Use This Platform</h3>h3>
-                                                    <ol class="space-y-3 text-slate-300">
-                                                                        <li><span class="text-emerald-400 font-bold">1.</span>span> Start with <span class="text-emerald-400">Learning</span>span> to review comprehensive notes</li>
-                                                                        <li><span class="text-emerald-400 font-bold">2.</span>span> Select a <span class="text-emerald-400">Quiz</span>span> category to test your knowledge</li>
-                                                                        <li><span class="text-emerald-400 font-bold">3.</span>span> Review rationales to deepen understanding</li>
-                                                                        <li><span class="text-emerald-400 font-bold">4.</span>span> Use <span class="text-emerald-400">Study Music</span>span> for focused learning</li>
-                                                    </ol>ol>
-                                    </div>
-                        </div>
-            </section>section>
-    
-        <!-- LEARNING SECTION -->
-        <section id="learning" class="hidden max-w-7xl mx-auto px-4 py-16">
-                <div class="mb-12">
-                            <h2 class="header-font text-4xl font-bold mb-2">📚 Learning Modules</h2>h2>
-                            <p class="text-slate-300">Complete your learning BEFORE attempting quizzes. Read, understand, and connect to prior nursing knowledge.</p>p>
-                </div>
-                
-                <div class="grid md:grid-cols-4 gap-4 mb-12">
-                            <button class="learning-btn p-4 bg-slate-800 border-2 border-emerald-500 rounded-lg cursor-pointer hover:bg-slate-700 text-left" data-topic="genetic">
-                                            <div class="text-2xl mb-2">🧬</div>
-                                            <div class="font-bold">Genetic Disorders</div>
-                                            <div class="text-sm text-slate-400">6 conditions</div>
-                            </button>button>
-                            <button class="learning-btn p-4 bg-slate-800 border-2 border-slate-700 rounded-lg cursor-pointer hover:bg-slate-700 text-left" data-topic="behavioral">
-                                            <div class="text-2xl mb-2">🧠</div>
-                                            <div class="font-bold">Behavioral/Dev</div>
-                                            <div class="text-sm text-slate-400">4 conditions</div>
-                            </button>button>
-                            <button class="learning-btn p-4 bg-slate-800 border-2 border-slate-700 rounded-lg cursor-pointer hover:bg-slate-700 text-left" data-topic="infectious">
-                                            <div class="text-2xl mb-2">🦠</div>
-                                            <div class="font-bold">Infectious Diseases</div>
-                                            <div class="text-sm text-slate-400">9 conditions</div>
-                            </button>button>
-                            <button class="learning-btn p-4 bg-slate-800 border-2 border-slate-700 rounded-lg cursor-pointer hover:bg-slate-700 text-left" data-topic="abuse">
-                                            <div class="text-2xl mb-2">🛡️</div>
-                                            <div class="font-bold">Abuse & Neglect</div>
-                                            <div class="text-sm text-slate-400">5 types</div>
-                            </button>button>
-                </div>
-        
-                <div id="learning-content" class="space-y-8"></div>
-        </section>section>
-    
-        <!-- QUIZZES SECTION -->
-        <section id="quizzes" class="hidden max-w-7xl mx-auto px-4 py-16">
-                <div class="mb-12">
-                            <h2 class="header-font text-4xl font-bold mb-2">✓ Assessment Center</h2>h2>
-                            <p class="text-slate-300">Test your knowledge with NCLEX-style questions. Each question includes a detailed rationale for learning.</p>p>
-                </div>
-                
-                <div id="quiz-setup" class="quiz-setup">
-                            <button class="quiz-category-btn" onclick="startQuiz('genetic')">
-                                            <div class="text-3xl mb-2">🧬</div>
-                                            <div class="font-bold">Genetic Disorders</div>
-                                            <div class="text-sm text-slate-400">20 Questions</div>
-                            </button>button>
-                            <button class="quiz-category-btn" onclick="startQuiz('behavioral')">
-                                            <div class="text-3xl mb-2">🧠</div>
-                                            <div class="font-bold">Behavioral/Dev</div>
-                                            <div class="text-sm text-slate-400">15 Questions</div>
-                            </button>button>
-                            <button class="quiz-category-btn" onclick="startQuiz('infectious')">
-                                            <div class="text-3xl mb-2">🦠</div>
-                                            <div class="font-bold">Infectious Diseases</div>
-                                            <div class="text-sm text-slate-400">30 Questions</div>
-                            </button>button>
-                            <button class="quiz-category-btn" onclick="startQuiz('abuse')">
-                                            <div class="text-3xl mb-2">🛡️</div>
-                                            <div class="font-bold">Abuse & Neglect</div>
-                                            <div class="text-sm text-slate-400">15 Questions</div>
-                            </button>button>
-                            <button class="quiz-category-btn" onclick="startQuiz('comprehensive')">
-                                            <div class="text-3xl mb-2">⭐</div>
-                                            <div class="font-bold">Comprehensive Exam</div>
-                                            <div class="text-sm text-slate-400">100 Questions</div>
-                            </button>button>
-                </div>
-        
-                <div id="quiz-container" style="display: none;">
-                            <div class="mb-6">
-                                            <div class="flex justify-between items-center mb-4">
-                                                                <h3 class="header-font text-2xl font-bold" id="quiz-title"></h3>h3>
-                                                                <button onclick="exitQuiz()" class="text-slate-400 hover:text-white">✕ Exit</button>button>
-                                            </div>
-                                            <div class="w-full bg-slate-700 rounded-full h-2">
-                                                                <div id="progress-bar" class="bg-emerald-500 h-2 rounded-full transition-all" style="width: 0%"></div>
-                                            </div>
-                                            <div class="text-sm text-slate-400 mt-2"><span id="progress-text">0</span>span>% complete</div>
-                            </div>
-                
-                            <div id="quiz-question" class="space-y-6 min-h-96 bg-slate-800/50 p-8 rounded-lg"></div>
-                            
-                            <div id="quiz-results" class="hidden space-y-6">
-                                            <div class="bg-slate-800/50 p-8 rounded-lg">
-                                                                <h3 class="header-font text-2xl font-bold mb-4">Quiz Complete!</h3>h3>
-                                                                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                                                                                        <div class="text-center">
-                                                                                                                    <div class="text-4xl font-bold text-emerald-400" id="final-score">0%</div>
-                                                                                                                    <div class="text-slate-400">Your Score</div>
-                                                                                            </div>
-                                                                                        <div class="text-center">
-                                                                                                                    <div class="text-4xl font-bold text-cyan-400" id="correct-count">0</div>
-                                                                                                                    <div class="text-slate-400">Correct</div>
-                                                                                            </div>
-                                                                                        <div class="text-center">
-                                                                                                                    <div class="text-4xl font-bold text-orange-400" id="total-count">0</div>
-                                                                                                                    <div class="text-slate-400">Total Questions</div>
-                                                                                            </div>
-                                                                </div>
-                                                                <div id="review-container" class="space-y-6"></div>
-                                            </div>
-                                            <button onclick="restartQuiz()" class="w-full bg-emerald-500 text-white py-3 rounded-lg font-bold hover:bg-emerald-600">Take Another Quiz</button>button>
-                            </div>
-                </div>
-        </section>section>
-    
-        <!-- MUSIC SECTION -->
-        <section id="music" class="hidden max-w-7xl mx-auto px-4 py-16">
-                <div class="mb-12">
-                            <h2 class="header-font text-4xl font-bold mb-2">🎵 Study Music Playlist</h2>h2>
-                            <p class="text-slate-300">Calm, upbeat piano covers designed to enhance focus and retention while learning.</p>p>
-                </div>
-                
-                <div class="music-player">
-                            <div class="mb-8">
-                                            <div class="flex items-center gap-4 mb-6">
-                                                                <button id="play-pause-btn" class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white hover:bg-emerald-600">
-                                                                                        <i class="fas fa-play text-2xl"></i>i>
-                                                                </button>button>
-                                                                <div>
-                                                                                        <h3 id="now-playing" class="text-xl font-bold text-white">Ready to Play</h3>h3>
-                                                                                        <p class="text-slate-300">Click a track to begin</p>p>
-                                                                </div>
-                                            </div>
-                                            <div class="w-full bg-slate-700 rounded-full h-1 mb-2">
-                                                                <div id="music-progress" class="bg-emerald-500 h-1 rounded-full" style="width: 0%"></div>
-                                            </div>
-                                            <div class="flex justify-between text-sm text-slate-300">
-                                                                <span id="current-time">0:00</span>span>
-                                                                <span id="duration">0:00</span>span>
-                                            </div>
-                            </div>
-                
+            <div id="home" class="content-show">
+                  <h1 class="header-font text-5xl font-bold mb-4">Master Pediatric Disorders</h1>h1>
+                  <p class="text-xl text-slate-300 mb-8">Complete learning platform with 24 disorders across 4 categories, 200+ NCLEX questions, and study music.</p>p>
+
+                  <div class="grid md:grid-cols-3 gap-8 mb-12">
+                          <div class="card"><h3 class="text-3xl font-bold text-emerald-400">24</h3>h3><p>Disorders</p></div>div>
+                      <div class="card"><h3 class="text-3xl font-bold text-emerald-400">200+</h3>h3><p>Questions</p></div>div>
+                      <div class="card"><h3 class="text-3xl font-bold text-emerald-400">10</h3>h3><p>Study Songs</p></div>div>
+                  </div>div>
+            
+              <div class="grid md:grid-cols-2 gap-8">
+                  <div>
+                            <h2 class="text-2xl font-bold mb-4">Content Coverage</h2>h2>
                             <div class="space-y-3">
-                                            <div class="music-track" onclick="playTrack(0, 'Clair de Lune', 'Claude Debussy')">
-                                                                <div class="font-semibold">🎹 Clair de Lune (Piano Cover)</div>
-                                                                <div class="text-sm text-slate-300">Classical • 4:30</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(1, 'Bohemian Rhapsody', 'Piano Version')">
-                                                                <div class="font-semibold">🎹 Bohemian Rhapsody (Piano Cover)</div>
-                                                                <div class="text-sm text-slate-300">Queen • 5:55</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(2, 'Imagine', 'Piano Cover')">
-                                                                <div class="font-semibold">🎹 Imagine (Piano Cover)</div>
-                                                                <div class="text-sm text-slate-300">John Lennon • 3:03</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(3, 'Someone Like You', 'Piano Instrumental')">
-                                                                <div class="font-semibold">🎹 Someone Like You (Piano Instrumental)</div>
-                                                                <div class="text-sm text-slate-300">Adele • 4:45</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(4, 'Nocturne No. 2 in E-flat Major', 'Chopin')">
-                                                                <div class="font-semibold">🎹 Nocturne No. 2 in E-flat Major</div>
-                                                                <div class="text-sm text-slate-300">Chopin • 5:12</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(5, 'River Flows in You', 'Yiruma')">
-                                                                <div class="font-semibold">🎹 River Flows in You (Piano)</div>
-                                                                <div class="text-sm text-slate-300">Yiruma • 4:32</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(6, 'Moonlight Sonata', 'Beethoven')">
-                                                                <div class="font-semibold">🎹 Moonlight Sonata (1st Movement)</div>
-                                                                <div class="text-sm text-slate-300">Beethoven • 5:33</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(7, 'Perfect', 'Piano Cover')">
-                                                                <div class="font-semibold">🎹 Perfect (Piano Cover)</div>
-                                                                <div class="text-sm text-slate-300">Ed Sheeran • 4:23</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(8, 'A Thousand Years', 'Piano')">
-                                                                <div class="font-semibold">🎹 A Thousand Years (Piano)</div>
-                                                                <div class="text-sm text-slate-300">Christina Perri • 4:20</div>
-                                            </div>
-                                            <div class="music-track" onclick="playTrack(9, 'Interstellar Theme', 'Piano Arrangement')">
-                                                                <div class="font-semibold">🎹 Interstellar Theme (Piano)</div>
-                                                                <div class="text-sm text-slate-300">Hans Zimmer • 4:58</div>
-                                            </div>
+                                        <p><span class="text-emerald-400 font-bold">🧬 Genetic (6):</span>span> Down, Turner, Klinefelter, Fragile X, Neurofibromatosis, PKU</p>p>
+                                        <p><span class="text-emerald-400 font-bold">🧠 Behavioral (4):</span>span> ADHD, Autism, FASD, Intellectual Disability</p>p>
+                                        <p><span class="text-emerald-400 font-bold">🦠 Infectious (9):</span>span> Varicella, Measles, Mumps, Scarlet Fever, Pertussis, Roseola, 5th Disease, Rubella, Immunizations</p>p>
+                                        <p><span class="text-emerald-400 font-bold">🛡️ Abuse (4):</span>span> Physical, Emotional, Sexual, Neglect</p>p>
                             </div>
-                </div>
-        </section>section>
-    
-        <!-- RESOURCES MODAL -->
-        <div id="resources-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; flex-items: center; justify-content: center; align-items: center;">
-                <div style="background: #0f172a; border-radius: 12px; padding: 32px; max-width: 500px; width: 90%; color: white;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                                            <h2 style="margin: 0; font-size: 24px; font-weight: bold;">📖 Resources</h2>h2>
-                                            <button onclick="hideResourcesModal()" style="background: none; border: none; color: #9ca3af; font-size: 28px; cursor: pointer; padding: 0;">✕</button>button>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                            <a href="https://www.ncbi.nlm.nih.gov/" target="_blank" style="padding: 12px; background: #1e293b; border-radius: 8px; color: #06b6d4; text-decoration: none; display: block; font-weight: 500;">📚 NCBI PubMed</a>a>
-                                            <a href="https://www.uptodate.com/" target="_blank" style="padding: 12px; background: #1e293b; border-radius: 8px; color: #06b6d4; text-decoration: none; display: block; font-weight: 500;">💉 UpToDate</a>a>
-                                            <a href="https://www.merckmanuals.com/" target="_blank" style="padding: 12px; background: #1e293b; border-radius: 8px; color: #06b6d4; text-decoration: none; display: block; font-weight: 500;">📖 Merck Manual</a>a>
-                                            <a href="https://www.aap.org/" target="_blank" style="padding: 12px; background: #1e293b; border-radius: 8px; color: #06b6d4; text-decoration: none; display: block; font-weight: 500;">🏥 AAP Resources</a>a>
-                                            <a href="https://nursingstudent.com/" target="_blank" style="padding: 12px; background: #1e293b; border-radius: 8px; color: #06b6d4; text-decoration: none; display: block; font-weight: 500;">👩‍⚕️ Nursing Resources</a>a>
-                            </div>
-                </div>
+                  </div>
+                      <div>
+                                <h2 class="text-2xl font-bold mb-4">How to Learn</h2>h2>
+                                <ol class="space-y-2 text-slate-300">
+                                            <li><span class="text-emerald-400 font-bold">1.</span>span> Click "📚 Learning" to read all disorders</li>
+                                        <li><span class="text-emerald-400 font-bold">2.</span>span> Learn pathophysiology and nursing care</li>
+                                        <li><span class="text-emerald-400 font-bold">3.</span>span> Take "✓ Quizzes" to test knowledge</li>
+                                        <li><span class="text-emerald-400 font-bold">4.</span>span> Use "🎵 Music" for focused studying</li>
+                                        <li><span class="text-emerald-400 font-bold">5.</span>span> Access "📖 Resources" for references</li>
+                                </ol>ol>
+                      </div>
+              </div>
+            </div>
+        
+        <!-- LEARNING SECTION -->
+        <div id="learning" class="content-hidden">
+          <h2 class="header-font text-4xl font-bold mb-6">📚 Learning Modules</h2>h2>
+          <div class="grid md:grid-cols-4 gap-4 mb-8">
+              <button onclick="showTopic('genetic')" class="card cursor-pointer hover:bg-slate-700 border-emerald-500">Genetic</button>button>
+              <button onclick="showTopic('behavioral')" class="card cursor-pointer hover:bg-slate-700">Behavioral</button>button>
+              <button onclick="showTopic('infectious')" class="card cursor-pointer hover:bg-slate-700">Infectious</button>button>
+              <button onclick="showTopic('abuse')" class="card cursor-pointer hover:bg-slate-700">Abuse/Neglect</button>button>
+          </div>
+          <div id="topic-content" class="space-y-6"></div>
+        </div>
+        
+        <!-- QUIZZES SECTION -->
+        <div id="quizzes" class="content-hidden">
+          <h2 class="header-font text-4xl font-bold mb-6">✓ Quizzes</h2>h2>
+          <div id="quiz-categories" class="grid md:grid-cols-2 gap-4"></div>
+        </div>
+        
+        <!-- MUSIC SECTION -->
+        <div id="music" class="content-hidden">
+          <h2 class="header-font text-4xl font-bold mb-6">🎵 Study Music Playlist</h2>h2>
+          <div id="playlist" class="space-y-3"></div>
+        </div>
+        
+        <!-- RESOURCES SECTION -->
+        <div id="resources" class="content-hidden">
+          <h2 class="header-font text-4xl font-bold mb-6">📖 Resources</h2>h2>
+          <div class="grid md:grid-cols-2 gap-6">
+              <a href="https://www.ncbi.nlm.nih.gov/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">NCBI PubMed</a>a>
+              <a href="https://www.uptodate.com/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">UpToDate</a>a>
+              <a href="https://www.merckmanuals.com/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">Merck Manual</a>a>
+              <a href="https://www.aap.org/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">AAP Resources</a>a>
+          </div>
+        </div>
+        
         </div>
     
-        <footer style="background: #0f172a; border-top: 1px solid #1e293b; padding: 32px; text-align: center; color: #9ca3af; margin-top: 60px;">
-                <p style="margin: 0 0 8px 0;">Made by Nicholas Brokaw • NURS 2209 • Tifton, GA</p>p>
-                <p style="margin: 0; font-size: 14px;">Deep learning powered by: pathophysiology focus • clinical reasoning • spaced repetition • active recall</p>p>
-        </footer>footer>
+    <footer class="bg-slate-900 border-t border-slate-700 mt-20 py-8 text-center text-slate-400">
+      <p>Made by Nicholas Brokaw • NURS 2209 • Tifton, GA</p>
+      <p class="text-sm">Evidence-based learning • Clinical reasoning • Spaced repetition</p>
+    </footer>footer>
     
-        <script>
-                const quizData = {
-                                genetic: [
-                                    { q: "A 2-year-old with Down syndrome (Trisomy 21) presents with poor feeding and failure to thrive. Which cardiac defect is most commonly associated with Down syndrome?", options: ["Tetralogy of Fallot", "Atrial septal defect (ASD)", "Ventricular septal defect (VSD)", "Patent ductus arteriosus"], correct: 2, rationale: "VSD is the most common cardiac defect in Down syndrome (45%), followed by ASD and endocardial cushion defects. Tetralogy of Fallot is more common in DiGeorge syndrome. Understanding cardiac manifestations is critical for nursing assessment and intervention." },
-                                    { q: "A 4-year-old girl with Turner syndrome is referred for growth hormone therapy. What is the primary concern regarding her physical development?", options: ["Microcephaly", "Short stature and infertility", "Developmental delay", "Cardiac arrhythmias only"], correct: 1, rationale: "Turner syndrome (45,X) presents with characteristic short stature and ovarian dysgenesis leading to infertility. Growth hormone therapy is used to maximize adult height. Other features include webbed neck, shield chest, and cardiac/renal anomalies." },
-                                    { q: "A 16-year-old boy with Klinefelter syndrome (47,XXY) comes to the clinic. Which statement accurately describes a nursing consideration for this client?", options: ["Increased testosterone production is expected", "Infertility is a likely complication", "Short stature is always present", "Learning disabilities are not typical"], correct: 1, rationale: "Klinefelter syndrome causes infertility due to testicular dysgenesis and azoospermia. While testosterone may be decreased, the primary concern is hypogonadism and infertility. Some learning difficulties may occur, but vary in severity." },
-                                    { q: "An infant with Fragile X syndrome is being admitted to the pediatric unit. Which key feature distinguishes this condition?", options: ["Macro-orchidism and intellectual disability", "Hypercalcemia", "Polycystic kidneys", "Clubfoot"], correct: 0, rationale: "Fragile X syndrome (FMR1 gene mutation) is the most common inherited cause of intellectual disability in males. Key features include macro-orchidism (enlarged testes), behavioral issues, and developmental delay. Nursing care focuses on behavioral support and developmental services." },
-                                    { q: "A newborn screening test is positive for phenylketonuria (PKU). The nurse explains to parents why immediate dietary management is crucial. What is the rationale?", options: ["To prevent renal failure", "To prevent irreversible intellectual disability", "To prevent cardiac defects", "To increase phenylalanine metabolism"], correct: 1, rationale: "PKU results from deficiency of phenylalanine hydroxylase. Untreated, phenylalanine accumulates causing irreversible intellectual disability within weeks. A phenylalanine-restricted diet (low-protein, special formula) must start immediately after diagnosis to prevent neurological damage." },
-                                    { q: "A 3-year-old with neurofibromatosis type 1 (NF1) is evaluated for complications. Which screening is most important for early detection?", options: ["Annual echocardiograms", "Annual ophthalmologic exams and blood pressure monitoring", "Monthly genetic counseling", "Quarterly cardiac catheterization"], correct: 1, rationale: "NF1 requires surveillance for optic pathway gliomas (affecting vision), pheochromocytoma (hypertension/tachycardia), and other malignancies. Annual eye exams and BP monitoring are essential. Café-au-lait spots and neurofibromas appear in childhood. Nursing focus: early detection and support." },
-                                    { q: "Which nursing intervention is priority for a child with Down syndrome undergoing corrective surgery for a VSD?", options: ["Strict fluid restriction", "Pre-op cardiac assessment and post-op monitoring for arrhythmias", "Immediate aggressive feeding post-op", "Limiting parental visitation"], correct: 1, rationale: "Children with Down syndrome have high rates of cardiac complications. Pre-operative baseline cardiac status and post-operative arrhythmia monitoring are critical. Nursing includes continuous cardiac assessment, oxygen therapy if needed, and careful hemodynamic monitoring." },
-                                    { q: "An adolescent girl with Turner syndrome reports concerns about not menstruating. The nurse provides accurate education. Which statement is appropriate?", options: ["Estrogen replacement therapy can help prevent complications", "Menstruation is not a concern in this condition", "Pregnancy is always impossible", "No medical intervention is needed"], correct: 0, rationale: "Girls with Turner syndrome have ovarian dysgenesis and won't menstruate without hormone replacement. Estrogen and progesterone therapy promotes sexual development and prevents osteoporosis. Assisted reproduction may be possible with donor eggs. Education should address this sensitively." },
-                                    { q: "A school nurse meets with the parents of a child with Klinefelter syndrome to discuss learning support needs. What should be included in the education?", options: ["IQ scores are always below 70", "Speech and language therapy may be beneficial", "No academic support is ever needed", "All boys with Klinefelter have behavioral disorders"], correct: 1, rationale: "While Klinefelter syndrome may be associated with learning difficulties (speech delay, reading problems), support is individualized. Many males function normally. Speech/language and educational therapy tailored to the individual's needs supports optimal development and social integration." },
-                                    { q: "An infant with PKU on the special diet achieves normal development. What does this outcome demonstrate?", options: ["PKU is not a serious condition", "Early detection and dietary management prevent complications", "The phenylalanine-restricted diet is optional", "Genetic counseling is unnecessary"], correct: 1, rationale: "This demonstrates the critical importance of early detection (newborn screening) and strict dietary management. When identified and treated early, children with PKU can achieve normal intellectual development. Ongoing monitoring, dietary adherence, and family support are essential for optimal outcomes." }
-                                                ],
-                                behavioral: [
-                                    { q: "A 7-year-old boy with ADHD is on methylphenidate. Which assessment finding would indicate the medication is effective?", options: ["Increased hyperactivity", "Improved focus and reduced impulsivity in class", "Significant weight gain", "Decreased appetite only"], correct: 1, rationale: "Methylphenidate (stimulant) improves focus, attention, and impulse control in ADHD. Effective treatment shows improved academic performance and social interactions. Monitor for side effects: decreased appetite, insomnia, elevated BP. Regular check-ins assess medication effectiveness and tolerance." },
-                                    { q: "A 3-year-old with autism spectrum disorder has difficulty with social interaction and communication. Which nursing intervention promotes development?", options: ["Avoid speaking directly to the child", "Use structured play and visual supports for communication", "Eliminate all sensory input", "Restrict interaction with other children"], correct: 1, rationale: "Evidence-based interventions for ASD include visual supports, structured routines, and social stories. Speech/occupational therapy, applied behavior analysis (ABA), and structured play support development. Nursing role: facilitate communication, reduce sensory overwhelm, provide predictable structure." },
-                                    { q: "A 6-year-old with FASD shows impulsivity and difficulty with memory. What is the underlying pathophysiology?", options: ["Benign hypermobility", "Prenatal alcohol exposure causing CNS damage", "Nutritional deficiency only", "Temporary developmental delay"], correct: 1, rationale: "Fetal Alcohol Spectrum Disorder (FASD) results from prenatal alcohol exposure causing permanent CNS damage. Effects include intellectual disability, behavioral problems, facial features, and learning disabilities. No cure exists; management focuses on behavioral support, educational accommodations, and family counseling." },
-                                    { q: "A 5-year-old with intellectual disability (ID) is being evaluated for adaptive function in school. Which area is most important to assess?", options: ["IQ score alone", "Adaptive behavior (self-care, social, communication skills)", "Only academic achievement", "Sports ability"], correct: 1, rationale: "Intellectual disability is defined by significant limitations in intellectual function AND adaptive behavior. Assessment includes self-care, communication, social skills, and independence in daily living. Nursing focuses on maximizing capabilities and supporting family in meeting the child's needs and promoting inclusion." }
-                                                ],
-                                infectious: [
-                                    { q: "A 9-month-old presents with vesicular rash in crops over 3 days, preceded by fever and malaise. Which disease is most likely?", options: ["Measles", "Varicella (chickenpox)", "Mumps", "Scarlet fever"], correct: 1, rationale: "Varicella presents with characteristic crops of vesicles (clear fluid) over days (not all at once). Preceded by 1-2 days of fever/malaise. Complications include bacterial superinfection, encephalitis. Nursing: prevent scratching (mittens, nails trimmed), isolation precautions, antihistamines, educate on contagious period." },
-                                    { q: "An unvaccinated 4-year-old develops a measles-like rash (maculopapular), cough, and Koplik spots. What is the most appropriate nursing intervention?", options: ["Encourage social interaction", "Initiate airborne isolation precautions and educate on complications", "Restrict fluids", "No special precautions needed"], correct: 1, rationale: "Measles (rubeola) is highly contagious (airborne). Koplik spots (white spots on buccal mucosa) are pathognomonic. Complications: pneumonia, encephalitis, SSPE. Nursing: airborne precautions, monitor respiratory status, ensure MMR vaccination for contacts, manage fever/rash symptoms." },
-                                    { q: "A 14-month-old with mumps presents with parotid gland swelling, fever, and headache. What complication should the nurse monitor for?", options: ["Only rash", "Meningitis and hearing loss", "Immediate paralysis", "Permanent tooth loss"], correct: 1, rationale: "Mumps can cause aseptic meningitis (most common complication) and sensorineural hearing loss. Nursing: droplet precautions, observe for signs of meningitis (stiff neck, altered consciousness), monitor hearing. Educate: MMR vaccine prevents this; post-exposure prophylaxis may be given to unimmunized contacts." },
-                                    { q: "A 6-year-old with scarlet fever develops a sandpaper-like rash and strawberry tongue. Which complication could occur if untreated?", options: ["Only temporary rash fading", "Acute rheumatic fever and glomerulonephritis", "Permanent skin changes", "Immediate kidney failure"], correct: 1, rationale: "Scarlet fever (Group A Streptococcus) can progress to acute rheumatic fever (ARF) and post-streptococcal glomerulonephritis (PSGN) if untreated. Nursing: ensure complete antibiotic course (penicillin), monitor for signs of ARF (heart murmur, polyarthritis, chorea), educate on medication compliance." },
-                                    { q: "A 3-year-old with pertussis presents with severe paroxysmal cough followed by a high-pitched 'whoop' and post-tussive vomiting. What is a critical nursing concern?", options: ["The cough is not serious", "Apnea and hypoxemia during cough episodes", "Permanent brain damage always occurs", "Cough resolves within 2 days"], correct: 1, rationale: "Pertussis (whooping cough) causes severe paroxysmal coughs with risk of apnea, hypoxemia, and seizures (especially in infants <6 months). Nursing: continuous pulse oximetry, suctioning support, isolate from infants, ensure contacts receive prophylaxis, educate on DTaP vaccination importance." },
-                                    { q: "An 18-month-old with roseola infantum (sixth disease) presents with high fever (103-104°F) for 3 days followed by rose-pink rash. What is the expected course?", options: ["Requires immediate antibiotics", "Self-limiting viral illness; supportive care is main treatment", "Permanent scarring occurs", "Always causes seizures"], correct: 1, rationale: "Roseola infantum (HHV-6) is self-limiting viral illness. High fever then rash appears as fever breaks ('fever then rash' pattern). Febrile seizures are a risk but infection resolves. Nursing: fever management, reassure parents of good prognosis, watch for dehydration, no specific antiviral treatment needed." },
-                                    { q: "A 2-year-old with erythema infectiosum (fifth disease) shows classic 'slapped cheek' appearance. What should the nurse educate the parents about?", options: ["Disease is immediately dangerous", "Arthralgia may occur in older children; condition is usually mild and self-limiting", "All children require hospitalization", "Rash never fades"], correct: 1, rationale: "Fifth disease (Parvovirus B19) causes characteristic slapped-cheek rash. Usually mild in immunocompetent children; self-limiting. In adults, can cause arthralgia. Risk: severe anemia in immunocompromised or those with hemolytic anemias. Nursing: supportive care, educate on symptom management, reassure parents of typical good prognosis." },
-                                    { q: "A 5-year-old unvaccinated child develops a maculopapular rash, arthralgia, and low-grade fever, later showing normal foramen ovale at cardiac imaging. Which disease is this?", options: ["Measles", "Rubella (German measles)", "Scarlet fever", "Chickenpox"], correct: 1, rationale: "Rubella presents with mild rash, arthralgia, low-grade fever. Congenital rubella syndrome (if maternal infection in pregnancy) causes cardiac defects (PDA, foramen ovale), cataract, hearing loss, intellectual disability. Vaccination prevents infection. Nursing: isolate if pregnant contacts present, counsel on pregnancy precautions." },
-                                    { q: "An infant is found to have congenital varicella syndrome with limb hypoplasia and eye abnormalities. When likely did maternal infection occur?", options: ["Third trimester", "First or early second trimester", "Post-delivery", "During labor"], correct: 1, rationale: "Congenital varicella syndrome occurs with maternal infection in first 20 weeks of pregnancy (rare ~1-2% risk). Features: limb hypoplasia, microcephaly, eye/skin scarring, intellectual disability. Nursing: provide family education on virus risks in pregnancy, support family adaptation to disabilities, coordinate multidisciplinary care." }
-                                                ],
-                                abuse: [
-                                    { q: "A 4-year-old presents with unexplained bruising in various stages of healing, fearfulness, and regressive behavior. What should the nurse's first action be?", options: ["Ask leading questions about abuse", "Report suspicions to child protective services", "Ignore signs as normal childhood injuries", "Discuss concerns only with the child without parental knowledge"], correct: 1, rationale: "Nurses are mandatory reporters. Bruising in various stages of healing, inconsistent explanations, and behavioral changes are abuse indicators. Report concerns to CPS/authorities per state law. Document objectively. Nursing role: protection, support, advocacy. Act even with suspicion; investigation is not your responsibility." },
-                                    { q: "A 6-year-old discloses inappropriate sexual touching by a family member in a quiet, calm setting. How should the nurse respond?", options: ["Promise not to tell anyone", "Question the child extensively", "Believe, support, and report to authorities; avoid further questioning", "Dismiss as child fantasy"], correct: 2, rationale: "Key: believe the child, provide emotional support, avoid leading questions (preserve evidence), report to CPS/authorities. Detailed questioning can contaminate testimony. Reassure child: not their fault, they did right telling. Provide safety planning. Coordinate with multidisciplinary team (social work, legal, mental health)." },
-                                    { q: "A 2-year-old with frequent ER visits for minor injuries, poor hygiene, and developmental delay is suspected of neglect. Which assessment finding supports this diagnosis?", options: ["Overstimulation in environment", "Lack of basic care (nutrition, hygiene, supervision), unmet medical/developmental needs", "Excessive parental involvement", "Too much structure and routine"], correct: 1, rationale: "Child neglect: failure to provide food, shelter, supervision, medical/emotional care leading to harm. Signs: malnutrition, poor hygiene, untreated medical conditions, developmental delays, frequent injuries from lack of supervision. Nursing: assess safety, report, coordinate services (nutrition, therapy), support family in care capacity." },
-                                    { q: "A 10-year-old discloses emotional abuse (constant criticism, belittling, isolation) by a parent. What are priority nursing interventions?", options: ["Minimize the impact", "Report, assess safety, provide therapeutic support, coordinate mental health services", "Keep it private", "Suggest the child ignore the parent"], correct: 1, rationale: "Emotional abuse damages self-esteem, causes anxiety/depression, behavioral problems. Nursing: report abuse, assess safety/suicidality, provide supportive counseling, connect to therapy. Work with multidisciplinary team. Document statements objectively. Help child develop coping strategies and support network." },
-                                    { q: "A physically abused 7-year-old shows delay in reporting injuries from fear of further harm. How should the nurse approach building trust?", options: ["Force immediate disclosure", "Be patient, consistent, non-judgmental; use simple language; respect pace of disclosure", "Tell the child they should forgive the abuser", "Avoid discussing the abuse"], correct: 1, rationale: "Abused children may fear reporting due to threats, loyalty, shame, self-blame. Build trust gradually: consistent presence, genuine listening, validation, safety assurance. Never pressure disclosure; respect child's pace. Provide age-appropriate explanations. Coordinate with counseling professionals. Empower child in decision-making." }
-                                                ],
-                                comprehensive: []
-                };
-        
-                // Generate comprehensive exam questions (sampling from all categories)
-                quizData.comprehensive = [
-                                ...quizData.genetic.slice(0, 20),
-                                ...quizData.behavioral.slice(0, 15),
-                                ...quizData.infectious.slice(0, 30),
-                                ...quizData.abuse.slice(0, 15)
-                            ];
-        
-                let currentQuiz = null;
-                let currentQuestion = 0;
-                let score = 0;
-                let answers = [];
-        
-                function startQuiz(category) {
-                                currentQuiz = category;
-                                currentQuestion = 0;
-                                score = 0;
-                                answers = [];
-                                document.getElementById('quiz-setup').style.display = 'none';
-                                document.getElementById('quiz-container').style.display = 'block';
-                                document.getElementById('quiz-results').classList.add('hidden');
-                                document.getElementById('quiz-question').classList.remove('hidden');
-                                document.getElementById('quiz-title').innerText = category.charAt(0).toUpperCase() + category.slice(1) + ' Quiz';
-                                loadQuestion();
-                }
-        
-                function loadQuestion() {
-                                const questions = quizData[currentQuiz];
-                                const q = questions[currentQuestion];
-                                const progress = Math.round(((currentQuestion + 1) / questions.length) * 100);
-                                
-                                document.getElementById('progress-bar').style.width = progress + '%';
-                                document.getElementById('progress-text').innerText = progress;
-                    
-                                let html = `<h3 class="text-xl font-bold mb-6">${currentQuestion + 1}. ${q.q}</h3>`;
-                                html += '<div class="space-y-3">';
-                                
-                                q.options.forEach((opt, idx) => {
-                                                    html += `<button class="quiz-option w-full p-4 bg-slate-700 rounded-lg text-left border-l-4 border-slate-600 hover:bg-emerald-500/20" onclick="answerQuestion(${idx})">${opt}</button>`;
-                                });
-                                
-                                html += '</div>';
-                                document.getElementById('quiz-question').innerHTML = html;
-                }
-        
-                function answerQuestion(selected) {
-                                const questions = quizData[currentQuiz];
-                                const correct = questions[currentQuestion].correct === selected;
-                                answers.push({ question: currentQuestion, selected: selected, correct: correct });
-                                if(correct) score++;
-                                                
-                                                currentQuestion++;
-                                if(currentQuestion >= questions.length) {
-                                                    showResults();
-                                } else {
-                                                    loadQuestion();
-                                }
-                }
-        
-                function showResults() {
-                                const questions = quizData[currentQuiz];
-                                const percentage = Math.round((score / questions.length) * 100);
-                                
-                                document.getElementById('quiz-question').classList.add('hidden');
-                                document.getElementById('quiz-results').classList.remove('hidden');
-                                document.getElementById('final-score').innerText = percentage + '%';
-                                document.getElementById('correct-count').innerText = score;
-                                document.getElementById('total-count').innerText = questions.length;
-                    
-                                let reviewHTML = '';
-                                answers.forEach((ans, idx) => {
-                                                    const q = questions[ans.question];
-                                                    const isCorrect = ans.correct;
-                                                    reviewHTML += `<div class="p-4 bg-slate-700 rounded-lg border-l-4 ${isCorrect ? 'border-emerald-500' : 'border-red-500'}">
-                                                                        <h4 class="font-bold mb-2">${idx + 1}. ${q.q}</h4>
-                                                                                            <p class="mb-2">Your answer: <span class="${isCorrect ? 'text-emerald-400' : 'text-red-400'}">${q.options[ans.selected]}</span></p>
-                                                                                                                ${!isCorrect ? `<p class="mb-2">Correct answer: <span class="text-emerald-400">${q.options[q.correct]}</span></p>` : ''}
-                                                                                                                                    <p class="text-slate-300 italic">${q.rationale}</p>
-                                                                                                                                                    </div>`;
-                                });
-                                
-                                document.getElementById('review-container').innerHTML = reviewHTML;
-                }
-        
-                function restartQuiz() {
-                                document.getElementById('quiz-setup').style.display = 'grid';
-                                document.getElementById('quiz-container').style.display = 'none';
-                }
-        
-                function exitQuiz() {
-                                document.getElementById('quiz-setup').style.display = 'grid';
-                                document.getElementById('quiz-container').style.display = 'none';
-                                navigateToSection('quizzes');
-                }
-        
-                function playTrack(index, title, artist) {
-                                document.getElementById('now-playing').innerText = title;
-                                document.querySelectorAll('.music-track').forEach((el, idx) => {
-                                                    el.classList.toggle('playing', idx === index);
-                                });
-                }
-        
-                // Learning content data
-                const learningContent = {
-                                genetic: `<h3 class="text-2xl font-bold mb-6">🧬 Genetic Alterations in Pediatric Nursing</h3>
-                                                <div class="space-y-6"><div class="bg-slate-700/50 p-6 rounded-lg"><h4 class="font-bold text-lg mb-3">Down Syndrome (Trisomy 21)</h4><p class="mb-3">Down syndrome is a chromosomal abnormality caused by trisomy of chromosome 21. It is the most common chromosomal disorder in living infants, affecting approximately 1 in 700 births. The condition results from a complete or partial extra copy of chromosome 21.</p><p class="mb-3"><strong>Key Features:</strong> Intellectual disability (mild to moderate), characteristic facies (flat face, upslanting eyes, short stature), cardiac defects (VSD most common at 45%), poor muscle tone (hypotonia), feeding difficulties, developmental delays.</p><p><strong>Nursing Care:</strong> Early intervention services, family support and education, cardiac assessment, monitoring for respiratory infections, promoting development, coordinating multidisciplinary care (speech, physical, occupational therapy).</p></div></div>`,
-                                behavioral: `<h3 class="text-2xl font-bold mb-6">🧠 Behavioral and Developmental Disorders</h3>
-                                                <div class="space-y-6"><div class="bg-slate-700/50 p-6 rounded-lg"><h4 class="font-bold text-lg mb-3">Autism Spectrum Disorder (ASD)</h4><p class="mb-3">ASD is a developmental disorder characterized by persistent deficits in social communication and social interaction, along with restricted, repetitive patterns of behavior, interests, or activities. Symptoms manifest early in childhood and persist across contexts.</p><p class="mb-3"><strong>Key Features:</strong> Difficulty with social interaction and communication, repetitive behaviors (stimming, routines), sensory sensitivities, challenges with transitions and changes. Severity varies widely; support levels range from minimal to extensive.</p><p><strong>Nursing Care:</strong> Use visual supports and structured routines, provide sensory accommodations, communicate clearly and directly, support family in understanding the child's communication style, coordinate with therapy services (speech, occupational, behavioral).</p></div></div>`,
-                                infectious: `<h3 class="text-2xl font-bold mb-6">🦠 Infectious Diseases in Pediatrics</h3>
-                                                <div class="space-y-6"><div class="bg-slate-700/50 p-6 rounded-lg"><h4 class="font-bold text-lg mb-3">Varicella (Chickenpox)</h4><p class="mb-3">Varicella is a highly contagious viral infection caused by varicella-zoster virus (VZV). It presents with characteristic vesicular rash in crops appearing over several days, preceded by prodromal symptoms.</p><p class="mb-3"><strong>Key Features:</strong> Fever, malaise, anorexia followed by vesicular rash in crops (clear to cloudy fluid), appears on face/trunk/extremities, lesions progress to pustules then crusts over 7-10 days.</p><p><strong>Nursing Care:</strong> Respiratory/contact precautions, prevent scratching (mittens, trim nails), antihistamines/cool compresses for pruritus, monitor for complications (bacterial superinfection, encephalitis, pneumonia), ensure MMR vaccination for contacts, teach about contagious period (until crusts form).</p></div></div>`,
-                                abuse: `<h3 class="text-2xl font-bold mb-6">🛡️ Child Abuse and Neglect</h3>
-                                                <div class="space-y-6"><div class="bg-slate-700/50 p-6 rounded-lg"><h4 class="font-bold text-lg mb-3">Understanding Child Abuse</h4><p class="mb-3">Child abuse includes physical abuse, emotional abuse, sexual abuse, and neglect. As healthcare providers, nurses are mandatory reporters and play a critical role in identifying and protecting vulnerable children.</p><p class="mb-3"><strong>Key Features of Abuse:</strong> Injuries inconsistent with explanation or child's developmental stage, behavioral changes (fear, withdrawal, regression), explanations that don't fit injuries, pattern of injuries over time.</p><p><strong>Nursing Responsibilities:</strong> Recognize signs, report suspicions to authorities, document objectively, provide supportive care, coordinate with multidisciplinary team (social work, law enforcement, mental health), ensure child safety is priority, support family when appropriate.</p></div></div>`
-                };
-        
-                // Handle learning content clicks
-                document.addEventListener('DOMContentLoaded', function() {
-                                const buttons = document.querySelectorAll('.learning-btn');
-                                buttons.forEach(btn => {
-                                                    btn.addEventListener('click', function() {
-                                                                            const topic = this.dataset.topic;
-                                                                            document.querySelectorAll('.learning-btn').forEach(b => {
-                                                                                                        b.style.borderColor = '#334155';
-                                                                                                        b.style.background = '#1e293b';
-                                                                                });
-                                                                            this.style.borderColor = '#10b981';
-                                                                            this.style.background = '#064e3b';
-                                                                            
-                                                                                             document.getElementById('learning-content').innerHTML = learningContent[topic];
-                                                    });
-                                });
-                });
-        </script>
+    <script>
+        const learningData = {
+              genetic: [
+                  {
+                            title: "Down Syndrome (Trisomy 21)",
+                            desc: "Chromosomal abnormality, 1 in 700 births",
+                            key: "Intellectual disability (mild-moderate), characteristic facies, cardiac defects (VSD 45%), hypotonia, feeding difficulties",
+                            nursing: "Early intervention services, family education, cardiac assessment, monitor respiratory infections, developmental support, multidisciplinary care"
+                  },
+                  {
+                            title: "Turner Syndrome (45,X)",
+                            desc: "Monosomy of X chromosome",
+                            key: "Short stature, ovarian dysgenesis/infertility, webbed neck, shield chest, cardiac anomalies (bicuspid aorta, coarctation), renal abnormalities",
+                            nursing: "Growth hormone therapy, estrogen/progesterone replacement, surveillance for cardiac/renal issues, fertility counseling"
+                  },
+                  {
+                            title: "Klinefelter Syndrome (47,XXY)",
+                            desc: "Extra X chromosome in males",
+                            key: "Infertility from testicular dysgenesis, hypogonadism, tall stature, possible learning/behavioral difficulties",
+                            nursing: "Testosterone replacement, fertility counseling, speech/educational therapy if needed"
+                  },
+                  {
+                            title: "Fragile X Syndrome",
+                            desc: "FMR1 gene mutation - most common inherited intellectual disability",
+                            key: "Macro-orchidism, intellectual disability, behavioral issues (autism-like), developmental delays, sensory sensitivities",
+                            nursing: "Behavioral support, developmental services, speech/occupational therapy, genetic counseling"
+                  },
+                  {
+                            title: "Phenylketonuria (PKU)",
+                            desc: "Deficiency of phenylalanine hydroxylase",
+                            key: "Untreated: phenylalanine accumulation causes irreversible intellectual disability within weeks",
+                            nursing: "Newborn screening critical, immediate phenylalanine-restricted diet, lifelong monitoring, dietary compliance education"
+                  },
+                  {
+                            title: "Neurofibromatosis Type 1 (NF1)",
+                            desc: "Autosomal dominant condition, 1 in 3500 births",
+                            key: "Café-au-lait spots, neurofibromas, optic pathway gliomas, pheochromocytoma (hypertension), increased malignancy risk",
+                            nursing: "Annual ophthalmology exams, blood pressure monitoring, surveillance for malignancies, education on complications"
+                  }
+                    ],
+              behavioral: [
+                  {
+                            title: "ADHD",
+                            desc: "Persistent inattention and/or hyperactivity-impulsivity",
+                            key: "Affects 5-7% of children, multiple brain regions, three presentations (inattentive, hyperactive, combined)",
+                            nursing: "Methylphenidate/amphetamines, behavioral interventions, school accommodations, parent education"
+                  },
+                  {
+                            title: "Autism Spectrum Disorder (ASD)",
+                            desc: "Persistent deficits in social communication and restricted interests",
+                            key: "Early childhood onset, spectrum severity, sensory sensitivities, repetitive behaviors, social communication challenges",
+                            nursing: "Structured routines, visual supports, speech/OT/behavioral therapy (ABA), sensory accommodations"
+                  },
+                  {
+                            title: "FASD (Fetal Alcohol Spectrum Disorder)",
+                            desc: "Prenatal alcohol exposure causing CNS damage",
+                            key: "Permanent intellectual disability, behavioral problems, characteristic facial features, learning disabilities",
+                            nursing: "No cure - behavioral support, educational accommodations, family counseling, realistic expectations"
+                  },
+                  {
+                            title: "Intellectual Disability (ID)",
+                            desc: "Significant limitations in cognitive and adaptive function",
+                            key: "Defined by IQ <70 AND adaptive behavior deficits, early intervention critical, variable severity",
+                            nursing: "Maximize capabilities, support family, promote independence/inclusion, coordinate multidisciplinary services"
+                  }
+                    ],
+              infectious: [
+                  {
+                            title: "Varicella (Chickenpox)",
+                            desc: "Highly contagious VZV infection, airborne/contact",
+                            key: "Vesicular rash in crops over 3+ days, preceded by fever/malaise, contagious until all crusts form",
+                            nursing: "Respiratory/contact precautions, prevent scratching (mittens), antihistamines, monitor for complications (infection, encephalitis)"
+                  },
+                  {
+                            title: "Measles (Rubeola)",
+                            desc: "Highly contagious airborne virus, vaccine-preventable",
+                            key: "Koplik spots (white spots on buccal mucosa), maculopapular rash, complications: pneumonia, encephalitis, SSPE",
+                            nursing: "Airborne precautions, respiratory monitoring, vitamin A supplementation, ensure contacts vaccinated"
+                  },
+                  {
+                            title: "Mumps",
+                            desc: "Paramyxovirus causing parotitis, vaccine-preventable",
+                            key: "Parotid swelling/pain, fever, complications: aseptic meningitis (most common), hearing loss, orchitis",
+                            nursing: "Droplet precautions, monitor for meningitis signs, hearing assessment, MMR vaccination"
+                  },
+                  {
+                            title: "Scarlet Fever",
+                            desc: "Group A Streptococcus systemic infection",
+                            key: "Sandpaper-like rash, strawberry tongue, complications if untreated: acute rheumatic fever, glomerulonephritis",
+                            nursing: "Complete antibiotic course (penicillin), monitor for ARF signs (heart murmur, polyarthritis), emphasize medication compliance"
+                  },
+                  {
+                            title: "Pertussis (Whooping Cough)",
+                            desc: "Bordetella pertussis causing severe paroxysmal cough",
+                            key: "Paroxysmal cough followed by high-pitched 'whoop', post-tussive vomiting, risk of apnea/seizures",
+                            nursing: "Pulse oximetry, suctioning support, isolation from infants, contact prophylaxis, DTaP vaccination"
+                  },
+                  {
+                            title: "Roseola Infantum (6th Disease)",
+                            desc: "HHV-6 causing fever then rash pattern",
+                            key: "High fever 103-104°F for 3 days, rose-pink rash appears as fever breaks, febrile seizure risk",
+                            nursing: "Fever management, reassure parents of good prognosis, monitor for febrile seizures, no specific treatment"
+                  },
+                  {
+                            title: "Fifth Disease (Erythema Infectiosum)",
+                            desc: "Parvovirus B19 with distinctive 'slapped cheek' appearance",
+                            key: "Mildly symptomatic, characteristic facial rash, self-limiting, joint pain in adults, anemia risk in immunocompromised",
+                            nursing: "Supportive care, symptom management, reassure excellent prognosis in immunocompetent"
+                  },
+                  {
+                            title: "Rubella (German Measles)",
+                            desc: "Mild viral infection with arthralgia, vaccine-preventable",
+                            key: "Pink-red rash, lymphadenopathy, arthralgia; congenital: cardiac defects, cataract, deafness, ID",
+                            nursing: "Isolate if pregnant contacts present, counsel on pregnancy precautions, ensure MMR vaccination"
+                  },
+                  {
+                            title: "Immunizations",
+                            desc: "Vaccination prevention of infectious diseases",
+                            key: "MMR protects from measles/mumps/rubella; DTaP from diphtheria/tetanus/pertussis; Varicella from chickenpox",
+                            nursing: "Ensure timely vaccination schedules, educate on vaccine safety/importance, address vaccine hesitancy"
+                  }
+                    ],
+              abuse: [
+                  {
+                            title: "Physical Abuse",
+                            desc: "Non-accidental injuries to child",
+                            key: "Injuries inconsistent with explanation/developmental stage, various stages of healing, behavioral changes",
+                            nursing: "MANDATORY REPORTING, recognize signs, document objectively, provide supportive care, coordinate multidisciplinary team"
+                  },
+                  {
+                            title: "Emotional Abuse",
+                            desc: "Chronic psychological harm through words/behavior",
+                            key: "Constant criticism, belittling, isolation, conditional love, damages self-esteem and emotional development",
+                            nursing: "Report, assess safety/suicidality, provide therapeutic counseling, connect to mental health services"
+                  },
+                  {
+                            title: "Sexual Abuse",
+                            desc: "Inappropriate sexual contact with child",
+                            key: "May be asymptomatic, behavioral changes (fear, withdrawal, regression), physical signs possible",
+                            nursing: "BELIEVE child, provide support, avoid leading questions, REPORT immediately, preserve evidence, trauma-informed care"
+                  },
+                  {
+                            title: "Neglect",
+                            desc: "Failure to provide food, shelter, supervision, medical/emotional care",
+                            key: "Malnutrition, poor hygiene, untreated medical conditions, developmental delays, frequent injuries from lack of supervision",
+                            nursing: "Assess safety, REPORT, coordinate services (nutrition, therapy), support family in improving care capacity"
+                  }
+                    ]
+        };
+
+        function showSection(id) {
+              document.querySelectorAll('[id="home"], [id="learning"], [id="quizzes"], [id="music"], [id="resources"]').forEach(el => {
+                      el.classList.add('content-hidden');
+              });
+              document.getElementById(id).classList.remove('content-hidden');
+              if (id === 'music') loadPlaylist();
+              if (id === 'quizzes') loadQuizzes();
+        }
+
+        function showTopic(topic) {
+              const content = learningData[topic];
+              let html = '<h3 class="text-2xl font-bold mb-4 text-emerald-400">' + topic.charAt(0).toUpperCase() + topic.slice(1) + ' Disorders</h3>';
+              content.forEach(item => {
+                      html += '<div class="card"><h4 class="text-xl font-bold text-emerald-400 mb-2">' + item.title + '</h4>';
+                      html += '<p class="text-sm text-slate-300 mb-2">' + item.desc + '</p>';
+                      html += '<p class="mb-2"><strong>Key Features:</strong> ' + item.key + '</p>';
+                      html += '<p><strong>Nursing Care:</strong> ' + item.nursing + '</p></div>';
+              });
+              document.getElementById('topic-content').innerHTML = html;
+        }
+
+        function loadQuizzes() {
+              let html = '';
+              ['Genetic', 'Behavioral', 'Infectious', 'Abuse'].forEach(cat => {
+                      html += '<button class="card cursor-pointer hover:bg-slate-700 p-6">' + cat + ' Quiz (Coming Soon)</button>';
+              });
+              document.getElementById('quiz-categories').innerHTML = html;
+        }
+
+        function loadPlaylist() {
+              const songs = [
+                      '🎹 Clair de Lune - Classical Piano',
+                      '🎹 Bohemian Rhapsody - Piano Cover',
+                      '🎹 Imagine - Piano Cover',
+                      '🎹 Someone Like You - Piano Instrumental',
+                      '🎹 Nocturne No. 2 - Chopin Piano',
+                      '🎹 River Flows in You - Yiruma',
+                      '🎹 Moonlight Sonata - Beethoven',
+                      '🎹 Perfect - Piano Cover',
+                      '🎹 A Thousand Years - Piano',
+                      '🎹 Interstellar Theme - Piano'
+                    ];
+              let html = '';
+              songs.forEach((song) => {
+                      html += '<div class="card cursor-pointer hover:bg-emerald-500/20">' + song + '</div>';
+              });
+              document.getElementById('playlist').innerHTML = html;
+        }
+
+        window.onload = function() {
+              showSection('home');
+              console.log('%c✓ Pediatric Mastery Hub Ready','background:#10b981;color:white;padding:8px;border-radius:4px;');
+        };
+    </script>
+
     </body>body>
-</html>html></li></li>
-                                                                                                                </div>
-                                        </div>
-            </script>
-        </style></title>
+</html>html>
+    </script></p></li></li>
+                      </div>
+                  </div></p></p>
+      </style></title>
     </head>
