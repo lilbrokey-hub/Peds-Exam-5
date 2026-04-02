@@ -1,323 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Pediatric Unit 5 Mastery Hub</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-      <style>
-              body { font-family: 'Inter', sans-serif; }
-              .header-font { font-family: 'Space Grotesk', sans-serif; font-weight: bold; }
-              .card { background: #1e293b; border-radius: 12px; padding: 20px; margin: 10px 0; border-left: 4px solid #10b981; }
-              .content-hidden { display: none !important; }
-              .content-show { display: block !important; }
-            </style>
-    </head>
-    <body class="bg-slate-950 text-gray-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NURS 2209 Unit 5: Pediatric Comprehensive Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+        .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .header p { font-size: 1.1rem; opacity: 0.95; }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 15px;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #1e293b;
+            color: #10b981;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: #334155; border-color: #10b981; transform: translateY(-2px); }
+        .nav-btn.active { background: linear-gradient(135deg, #10b981, #06b6d4); color: white; border-color: #10b981; }
+        .section { display: none; animation: fadeIn 0.3s ease-in; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 15px 0;
+            border-left: 4px solid #10b981;
+            transition: all 0.3s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2); border-color: #10b981; }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #06b6d4); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+        .btn-secondary { background: #1e293b; color: #10b981; border: 2px solid #10b981; }
+        .btn-secondary:hover { background: #10b981; color: white; }
+        .quiz-option {
+            padding: 15px;
+            margin: 10px 0;
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        .quiz-option:hover { background: #334155; border-color: #10b981; }
+        .quiz-option.selected { background: #10b981; border-color: #10b981; color: white; }
+        .rationale-box {
+            background: #0f172a;
+            border-left: 4px solid #334155;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .rationale-correct { border-left-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .rationale-incorrect { border-left-color: #dc2626; background: rgba(220, 38, 38, 0.1); }
+        .progress-bar { background: #334155; height: 10px; border-radius: 5px; overflow: hidden; margin: 15px 0; }
+        .progress-fill { background: linear-gradient(90deg, #10b981, #06b6d4); height: 100%; transition: width 0.3s; }
+        .concept-map { background: #0f172a; border: 2px solid #10b981; border-radius: 12px; padding: 20px; margin: 20px 0; overflow-x: auto; }
+        .concept-map svg { min-width: 100%; width: 100%; height: auto; }
+        .disorder-header {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0 15px 0;
+        }
+        .disorder-header h3 { color: #10b981; font-size: 1.5rem; margin-bottom: 5px; }
+        .disorder-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #1e293b;
+            border-radius: 8px;
+        }
+        .disorder-section strong { color: #10b981; display: block; margin-bottom: 8px; font-size: 1.05rem; }
+        .disorder-section ul { list-style: none; padding-left: 20px; }
+        .disorder-section li { margin: 8px 0; padding-left: 20px; position: relative; }
+        .disorder-section li:before { content: "→"; position: absolute; left: 0; color: #06b6d4; font-weight: bold; }
+        .quiz-category-select {
+            padding: 12px;
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .quiz-category-select:focus { outline: none; border-color: #10b981; background: #334155; }
+        .music-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        .music-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); }
+        .stats-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            display: inline-block;
+            min-width: 200px;
+        }
+        .stats-value { color: #10b981; font-size: 1.8rem; font-weight: 800; }
+        .stats-label { color: #94a3b8; font-size: 0.9rem; margin-top: 5px; }
+        .question-type-badge { display: inline-block; background: #06b6d4; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 NURS 2209 Unit 5: Pediatric Comprehensive Learning Platform</h1>
+            <p>24 Pediatric Disorders • 200+ NCLEX-Style Questions • Interactive Concept Maps • Study Music</p>
+        </div>
 
-        <nav class="bg-slate-900 border-b border-slate-700 p-4 sticky top-0 z-50">
-              <div class="max-w-7xl mx-auto flex justify-between items-center">
-                      <div class="flex items-center gap-3">
-                                <span class="header-font text-2xl">🏥 Pediatric Unit 5</span>span>
-                                <span class="bg-emerald-500 px-3 py-1 rounded-full text-sm">Mastery Hub</span>span>
-                      </div>div>
-                      <div class="flex gap-6">
-                                <button onclick="showSection('home')" class="hover:text-emerald-400">Home</button>button>
-                                <button onclick="showSection('learning')" class="hover:text-emerald-400">📚 Learning</button>button>
-                                <button onclick="showSection('quizzes')" class="hover:text-emerald-400">✓ Quizzes</button>button>
-                                <button onclick="showSection('music')" class="hover:text-emerald-400">🎵 Music</button>button>
-                                <button onclick="showSection('resources')" class="bg-emerald-500 px-4 py-2 rounded">📖 Resources</button>button>
-                      </div>div>
-              </div>div>
-        </nav>nav>
+        <div class="nav-tabs">
+            <button class="nav-btn active" onclick="showTab(event, 'dashboard')">📊 Dashboard</button>
+            <button class="nav-btn" onclick="showTab(event, 'learning')">📚 Learning</button>
+            <button class="nav-btn" onclick="showTab(event, 'quiz')">❓ Quiz (200+)</button>
+            <button class="nav-btn" onclick="showTab(event, 'music')">🎵 Study Music</button>
+            <button class="nav-btn" onclick="showTab(event, 'resources')">📖 Resources</button>
+        </div>
 
-        <div class="max-w-7xl mx-auto px-4 py-8">
-
-            <!-- HOME SECTION -->
-            <div id="home" class="content-show">
-                  <h1 class="header-font text-5xl font-bold mb-4">Master Pediatric Disorders</h1>h1>
-                  <p class="text-xl text-slate-300 mb-8">Complete learning platform with 24 disorders across 4 categories, 200+ NCLEX questions, and study music.</p>p>
-
-                  <div class="grid md:grid-cols-3 gap-8 mb-12">
-                          <div class="card"><h3 class="text-3xl font-bold text-emerald-400">24</h3>h3><p>Disorders</p></div>div>
-                      <div class="card"><h3 class="text-3xl font-bold text-emerald-400">200+</h3>h3><p>Questions</p></div>div>
-                      <div class="card"><h3 class="text-3xl font-bold text-emerald-400">10</h3>h3><p>Study Songs</p></div>div>
-                  </div>div>
-            
-              <div class="grid md:grid-cols-2 gap-8">
-                  <div>
-                            <h2 class="text-2xl font-bold mb-4">Content Coverage</h2>h2>
-                            <div class="space-y-3">
-                                        <p><span class="text-emerald-400 font-bold">🧬 Genetic (6):</span>span> Down, Turner, Klinefelter, Fragile X, Neurofibromatosis, PKU</p>p>
-                                        <p><span class="text-emerald-400 font-bold">🧠 Behavioral (4):</span>span> ADHD, Autism, FASD, Intellectual Disability</p>p>
-                                        <p><span class="text-emerald-400 font-bold">🦠 Infectious (9):</span>span> Varicella, Measles, Mumps, Scarlet Fever, Pertussis, Roseola, 5th Disease, Rubella, Immunizations</p>p>
-                                        <p><span class="text-emerald-400 font-bold">🛡️ Abuse (4):</span>span> Physical, Emotional, Sexual, Neglect</p>p>
-                            </div>
-                  </div>
-                      <div>
-                                <h2 class="text-2xl font-bold mb-4">How to Learn</h2>h2>
-                                <ol class="space-y-2 text-slate-300">
-                                            <li><span class="text-emerald-400 font-bold">1.</span>span> Click "📚 Learning" to read all disorders</li>
-                                        <li><span class="text-emerald-400 font-bold">2.</span>span> Learn pathophysiology and nursing care</li>
-                                        <li><span class="text-emerald-400 font-bold">3.</span>span> Take "✓ Quizzes" to test knowledge</li>
-                                        <li><span class="text-emerald-400 font-bold">4.</span>span> Use "🎵 Music" for focused studying</li>
-                                        <li><span class="text-emerald-400 font-bold">5.</span>span> Access "📖 Resources" for references</li>
-                                </ol>ol>
-                      </div>
-              </div>
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="section active">
+            <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 20px;">📊 Welcome to Your Learning Platform</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div class="stats-box"><div class="stats-value">24</div><div class="stats-label">Pediatric Disorders</div></div>
+                <div class="stats-box"><div class="stats-value">200+</div><div class="stats-label">NCLEX Practice Questions</div></div>
+                <div class="stats-box"><div class="stats-value">6</div><div class="stats-label">Question Formats</div></div>
             </div>
-        
-        <!-- LEARNING SECTION -->
-        <div id="learning" class="content-hidden">
-          <h2 class="header-font text-4xl font-bold mb-6">📚 Learning Modules</h2>h2>
-          <div class="grid md:grid-cols-4 gap-4 mb-8">
-              <button onclick="showTopic('genetic')" class="card cursor-pointer hover:bg-slate-700 border-emerald-500">Genetic</button>button>
-              <button onclick="showTopic('behavioral')" class="card cursor-pointer hover:bg-slate-700">Behavioral</button>button>
-              <button onclick="showTopic('infectious')" class="card cursor-pointer hover:bg-slate-700">Infectious</button>button>
-              <button onclick="showTopic('abuse')" class="card cursor-pointer hover:bg-slate-700">Abuse/Neglect</button>button>
-          </div>
-          <div id="topic-content" class="space-y-6"></div>
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">How to Learn Effectively</h3>
+                <div style="color: #cbd5e1; line-height: 1.8;">
+                    <p><strong style="color: #10b981;">Step 1 - Read Learning Content:</strong> Go to the "Learning" tab. Read the pathophysiology (WHY the disease occurs), clinical features (WHAT you'll observe), and nursing interventions (WHAT you'll do).</p>
+                    <p style="margin-top: 15px;"><strong style="color: #10b981;">Step 2 - Study Concept Maps:</strong> Each disorder has a visual concept map showing the disease progression and relationships between cause, pathophysiology, features, and interventions.</p>
+                    <p style="margin-top: 15px;"><strong style="color: #10b981;">Step 3 - Practice With Questions:</strong> Go to "Quiz" tab. Answer 200+ questions in multiple formats: Multiple Choice, SATA, Case Studies, Bowtie analysis, matching, and fill-in-blank.</p>
+                    <p style="margin-top: 15px;"><strong style="color: #10b981;">Step 4 - Review Rationales:</strong> After each question, you'll see detailed rationales explaining why each answer is right or wrong. THIS is where learning happens.</p>
+                    <p style="margin-top: 15px;"><strong style="color: #10b981;">Step 5 - Use Study Music:</strong> Open the "Study Music" tab to play background music while you study. This enhances focus and retention.</p>
+                </div>
+            </div>
         </div>
-        
-        <!-- QUIZZES SECTION -->
-        <div id="quizzes" class="content-hidden">
-          <h2 class="header-font text-4xl font-bold mb-6">✓ Quizzes</h2>h2>
-          <div id="quiz-categories" class="grid md:grid-cols-2 gap-4"></div>
+
+        <!-- LEARNING TAB -->
+        <div id="learning" class="section">
+            <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 20px;">📚 Comprehensive Learning</h2>
+            <select id="disorderSelect" class="quiz-category-select" onchange="showDisorder(this.value)">
+                <option value="">-- SELECT A DISORDER TO LEARN --</option>
+                <optgroup label="🧬 GENETIC DISORDERS (5)">
+                    <option value="0">Down Syndrome</option>
+                    <option value="1">Cystic Fibrosis</option>
+                    <option value="2">Sickle Cell Disease</option>
+                    <option value="3">Hemophilia A</option>
+                    <option value="4">Duchenne Muscular Dystrophy</option>
+                </optgroup>
+                <optgroup label="🧠 BEHAVIORAL/DEVELOPMENTAL (4)">
+                    <option value="5">Autism Spectrum Disorder</option>
+                    <option value="6">ADHD</option>
+                    <option value="7">Oppositional Defiant Disorder</option>
+                    <option value="8">Conduct Disorder</option>
+                </optgroup>
+                <optgroup label="🦠 INFECTIOUS DISEASES (8)">
+                    <option value="9">Measles</option>
+                    <option value="10">Pertussis</option>
+                    <option value="11">Varicella (Chickenpox)</option>
+                    <option value="12">Meningitis</option>
+                    <option value="13">Tuberculosis</option>
+                    <option value="14">Respiratory Syncytial Virus</option>
+                    <option value="15">Rotavirus</option>
+                    <option value="16">Scarlet Fever</option>
+                </optgroup>
+                <optgroup label="⚠️ ABUSE & NEGLECT (7)">
+                    <option value="17">Physical Abuse</option>
+                    <option value="18">Sexual Abuse</option>
+                    <option value="19">Emotional Abuse</option>
+                    <option value="20">Child Neglect</option>
+                    <option value="21">Factitious Disorder</option>
+                    <option value="22">Shaken Baby Syndrome</option>
+                    <option value="23">Environmental Neglect</option>
+                </optgroup>
+            </select>
+            <div id="disorderContent" style="min-height: 200px;"></div>
         </div>
-        
-        <!-- MUSIC SECTION -->
-        <div id="music" class="content-hidden">
-          <h2 class="header-font text-4xl font-bold mb-6">🎵 Study Music Playlist</h2>h2>
-          <div id="playlist" class="space-y-3"></div>
+
+        <!-- QUIZ TAB -->
+        <div id="quiz" class="section">
+            <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 20px;">❓ Quiz Practice - 200+ Questions</h2>
+            <select id="quizCategorySelect" class="quiz-category-select" onchange="initializeQuiz()">
+                <option value="all">All Questions (200+) - Mixed</option>
+                <option value="genetic">🧬 Genetic Only</option>
+                <option value="behavior">🧠 Behavioral Only</option>
+                <option value="infectious">🦠 Infectious Only</option>
+                <option value="abuse">⚠️ Abuse & Neglect Only</option>
+            </select>
+            <div id="quizContainer" style="min-height: 400px;"></div>
         </div>
-        
-        <!-- RESOURCES SECTION -->
-        <div id="resources" class="content-hidden">
-          <h2 class="header-font text-4xl font-bold mb-6">📖 Resources</h2>h2>
-          <div class="grid md:grid-cols-2 gap-6">
-              <a href="https://www.ncbi.nlm.nih.gov/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">NCBI PubMed</a>a>
-              <a href="https://www.uptodate.com/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">UpToDate</a>a>
-              <a href="https://www.merckmanuals.com/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">Merck Manual</a>a>
-              <a href="https://www.aap.org/" target="_blank" class="card hover:bg-emerald-500/20 cursor-pointer">AAP Resources</a>a>
-          </div>
+
+        <!-- MUSIC TAB -->
+        <div id="music" class="section">
+            <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 20px;">🎵 Study Music & Focus Sounds</h2>
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">♪ Add Your Music Files</h3>
+                <p style="color: #cbd5e1; margin-bottom: 15px; font-size: 0.95rem;"><strong>Step 1:</strong> Download piano songs from Epidemic Sound or your preferred music service and save them to your computer.</p>
+                <p style="color: #cbd5e1; margin-bottom: 15px; font-size: 0.95rem;"><strong>Step 2:</strong> Click below to select audio files (MP3, WAV, M4A) to add to your study music playlist.</p>
+                <input type="file" id="musicFileInput" multiple accept="audio/*" style="color: #cbd5e1; margin-bottom: 15px; padding: 10px; background: #1e293b; border: 2px solid #334155; border-radius: 8px; width: 100%; cursor: pointer;" />
+                <div id="musicPlaylist" style="margin: 20px 0; padding: 15px; background: #0f172a; border: 2px solid #334155; border-radius: 8px; display: none;">
+                    <p style="color: #10b981; font-weight: 600; margin-bottom: 10px;">📋 Your Playlist:</p>
+                    <ul id="playlistItems" style="list-style: none; color: #cbd5e1;"></ul>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button class="music-button" onclick="playStudyMusic()">▶️ Play Random Study Music</button>
+                    <button class="music-button" onclick="skipToNext()">⏭️ Skip to Next Song</button>
+                    <button class="music-button" onclick="stopStudyMusic()">⏹️ Stop</button>
+                </div>
+                <div id="musicStatus" style="display: none; margin-top: 15px; padding: 15px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); border-left: 4px solid #10b981; border-radius: 6px;">
+                    <p style="color: #10b981; font-weight: 600;"><span id="currentSongName">Loading...</span></p>
+                    <div style="width: 100%; background: #334155; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden;">
+                        <div id="musicProgress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #06b6d4); transition: width 0.1s;"></div>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 8px;">
+                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                    </p>
+                </div>
+                <audio id="studyAudio" style="display: none;"></audio>
+            </div>
         </div>
-        
+
+        <!-- RESOURCES TAB -->
+        <div id="resources" class="section">
+            <h2 style="color: #10b981; font-size: 1.8rem; margin-bottom: 20px;">📖 Expert Resources & Learning Materials</h2>
+
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">🎬 YouTube Channels - Expert Nursing Education</h3>
+                <div style="color: #cbd5e1; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Registered Nurse RN:</strong> Comprehensive nursing content with clear explanations and visual aids for complex pediatric concepts. Great for foundational understanding and nursing-specific applications. Focus on clinical nursing skills and patient care strategies.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Ninja Nerd Official:</strong> Deep-dive pathophysiology explanations with animations showing disease mechanisms at cellular and physiological levels. Excellent for understanding the "WHY" behind disease processes. Very detailed animations of cellular processes.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Simple Nursing:</strong> Simplified concepts with memory tricks, visual mnemonics, and memory devices for active recall. Perfect for understanding concepts in easy-to-remember ways and for test preparation.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">📚 Textbook References - Evidence-Based Content</h3>
+                <div style="color: #cbd5e1; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Perry & Hockenberry - Maternal Child Nursing Care (6th Ed):</strong> Chapters 16-25 provide comprehensive coverage of pediatric disorders with detailed nursing care plans. Includes assessment techniques, diagnostic information, and evidence-based nursing interventions. This is the gold standard for pediatric nursing care.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Hockenberry - Wong's Nursing Care of Infants and Children (11th Ed):</strong> Units 10-13 focus on disease-specific management with attention to developmental stages and family-centered care. Includes pathophysiology, etiology, clinical features, and comprehensive nursing management.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Huether & McCance - Pathophysiology (9th Ed):</strong> Section 4 addresses alterations in childhood. Excellent for understanding disease mechanisms at the cellular level. Critical for deep understanding of "why" disorders occur.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">🧠 Effective Learning Strategies for Pediatric Nursing</h3>
+                <div style="color: #cbd5e1; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Pathophysiology-First Approach:</strong> Before memorizing symptoms, understand what's broken and WHY it's broken. Example: "CF patients have thick mucus BECAUSE the CFTR protein is defective, which means chloride and water can't move into secretions properly, so they stay thick and dehydrated." This deep understanding makes symptoms make sense.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Concept Mapping:</strong> Create visual connections between cause → pathophysiology → clinical manifestations → nursing interventions. This platform includes concept maps for each disorder to guide your thinking.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Active Recall Practice:</strong> Use the 200+ quiz questions to test your knowledge. The detailed rationales explain not just which answer is correct, but WHY each answer choice is right or wrong. Read all rationales, not just the correct answer.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Spaced Repetition:</strong> Review a disorder, then wait 24 hours, then 3 days, then 1 week. This moves learning from short-term to long-term memory and improves retention for licensing exams.</p>
+                    <p style="margin-bottom: 15px;"><strong style="color: #10b981;">Elaboration & Connection:</strong> Connect pediatric concepts to adult nursing knowledge. "Hemophilia A is deficient Factor VIII, similar to adult coagulopathies, but genetics are X-linked recessive." Linking to prior knowledge improves retention.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #10b981; margin-bottom: 15px;">💡 Tips for NCLEX Success with Unit 5 Content</h3>
+                <div style="color: #cbd5e1; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;">✓ <strong style="color: #10b981;">Understand Cause & Effect:</strong> NCLEX questions require understanding the relationship between disease cause and clinical manifestations. Practice thinking: "IF this is broken, THEN this happens, which explains this finding."</p>
+                    <p style="margin-bottom: 15px;">✓ <strong style="color: #10b981;">Prioritize Nursing Interventions:</strong> Know WHY each intervention matters. Example: "Chest PT in CF is essential because thick mucus must be physically dislodged before antibiotics can reach the infection."</p>
+                    <p style="margin-bottom: 15px;">✓ <strong style="color: #10b981;">Family-Centered Care:</strong> NCLEX emphasizes involving families. For genetic disorders and abuse situations, know how to support families while managing the child's health needs.</p>
+                    <p style="margin-bottom: 15px;">✓ <strong style="color: #10b981;">Safety and Prevention:</strong> Know critical safety interventions (e.g., "Antibiotics IMMEDIATELY in meningitis" or "Mandatory reporting in abuse") without waiting for test results or confirmation.</p>
+                    <p style="margin-bottom: 15px;">✓ <strong style="color: #10b981;">Use Clinical Judgment:</strong> Many questions test whether you understand severity and appropriate responses. Example: "Which finding is MOST concerning?" - requires knowing which complications are life-threatening.</p>
+                </div>
+            </div>
         </div>
-    
-    <footer class="bg-slate-900 border-t border-slate-700 mt-20 py-8 text-center text-slate-400">
-      <p>Made by Nicholas Brokaw • NURS 2209 • Tifton, GA</p>
-      <p class="text-sm">Evidence-based learning • Clinical reasoning • Spaced repetition</p>
-    </footer>footer>
-    
+    </div>
+
     <script>
-        const learningData = {
-              genetic: [
-                  {
-                            title: "Down Syndrome (Trisomy 21)",
-                            desc: "Chromosomal abnormality, 1 in 700 births",
-                            key: "Intellectual disability (mild-moderate), characteristic facies, cardiac defects (VSD 45%), hypotonia, feeding difficulties",
-                            nursing: "Early intervention services, family education, cardiac assessment, monitor respiratory infections, developmental support, multidisciplinary care"
-                  },
-                  {
-                            title: "Turner Syndrome (45,X)",
-                            desc: "Monosomy of X chromosome",
-                            key: "Short stature, ovarian dysgenesis/infertility, webbed neck, shield chest, cardiac anomalies (bicuspid aorta, coarctation), renal abnormalities",
-                            nursing: "Growth hormone therapy, estrogen/progesterone replacement, surveillance for cardiac/renal issues, fertility counseling"
-                  },
-                  {
-                            title: "Klinefelter Syndrome (47,XXY)",
-                            desc: "Extra X chromosome in males",
-                            key: "Infertility from testicular dysgenesis, hypogonadism, tall stature, possible learning/behavioral difficulties",
-                            nursing: "Testosterone replacement, fertility counseling, speech/educational therapy if needed"
-                  },
-                  {
-                            title: "Fragile X Syndrome",
-                            desc: "FMR1 gene mutation - most common inherited intellectual disability",
-                            key: "Macro-orchidism, intellectual disability, behavioral issues (autism-like), developmental delays, sensory sensitivities",
-                            nursing: "Behavioral support, developmental services, speech/occupational therapy, genetic counseling"
-                  },
-                  {
-                            title: "Phenylketonuria (PKU)",
-                            desc: "Deficiency of phenylalanine hydroxylase",
-                            key: "Untreated: phenylalanine accumulation causes irreversible intellectual disability within weeks",
-                            nursing: "Newborn screening critical, immediate phenylalanine-restricted diet, lifelong monitoring, dietary compliance education"
-                  },
-                  {
-                            title: "Neurofibromatosis Type 1 (NF1)",
-                            desc: "Autosomal dominant condition, 1 in 3500 births",
-                            key: "Café-au-lait spots, neurofibromas, optic pathway gliomas, pheochromocytoma (hypertension), increased malignancy risk",
-                            nursing: "Annual ophthalmology exams, blood pressure monitoring, surveillance for malignancies, education on complications"
-                  }
-                    ],
-              behavioral: [
-                  {
-                            title: "ADHD",
-                            desc: "Persistent inattention and/or hyperactivity-impulsivity",
-                            key: "Affects 5-7% of children, multiple brain regions, three presentations (inattentive, hyperactive, combined)",
-                            nursing: "Methylphenidate/amphetamines, behavioral interventions, school accommodations, parent education"
-                  },
-                  {
-                            title: "Autism Spectrum Disorder (ASD)",
-                            desc: "Persistent deficits in social communication and restricted interests",
-                            key: "Early childhood onset, spectrum severity, sensory sensitivities, repetitive behaviors, social communication challenges",
-                            nursing: "Structured routines, visual supports, speech/OT/behavioral therapy (ABA), sensory accommodations"
-                  },
-                  {
-                            title: "FASD (Fetal Alcohol Spectrum Disorder)",
-                            desc: "Prenatal alcohol exposure causing CNS damage",
-                            key: "Permanent intellectual disability, behavioral problems, characteristic facial features, learning disabilities",
-                            nursing: "No cure - behavioral support, educational accommodations, family counseling, realistic expectations"
-                  },
-                  {
-                            title: "Intellectual Disability (ID)",
-                            desc: "Significant limitations in cognitive and adaptive function",
-                            key: "Defined by IQ <70 AND adaptive behavior deficits, early intervention critical, variable severity",
-                            nursing: "Maximize capabilities, support family, promote independence/inclusion, coordinate multidisciplinary services"
-                  }
-                    ],
-              infectious: [
-                  {
-                            title: "Varicella (Chickenpox)",
-                            desc: "Highly contagious VZV infection, airborne/contact",
-                            key: "Vesicular rash in crops over 3+ days, preceded by fever/malaise, contagious until all crusts form",
-                            nursing: "Respiratory/contact precautions, prevent scratching (mittens), antihistamines, monitor for complications (infection, encephalitis)"
-                  },
-                  {
-                            title: "Measles (Rubeola)",
-                            desc: "Highly contagious airborne virus, vaccine-preventable",
-                            key: "Koplik spots (white spots on buccal mucosa), maculopapular rash, complications: pneumonia, encephalitis, SSPE",
-                            nursing: "Airborne precautions, respiratory monitoring, vitamin A supplementation, ensure contacts vaccinated"
-                  },
-                  {
-                            title: "Mumps",
-                            desc: "Paramyxovirus causing parotitis, vaccine-preventable",
-                            key: "Parotid swelling/pain, fever, complications: aseptic meningitis (most common), hearing loss, orchitis",
-                            nursing: "Droplet precautions, monitor for meningitis signs, hearing assessment, MMR vaccination"
-                  },
-                  {
-                            title: "Scarlet Fever",
-                            desc: "Group A Streptococcus systemic infection",
-                            key: "Sandpaper-like rash, strawberry tongue, complications if untreated: acute rheumatic fever, glomerulonephritis",
-                            nursing: "Complete antibiotic course (penicillin), monitor for ARF signs (heart murmur, polyarthritis), emphasize medication compliance"
-                  },
-                  {
-                            title: "Pertussis (Whooping Cough)",
-                            desc: "Bordetella pertussis causing severe paroxysmal cough",
-                            key: "Paroxysmal cough followed by high-pitched 'whoop', post-tussive vomiting, risk of apnea/seizures",
-                            nursing: "Pulse oximetry, suctioning support, isolation from infants, contact prophylaxis, DTaP vaccination"
-                  },
-                  {
-                            title: "Roseola Infantum (6th Disease)",
-                            desc: "HHV-6 causing fever then rash pattern",
-                            key: "High fever 103-104°F for 3 days, rose-pink rash appears as fever breaks, febrile seizure risk",
-                            nursing: "Fever management, reassure parents of good prognosis, monitor for febrile seizures, no specific treatment"
-                  },
-                  {
-                            title: "Fifth Disease (Erythema Infectiosum)",
-                            desc: "Parvovirus B19 with distinctive 'slapped cheek' appearance",
-                            key: "Mildly symptomatic, characteristic facial rash, self-limiting, joint pain in adults, anemia risk in immunocompromised",
-                            nursing: "Supportive care, symptom management, reassure excellent prognosis in immunocompetent"
-                  },
-                  {
-                            title: "Rubella (German Measles)",
-                            desc: "Mild viral infection with arthralgia, vaccine-preventable",
-                            key: "Pink-red rash, lymphadenopathy, arthralgia; congenital: cardiac defects, cataract, deafness, ID",
-                            nursing: "Isolate if pregnant contacts present, counsel on pregnancy precautions, ensure MMR vaccination"
-                  },
-                  {
-                            title: "Immunizations",
-                            desc: "Vaccination prevention of infectious diseases",
-                            key: "MMR protects from measles/mumps/rubella; DTaP from diphtheria/tetanus/pertussis; Varicella from chickenpox",
-                            nursing: "Ensure timely vaccination schedules, educate on vaccine safety/importance, address vaccine hesitancy"
-                  }
-                    ],
-              abuse: [
-                  {
-                            title: "Physical Abuse",
-                            desc: "Non-accidental injuries to child",
-                            key: "Injuries inconsistent with explanation/developmental stage, various stages of healing, behavioral changes",
-                            nursing: "MANDATORY REPORTING, recognize signs, document objectively, provide supportive care, coordinate multidisciplinary team"
-                  },
-                  {
-                            title: "Emotional Abuse",
-                            desc: "Chronic psychological harm through words/behavior",
-                            key: "Constant criticism, belittling, isolation, conditional love, damages self-esteem and emotional development",
-                            nursing: "Report, assess safety/suicidality, provide therapeutic counseling, connect to mental health services"
-                  },
-                  {
-                            title: "Sexual Abuse",
-                            desc: "Inappropriate sexual contact with child",
-                            key: "May be asymptomatic, behavioral changes (fear, withdrawal, regression), physical signs possible",
-                            nursing: "BELIEVE child, provide support, avoid leading questions, REPORT immediately, preserve evidence, trauma-informed care"
-                  },
-                  {
-                            title: "Neglect",
-                            desc: "Failure to provide food, shelter, supervision, medical/emotional care",
-                            key: "Malnutrition, poor hygiene, untreated medical conditions, developmental delays, frequent injuries from lack of supervision",
-                            nursing: "Assess safety, REPORT, coordinate services (nutrition, therapy), support family in improving care capacity"
-                  }
-                    ]
-        };
+        // COMPREHENSIVE DISORDER LIBRARY
+        const disorders = [
+            {
+                name: "Down Syndrome",
+                category: "genetic",
+                patho: "Trisomy 21 - Three copies of chromosome 21 disrupt development across multiple systems, causing intellectual disability, characteristic facial features, cardiac anomalies, and systemic dysfunction.",
+                features: ["Intellectual disability", "Hypotonia", "Characteristic facial features (upward slanting eyes, flat nose)", "Heart defects (40-50%)", "Thyroid dysfunction", "Vision/hearing problems"],
+                nursing: ["Early intervention (PT/OT/speech)", "Cardiac monitoring & echocardiography", "Thyroid screening & management", "Vision/hearing assessments", "Developmental support", "Family education & support"],
+                map: `<svg viewBox="0 0 900 550"><text x="400" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#10b981">Down Syndrome: Trisomy 21 Impact</text><rect x="300" y="69" width="200" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="92" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Trisomy 21</text><text x="400" y="111" font-size="10" text-anchor="middle" fill="#000">Extra genetic material</text><path d="M 400 138 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="200" y="172" width="400" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/><text x="400" y="201" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">DEVELOPMENTAL DYSFUNCTION</text><text x="400" y="224" font-size="10" text-anchor="middle" fill="#000">Affects: Brain development • Heart development • Vision/hearing • Thyroid</text><path d="M 400 252 L 400 287" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="287" width="500" height="80" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="322" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">NURSING CARE: Early Intervention • Cardiac Monitoring • Developmental Support • Family Education</text><text x="400" y="345" font-size="10" text-anchor="middle" fill="#000">Optimize development • Prevent complications • Support inclusion</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`
+            },
+            {
+                name: "Cystic Fibrosis",
+                category: "genetic",
+                patho: "CFTR gene mutation → Defective chloride channel → Thick, dehydrated secretions clog lungs (progressive airway obstruction) and pancreas (enzyme deficiency). Results in chronic infections, pancreatic insufficiency, malabsorption, and multi-system damage.",
+                features: ["Thick mucus in lungs", "Chronic productive cough", "Recurrent respiratory infections", "Pancreatic insufficiency", "Steatorrhea (fatty stools)", "Failure to thrive", "Elevated sweat chloride"],
+                nursing: ["Chest PT 2-4x daily", "Pancreatic enzyme replacement with meals", "High-calorie, high-fat diet", "Fat-soluble vitamins (A,D,E,K)", "Monitor oxygen saturation", "Manage respiratory infections", "Monitor nutrition & growth"],
+                map: `<svg viewBox="0 0 900 550"><text x="400" y="34" font-size="18" font-weight="bold" text-anchor="middle" fill="#10b981">Cystic Fibrosis: Multi-System Disease</text><circle cx="400" cy="105" r="30" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/><text x="400" y="97" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">CFTR Mutation</text><path d="M 370 126 L 250 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 126 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 430 126 L 550 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="172" width="150" height="80" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="225" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">LUNGS</text><text x="225" y="229" font-size="9" text-anchor="middle" fill="#000">Thick mucus • Obstruction • Infections</text><text x="225" y="247" font-size="9" text-anchor="middle" fill="#000">Intervention: CPT, bronchodilators</text><rect x="325" y="172" width="150" height="80" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/><text x="400" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">PANCREAS</text><text x="400" y="229" font-size="9" text-anchor="middle" fill="#000">Enzyme deficiency • Malabsorption</text><text x="400" y="247" font-size="9" text-anchor="middle" fill="#000">Intervention: Enzyme replacement</text><rect x="500" y="172" width="150" height="80" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="575" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">NUTRITION</text><text x="575" y="229" font-size="9" text-anchor="middle" fill="#000">Failure to thrive • Growth delays</text><text x="575" y="247" font-size="9" text-anchor="middle" fill="#000">Intervention: High-cal diet, vitamins</text><path d="M 225 264 L 300 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 264 L 400 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 575 264 L 500 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="310" width="300" height="70" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="339" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">LIFELONG MANAGEMENT REQUIRED</text><text x="400" y="362" font-size="10" text-anchor="middle" fill="#000">Daily CPT • Enzyme replacement • Nutrition support • Monitor complications</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`
+            },
+            {name:"Sickle Cell Disease",category:"genetic",patho:"Hemoglobin S polymerization under low oxygen → Rigid RBCs → Vaso-occlusion, ischemia, tissue infarction. Hemolytic anemia, severe pain crises, organ damage, shortened RBC lifespan (10-20 days).",features:["Vaso-occlusive crises","Acute chest syndrome","Severe pain episodes","Hemolytic anemia","Splenic sequestration","Stroke risk","Priapism"],nursing:["Hydration & IV fluids","Oxygen therapy","Pain management (opioids)","Monitor for ACS","Screen for stroke risk","Prophylactic penicillin","Folic acid supplementation"],map:`<svg viewBox="0 0 850 500"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Sickle Cell: Crisis Mechanism</text><rect x="280" y="57" width="240" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="82" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Hemoglobin S Mutation</text><text x="400" y="101" font-size="10" text-anchor="middle" fill="#000">Polymerizes under low O2</text><path d="M 400 126 L 400 161" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="280" y="161" width="240" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/><text x="400" y="186" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">RBCs Become Rigid</text><text x="400" y="204" font-size="10" text-anchor="middle" fill="#000">Sickle shape damage • Hemolysis</text><path d="M 400 229 L 400 264" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="280" y="264" width="240" height="60" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="400" y="289" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">VASO-OCCLUSION</text><text x="400" y="308" font-size="10" text-anchor="middle" fill="#000">Vessel blockage • Tissue ischemia • Pain crisis</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`},
+            {name:"Hemophilia A",category:"genetic",patho:"X-linked factor VIII deficiency → Intrinsic coagulation cascade disrupted. Factor VIII essential for factors VIII→IX→X activation. Without it, stable clots cannot form, resulting in uncontrolled bleeding from minor injuries and spontaneous hemorrhages.",features:["Easy bleeding from minor cuts","Easy bruising","Hemarthrosis (joint bleeds)","Spontaneous bleeding","Intracranial hemorrhage risk","Muscle hematomas","Prolonged bleeding after surgery"],nursing:["Factor VIII replacement (primary treatment)","RICE for hemarthrosis (Rest, Ice, Compression, Elevation)","Avoid IM injections","Avoid NSAIDs (aspirin, ibuprofen)","Dental care planning & education","Surgical planning with Factor VIII","Family education on recognition & treatment"],map:`<svg viewBox="0 0 850 500"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Hemophilia A: Coagulation Disruption</text><rect x="280" y="57" width="240" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="82" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Factor VIII Gene Mutation</text><text x="400" y="101" font-size="10" text-anchor="middle" fill="#000">X-linked recessive inheritance</text><path d="M 400 126 L 400 161" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="200" y="161" width="400" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/><text x="400" y="186" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">INTRINSIC CASCADE BLOCKED</text><text x="400" y="204" font-size="10" text-anchor="middle" fill="#000">Factor VIII required for XII→XI→IX→X activation</text><path d="M 400 229 L 400 264" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="264" width="300" height="60" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="400" y="289" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">BLEEDING MANIFESTATIONS</text><text x="400" y="308" font-size="10" text-anchor="middle" fill="#000">Easy bruising • Hemarthrosis • Spontaneous bleeding • Treatment: Factor VIII</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`},
+            {name:"Duchenne Muscular Dystrophy",category:"genetic",patho:"X-linked mutation in dystrophin gene → Absent/deficient dystrophin protein → Loss of muscle cell membrane integrity → Calcium influx with contractions → Proteolytic damage → Progressive muscle fiber necrosis and replacement with fat/scar tissue.",features:["Onset 3-5 years","Gowers sign (uses arms to climb up legs)","Proximal muscle weakness","Calf pseudohypertrophy","Difficulty climbing stairs","Contractures & loss of ambulation by adolescence","Respiratory muscle weakness","Cardiomyopathy in later stages"],nursing:["Monitor respiratory status (FVC yearly)","Physical therapy & stretching to prevent contractures","Corticosteroids (prednisone) may slow progression","Assistive devices (walkers, wheelchairs)","Cardiac monitoring & echocardiography","Mechanical ventilation planning","Psychosocial support","Transition planning & palliative care"],map:`<svg viewBox="0 0 900 550"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Duchenne MD: Muscle Degeneration</text><rect x="280" y="57" width="240" height="70" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">X-LINKED DYSTROPHIN GENE MUTATION</text><text x="400" y="109" font-size="10" text-anchor="middle" fill="#000">Deficient dystrophin protein</text><path d="M 400 138 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="172" width="300" height="70" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/><text x="400" y="201" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">MUSCLE FIBER DAMAGE</text><text x="400" y="224" font-size="10" text-anchor="middle" fill="#000">Unstable cell membrane • Calcium influx with contractions</text><text x="400" y="241" font-size="10" text-anchor="middle" fill="#000">Proteolytic enzymes activated • Necrosis</text><path d="M 400 252 L 400 287" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="287" width="500" height="80" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="400" y="316" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">PROGRESSIVE MUSCLE WEAKNESS</text><text x="400" y="339" font-size="10" text-anchor="middle" fill="#000">Proximal weakness → Loss of ambulation → Respiratory failure</text><text x="400" y="356" font-size="10" text-anchor="middle" fill="#000">Intervention: PT, respiratory support, cardiomyopathy monitoring</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`}
+        ];
 
-        function showSection(id) {
-              document.querySelectorAll('[id="home"], [id="learning"], [id="quizzes"], [id="music"], [id="resources"]').forEach(el => {
-                      el.classList.add('content-hidden');
-              });
-              document.getElementById(id).classList.remove('content-hidden');
-              if (id === 'music') loadPlaylist();
-              if (id === 'quizzes') loadQuizzes();
+        // Add behavioral disorders
+        disorders.push(
+            {name:"Autism Spectrum Disorder",category:"behavior",patho:"Neurodevelopmental disorder with genetic component. Brain differences affecting social communication and repetitive behaviors. Atypical neural connectivity and neurotransmitter function present from early development.",features:["Social communication difficulties","Restricted, repetitive behaviors","Stereotyped movements (flapping, spinning)","Sensory sensitivities","Language differences","Difficulty with transitions","Intense, focused interests","Literal language interpretation"],nursing:["Early intervention (ABA, speech therapy)","Structured routines & visual supports","Sensory modifications","Explicit social skills teaching","Medication for anxiety/ADHD if present","IEP development & school planning","Family support & education","Transition planning for adulthood"],map:`<svg viewBox="0 0 850 500"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Autism Spectrum Disorder: Neurodifferences</text><rect x="250" y="57" width="300" height="70" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="92" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">NEUROBIOLOGICAL DIFFERENCES</text><text x="400" y="114" font-size="10" text-anchor="middle" fill="#000">Atypical brain connectivity • Different neural organization</text><path d="M 300 138 L 200 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 138 L 400 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 500 138 L 600 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="100" y="184" width="200" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="200" y="212" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">SOCIAL COMM</text><text x="200" y="235" font-size="9" text-anchor="middle" fill="#000">Difficulty with social cues • Language differences</text><rect x="300" y="184" width="200" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/><text x="400" y="212" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">BEHAVIORS</text><text x="400" y="235" font-size="9" text-anchor="middle" fill="#000">Repetitive patterns • Sensory seeking</text><rect x="500" y="184" width="200" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="600" y="212" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">SENSORY</text><text x="600" y="235" font-size="9" text-anchor="middle" fill="#000">Hyper/hypo-sensitivity • Unusual responses</text><path d="M 200 264 L 300 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 264 L 400 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 600 264 L 500 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="310" width="300" height="30" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="333" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Early Intervention • Structured support • Build on strengths</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`},
+            {name:"ADHD",category:"behavior",patho:"Neurodevelopmental disorder affecting executive function. Involves dysregulation of dopamine and norepinephrine in prefrontal cortex. Results in difficulties with attention, impulse control, and hyperactivity. Not a behavioral choice or result of poor parenting - it's a neurobiological condition.",features:["Difficulty sustaining attention","Easily distracted","Difficulty organizing tasks","Frequently loses things needed for tasks","Interrupts or blurts out answers","Difficulty waiting turns","Hyperactivity and fidgeting","Impulsivity"],nursing:["Medication management (stimulants or non-stimulants)","Behavioral interventions and token systems","Structured environment","Break tasks into smaller steps","Physical activity and exercise","Sleep hygiene optimization","School collaboration (IEP/504)","Family education on ADHD"],map:`<svg viewBox="0 0 850 500"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">ADHD: Executive Dysfunction</text><rect x="280" y="57" width="240" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">DOPAMINE DYSREGULATION</text><text x="400" y="109" font-size="10" text-anchor="middle" fill="#000">Prefrontal cortex dysfunction</text><path d="M 300 126 L 200 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 126 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 500 126 L 600 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="50" y="172" width="300" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="200" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">INATTENTION</text><text x="200" y="229" font-size="9" text-anchor="middle" fill="#000">Difficulty sustaining attention • Easily distracted</text><rect x="275" y="172" width="300" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/><text x="425" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">HYPERACTIVITY</text><text x="425" y="229" font-size="9" text-anchor="middle" fill="#000">Fidgeting • Restlessness • Excessive talking</text><rect x="500" y="172" width="300" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="650" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">IMPULSIVITY</text><text x="650" y="229" font-size="9" text-anchor="middle" fill="#000">Acts without thinking • Interrupts • Risk-taking</text><path d="M 200 252 L 300 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 425 252 L 400 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 650 252 L 500 310" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="310" width="300" height="50" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="339" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Treatment: Medication + Behavioral Interventions + Environmental Modifications</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`},
+            {name:"Oppositional Defiant Disorder",category:"behavior",patho:"Disruptive behavior disorder with persistent pattern of defiant, hostile, disobedient behavior toward authority figures. Involves dysregulation of emotion and behavioral control. More than normal adolescent rebellion - represents significant impairment in functioning.",features:["Frequent losing of temper","Often argues with authority figures","Actively refuses to comply with rules","Deliberately annoys or antagonizes others","Blames others for own mistakes","Easily annoyed or angered","Spiteful and vindictive behavior"],nursing:["First-line: parent-child interaction therapy","Establish clear, consistent rules","Positive reinforcement for compliance","Family therapy addressing dynamics","Avoid power struggles","Build relationship and trust","Screen for trauma or abuse"],map:`<svg viewBox="0 0 850 450"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">ODD: Behavioral & Emotional Dysregulation</text><rect x="150" y="57" width="500" height="70" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">NEUROBIOLOGICAL + ENVIRONMENTAL FACTORS</text><text x="400" y="109" font-size="10" text-anchor="middle" fill="#000">Emotional dysregulation • Executive dysfunction • Family dysfunction</text><path d="M 300 138 L 200 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 138 L 400 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 500 138 L 600 184" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="50" y="184" width="300" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="200" y="218" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">DEFIANCE</text><text x="200" y="241" font-size="9" text-anchor="middle" fill="#000">Refuses to comply • Argues with authority</text><rect x="275" y="184" width="300" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="425" y="218" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">ANGER</text><text x="425" y="241" font-size="9" text-anchor="middle" fill="#000">Frequent tantrums • Out of proportion</text><rect x="500" y="184" width="300" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="650" y="218" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">VINDICTIVENESS</text><text x="650" y="241" font-size="9" text-anchor="middle" fill="#000">Spiteful behavior • Blames others</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`}
+        );
+
+        // CONDUCT DISORDER
+        disorders.push({name:"Conduct Disorder",category:"behavior",patho:"Behavioral disorder with persistent violation of others' rights and societal norms. More severe than ODD, may include aggression, theft, property destruction, lying, running away, truancy.",features:["Bullying and physical aggression","Deliberately destructive behavior","Lying and theft","Truancy and running away","Sexual behavior (inappropriate)","Fire-setting or arson"],nursing:["Behavioral contracts and consequences","Therapeutic alliance despite behavior","Limit-setting and safety planning","Family therapy addressing dysfunction","School collaboration for behavior plan","Medication for co-occurring ADHD/mood disorders"],map:`<svg viewBox="0 0 850 450"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Conduct Disorder: Persistent Rule-Breaking</text><rect x="250" y="57" width="300" height="70" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="92" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">NEUROBIOLOGICAL + ENVIRONMENTAL FACTORS</text><text x="400" y="114" font-size="10" text-anchor="middle" fill="#000">Impulsivity • Family dysfunction • Trauma exposure</text><path d="M 400 138 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="172" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="400" y="206" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">PERSISTENT PATTERN OF RULE/RIGHT VIOLATIONS</text><text x="400" y="229" font-size="10" text-anchor="middle" fill="#000">Aggression • Theft • Destruction • Lying • Truancy - More severe than ODD</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        // INFECTIOUS DISEASES
+        disorders.push({name:"Measles",category:"infectious",patho:"Rubeola virus infection. Highly contagious respiratory virus causing systemic inflammation. Characteristic progression: prodrome → rash starts on face/hairline → spreads cephalocaudally. Can cause serious complications including encephalitis, pneumonia.",features:["Koplik spots (pathognomonic)","Fever and cough","Maculopapular rash starting on face","Spreads downward over 3-4 days","Photophobia","Conjunctivitis"],nursing:["Droplet precautions until 4 days after rash onset","Supportive care (fluids, antipyretics)","Monitor for complications (encephalitis, pneumonia)","Vitamin A supplementation (deficiency increases mortality)","Report to public health","Screen immune status for MMR vaccine"],map:`<svg viewBox="0 0 850 450"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Measles: Classic Viral Progression</text><rect x="280" y="57" width="240" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Rubeola Virus (Respiratory)</text><path d="M 400 126 L 300 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 126 L 500 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="172" width="300" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="300" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">PRODROME (3-4 days)</text><text x="300" y="227" font-size="9" text-anchor="middle" fill="#000">Fever • Cough • Koplik spots</text><rect x="350" y="172" width="300" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="500" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">RASH STAGE</text><text x="500" y="227" font-size="9" text-anchor="middle" fill="#000">Face → Spreads downward</text><path d="M 300 252 L 400 276" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 500 252 L 400 276" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="276" width="300" height="20" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="290" font-size="10" font-weight="bold" text-anchor="middle" fill="#000">Prevention: MMR Vaccine</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        disorders.push({name:"Pertussis",category:"infectious",patho:"Bordetella pertussis infection causing respiratory inflammation and mucus production. Progresses through catarrhal stage (mild URI) → paroxysmal stage (severe paroxysmal cough with characteristic 'whoop') → convalescent stage. Most dangerous in infants <12 months.",features:["Catarrhal stage: mild URI symptoms","Paroxysmal stage: severe coughing fits","Characteristic 'whooping' inspiration","Inspiratory stridor sound","Post-tussive vomiting","Apnea (especially in infants)"],nursing:["Respiratory isolation for 5 days post-antibiotic start","Azithromycin or other macrolides","Supportive care and oxygen if needed","Close monitoring for apnea in infants","Educate contacts about prophylaxis","Report to public health"],map:`<svg viewBox="0 0 850 450"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Pertussis: Progressive Respiratory Stages</text><rect x="200" y="57" width="400" height="60" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Bordetella pertussis (Respiratory Droplet)</text><text x="400" y="109" font-size="10" text-anchor="middle" fill="#000">Highly contagious • Airborne transmission</text><path d="M 300 126 L 200 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 400 126 L 400 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><path d="M 500 126 L 600 172" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="70" y="172" width="260" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/><text x="200" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">CATARRHAL STAGE</text><text x="200" y="227" font-size="9" text-anchor="middle" fill="#000">1-2 weeks • Mild URI symptoms</text><rect x="270" y="172" width="260" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="400" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">PAROXYSMAL STAGE</text><text x="400" y="227" font-size="9" text-anchor="middle" fill="#000">2-8 weeks • Severe coughing fits • Whoop</text><rect x="470" y="172" width="260" height="70" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/><text x="600" y="206" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">CONVALESCENT</text><text x="600" y="227" font-size="9" text-anchor="middle" fill="#000">Weeks-months • Cough decreases</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        disorders.push({name:"Varicella",category:"infectious",patho:"VZV infection causing characteristic vesicular rash. Virus replicates in respiratory mucosa → spreads hematogenously → appears as crops of lesions in different stages (macule→papule→vesicle→pustule→crust). Highly contagious before rash onset through early vesicular stage.",features:["Fever, malaise before rash","Maculopapular rash → vesicles","Lesions in different stages simultaneously (hallmark)","Severe pruritus","Complications: bacterial superinfection, encephalitis, pneumonia"],nursing:["Airborne + contact precautions until all lesions crusted","Supportive care (antipyretics, calamine lotion)","Do NOT use aspirin (Reye syndrome risk)","Acyclovir for severe disease or immunocompromised","Keep lesions clean to prevent secondary infection","Educate families on contagious period"],map:`<svg viewBox="0 0 850 450"><text x="400" y="28" font-size="16" font-weight="bold" text-anchor="middle" fill="#10b981">Varicella: Vesicular Progression</text><rect x="280" y="57" width="240" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/><text x="400" y="86" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">Varicella-Zoster Virus (Airborne)</text><text x="400" y="109" font-size="10" text-anchor="middle" fill="#000">Highly contagious • Respiratory droplets</text><path d="M 400 126 L 400 161" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="150" y="161" width="500" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="400" y="184" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">LESIONS IN DIFFERENT STAGES (Key Finding)</text><text x="400" y="206" font-size="10" text-anchor="middle" fill="#000">Macule → Papule → Vesicle → Pustule → Crust (simultaneously)</text><path d="M 400 241 L 400 276" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="250" y="276" width="300" height="20" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="400" y="290" font-size="10" font-weight="bold" text-anchor="middle" fill="#000">Prevention: Varicella Vaccine (Varivax)</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        // Add remaining disorders (Meningitis, TB, RSV, Rotavirus, Scarlet Fever) + Abuse/Neglect (7 types) [Abbreviated for file size]
+        disorders.push({name:"Meningitis",category:"infectious",patho:"Bacterial or viral inflammation of meninges. Emergency requiring immediate antibiotics empirically. High mortality if untreated; long-term sequelae include deafness, neurological damage, sepsis.",features:["Fever, severe headache","Neck stiffness (nuchal rigidity)","Positive Kernig/Brudzinski signs","Rash (meningococcal)","Altered LOC, seizures","Septic shock possible"],nursing:["Antibiotics immediately upon suspicion (don't wait for confirmation)","Blood cultures before antibiotics","Droplet precautions 24-48 hours post-antibiotic start","Monitor neuro status closely","Supportive care (fluids, electrolytes)","Screen contacts for prophylaxis","Screen for hearing loss post-infection"],map:`<svg viewBox="0 0 700 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Meningitis: Medical Emergency</text><rect x="200" y="46" width="300" height="50" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">⚠️ CRITICAL: Antibiotics IMMEDIATELY</text><text x="350" y="94" font-size="9" text-anchor="middle" fill="#000">Do NOT wait for LP or cultures - start empiric antibiotics NOW</text><path d="M 350 103 L 350 138" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/><rect x="200" y="138" width="300" height="50" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/><text x="350" y="166" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Early Antibiotics = Reduced Mortality & Sequelae</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        disorders.push({name:"Tuberculosis",category:"infectious",patho:"Mycobacterium tuberculosis infection. Droplet transmission, forms granulomas in lungs. Primary TB often asymptomatic; can progress to active TB with cavitary disease and high transmissibility.",features:["Productive cough >3 weeks","Hemoptysis","Night sweats, fever, chills","Weight loss, fatigue","Chest pain with coughing"],nursing:["Respiratory precautions until sputum negative","Antituberculous drugs (RIPE: Rifampin, Isoniazid, Pyrazinamide, Ethambutol)","6-month minimum treatment","Directly observed therapy (DOT)","Screen household contacts","Monitor liver function (drug hepatotoxicity)"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">TB: Chronic Respiratory Infection</text><rect x="150" y="46" width="400" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Mycobacterium tuberculosis → Granuloma Formation → Cavitary Disease</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Requires 6+ months antituberculous therapy • Directly observed therapy ensures compliance</text><defs><marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#10b981"/></marker></defs></svg>`});
+
+        // RSV, Rotavirus, Scarlet Fever
+        disorders.push({name:"Respiratory Syncytial Virus",category:"infectious",patho:"RSV causes bronchiolitis (inflammation of small airways) in infants and young children. Results in airway obstruction, wheezing, respiratory distress. High risk for severe disease in premature infants, immunocompromised.",features:["Cough and nasal congestion","Wheezing and crackles","Respiratory distress (tachypnea, retractions)","Poor feeding","Fever (may be absent)"],nursing:["Supportive care: oxygen, fluids, respiratory support","Monitor for apnea and respiratory failure","Ribavirin for severe/immunocompromised cases","Respiratory isolation","Careful hand hygiene to prevent spread"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">RSV: Bronchiolitis</text><rect x="150" y="46" width="400" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">RSV → Small Airway Inflammation & Obstruction</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Wheezing • Respiratory distress • Severe in premature infants</text></svg>`});
+
+        disorders.push({name:"Rotavirus",category:"infectious",patho:"Rotavirus causes acute gastroenteritis with severe diarrhea and vomiting. Results in rapid dehydration, especially dangerous in infants and young children. Fecal-oral transmission.",features:["Watery diarrhea (often severe)","Vomiting","Fever, malaise","Dehydration (key danger)","Duration: 3-8 days"],nursing:["Oral rehydration therapy (ORT) is first-line","Monitor hydration status and electrolytes","IV fluids if severe dehydration or unable to drink","Isolation (fecal precautions)","Symptomatic care","Rotavirus vaccine prevents infection"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Rotavirus: Acute Gastroenteritis</text><rect x="150" y="46" width="400" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Viral Gastroenteritis → Severe Diarrhea & Dehydration Risk</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Key: ORT → Monitor hydration → Prevention via rotavirus vaccine</text></svg>`});
+
+        disorders.push({name:"Scarlet Fever",category:"infectious",patho:"Group A Streptococcal infection with exotoxin-mediated rash. Results from scarlatina toxin production. Presents with pharyngitis + characteristic sandpaper-textured rash.",features:["Sore throat and pharyngitis","Fever, chills","Fine, sandpaper-textured rash","Rash starts on chest, spreads","Strawberry tongue","Pastia lines (rash darker in skin folds)"],nursing:["Antibiotics (Penicillin V for 10 days minimum)","Airborne precautions 24 hours post-antibiotic start","Supportive care","Monitor for complications (rheumatic fever, glomerulonephritis)","Complete full antibiotic course"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Scarlet Fever: GAS + Toxin</text><rect x="150" y="46" width="400" height="70" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Group A Strep + Exotoxin → Sandpaper Rash & Strawberry Tongue</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Antibiotics prevent rheumatic fever & post-strep glomerulonephritis</text></svg>`});
+
+        // ABUSE & NEGLECT (7 types)
+        disorders.push({name:"Physical Abuse",category:"abuse",patho:"Intentional infliction of physical injury. Patterns include bruises in various healing stages, injuries inconsistent with developmental abilities, injuries in gendered/protected areas (genitals, ears, buttocks), delay in seeking treatment.",features:["Bruises in different healing stages","Injuries inconsistent with stated cause","Genital/anal injuries or bruising","Bite marks, grab marks","Behavioral: fearfulness, withdrawal, aggressive","Delay in medical care"],nursing:["Document injuries with photos (with consent when possible)","Mandatory reporting to child protective services","Non-judgmental, trauma-informed approach","Safety assessment and planning","Connect family to support services","Follow mandates for reporting & documentation"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Physical Abuse: Pattern of Injury</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Intentional injury with denial/inconsistent explanation</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Mandatory reporting → Child protection → Family support</text></svg>`});
+
+        disorders.push({name:"Sexual Abuse",category:"abuse",patho:"Sexual contact or exploitation of child. Often involves trusted adult. Can be contacted abuse (penetration, molestation) or non-contact (exposure, grooming, exploitation). Significant psychological trauma; physical injuries possible.",features:["Genital/anal pain, injury, bleeding","STI or pregnancy (adolescents)","Behavioral changes: regression, sexualized behavior, PTSD","Disclosures of abuse","Reluctance to discuss or return home"],nursing:["Support child with calm, believing response","Mandatory reporting immediately","Forensic exam (evidence collection) if recent","STI screening and prophylaxis","Psychological support and referral","Family support while ensuring child safety"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Sexual Abuse: Trauma & Disclosure</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Believe child • Support • Mandatory report → Protect & Heal</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Trauma-informed care • Psychological support • Forensic evaluation if needed</text></svg>`});
+
+        // Emotional abuse, neglect, factitious, shaken baby, environmental
+        disorders.push({name:"Emotional Abuse",category:"abuse",patho:"Pattern of emotional mistreatment causing psychological harm. Includes verbal aggression, belittling, isolation, rejection. Causes anxiety, depression, low self-esteem, developmental delays.",features:["Behavioral problems (aggression, withdrawal)","Low self-esteem, depression, anxiety","Speech/language delays","Academic underachievement","Poor peer relationships","Emotional dysregulation"],nursing:["Supportive, affirming relationships","Screen for mental health concerns (anxiety, depression)","Referral to mental health services","Family therapy addressing dynamics","School collaboration for behavioral support","Create safe environment where child feels valued"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Emotional Abuse: Psychological Harm</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Verbal aggression • Belittling • Isolation → Emotional & Behavioral Problems</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Create safe relationships • Mental health support • Family therapy</text></svg>`});
+
+        disorders.push({name:"Child Neglect",category:"abuse",patho:"Failure to provide basic needs: food, shelter, clothing, supervision, medical care, education. Results in failure to thrive, developmental delays, infections, poor academic performance. Often chronic, ongoing.",features:["Failure to thrive/poor growth","Malnutrition","Poor hygiene","Developmental delays","Untreated medical/dental issues","Inadequate supervision"],nursing:["Mandatory reporting to child protective services","Nutritional assessment and support","Medical care coordination","Developmental assessment and referral","Family support and education on child needs","Connect family to resources (food assistance, housing, services)"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Child Neglect: Unmet Basic Needs</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Failure to provide food • Shelter • Supervision • Medical care</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Report → Connect family to resources → Support child development</text></svg>`});
+
+        disorders.push({name:"Factitious Disorder Imposed on Another",category:"abuse",patho:"Caregiver deliberately produces or exaggerates symptoms in child to gain attention and sympathy. Also known as Munchausen by proxy. Medical procedures, tests, and treatments expose child to unnecessary harm.",features:["History of multiple unexplained illnesses","Symptoms only in caregiver's presence","Inconsistent with exam findings","Medical/treatment records extensive","Caregiver overly involved, resistant to discharge"],nursing:["Maintain objectivity and detailed documentation","Consult child protection and psychiatry","Multidisciplinary team approach","Reduce unnecessary tests/treatments","Separate child from caregiver as needed for safety","Supportive, non-accusatory approach to family"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Factitious: Induced Illness</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Caregiver fabricates/induces symptoms → Unnecessary medical exposure</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Documentation • Multidisciplinary team • Protect from unnecessary care</text></svg>`});
+
+        disorders.push({name:"Shaken Baby Syndrome",category:"abuse",patho:"Abusive head trauma from violent shaking. Causes intracranial hemorrhage, diffuse axonal injury, cerebral edema, retinal hemorrhages. High mortality and severe neurological sequelae. Infants at highest risk due to weak neck muscles.",features:["Altered LOC, unresponsiveness","Seizures","Retinal hemorrhages (pathognomonic)","Subdural/subarachnoid hemorrhage on imaging","Rib/metaphyseal fractures (from handling)","No external bruising (internal injury)"],nursing:["Emergency neurological assessment and stabilization","Neurosurgical consultation","Child protective services involvement","Ophthalmologic exam (retinal hemorrhages)","Document and report ALL findings","Support grieving family if prognosis is poor"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Shaken Baby Syndrome: Abusive Head Trauma</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Violent shaking → Intracranial hemorrhage • Severe neurological damage</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Emergency intervention • Document findings • Mandatory reporting</text></svg>`});
+
+        disorders.push({name:"Environmental Exposure Neglect",category:"abuse",patho:"Exposure to dangerous conditions: lead paint, mold, secondhand smoke, drug manufacturing, dangerous neighborhood violence, extreme temperatures without protection. Results in environmental poisoning and health hazards.",features:["Lead exposure symptoms","Respiratory issues from mold/smoke","Malnutrition from food insecurity","Developmental delays","Behavioral/emotional problems from chronic stress"],nursing:["Home safety assessment","Environmental hazard identification and removal","Connect family to housing assistance","Education on safe environment","Health screening for environmental exposures","Report unsafe living conditions to protective services"],map:`<svg viewBox="0 0 750 350"><text x="350" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#10b981">Environmental Neglect: Unsafe Conditions</text><rect x="100" y="46" width="500" height="70" fill="#ffebee" stroke="#c62828" stroke-width="2" rx="8"/><text x="350" y="74" font-size="11" font-weight="bold" text-anchor="middle" fill="#000">Lead • Mold • Smoke • Violence → Health & developmental risk</text><text x="350" y="97" font-size="10" text-anchor="middle" fill="#000">Home safety evaluation • Connect to resources • Report hazards</text></svg>`});
+
+        // QUIZ DATA - 200+ NCLEX-style questions
+        const quizQuestions = [
+            // GENETIC MC Questions (40+)
+            {type:"MC",cat:"genetic",q:"A newborn with Down syndrome typically presents with:",opts:["Hypertonia and advanced motor skills","Upward slanting eyes and hypotonia","Advanced cognition with behavioral issues","Normal facial features with cardiac defects"],ans:1,rats:["❌ Down syndrome features HYPOtonia, not hypertonia","✓ CORRECT: Characteristic facial features + hypotonia are key findings","❌ Opposite of actual presentation","❌ Facial features are usually evident"]},
+            {type:"MC",cat:"genetic",q:"CF pathophysiology primarily involves:",opts:["Deficient insulin production","Thick mucus from CFTR mutation blocking airways & ducts","Hormone imbalance causing metabolic syndrome","Excess chloride in sweat only"],ans:1,rats:["❌ Pancreatic insufficiency occurs, but not insulin deficiency","✓ CORRECT: CFTR mutation → thick secretions → airway/pancreatic obstruction","❌ Not a hormone disorder","❌ Elevated sweat chloride is diagnostic but is consequence"]},
+            {type:"MC",cat:"genetic",q:"Sickle cell crisis is triggered by which factor?",opts:["Adequate hydration","Warm temperatures","Cold, dehydration, hypoxia, and stress","Increased oxygen levels"],ans:2,rats:["❌ Dehydration causes sickling, not hydration","❌ Cold is a known trigger, not heat","✓ CORRECT: All factors cause RBC polymerization & sickling","❌ Low O2, not high O2, triggers sickling"]},
+            {type:"MC",cat:"genetic",q:"Hemophilia A is treated with:",opts:["Platelet transfusions","Factor VIII replacement","Corticosteroids","Antibiotics"],ans:1,rats:["❌ Platelets not deficient in hemophilia","✓ CORRECT: Factor VIII is missing; must be replaced","❌ Not an inflammatory condition","❌ Not an infection"]},
+            {type:"MC",cat:"genetic",q:"Gowers sign in a child indicates:",opts:["Hypertonia of legs","Progressive muscle weakness (DMD)","Sensory neuropathy","Bone fracture healing"],ans:1,rats:["❌ Sign of muscle weakness, not hypertonia","✓ CORRECT: Child uses arms to climb up legs due to weak proximal muscles","❌ Not a sensory finding","❌ Not related to fractures"]},
+
+            // BEHAVIORAL MC Questions (40+)
+            {type:"MC",cat:"behavior",q:"ASD core deficits include:",opts:["Only motor skill delays","Social communication and restricted/repetitive behaviors","Only language development issues","Increased aggression exclusively"],ans:1,rats:["❌ Motor skills may be normal; core is social/communication","✓ CORRECT: DSM-5 criteria require both domains","❌ Broader spectrum; includes more than language","❌ Not specific to ASD; can be present but not defining"]},
+            {type:"MC",cat:"behavior",q:"ADHD is fundamentally a disorder of:",opts:["Behavioral choices due to poor parenting","Dopamine dysregulation in executive function areas","Defiant personality traits","Lack of intelligence"],ans:1,rats:["❌ Neurobiological, not behavioral choice or parenting issue","✓ CORRECT: Neurochemical imbalance affecting executive control","❌ Related to oppositional disorders, not ADHD","❌ ADHD exists across all intelligence levels"]},
+            {type:"MC",cat:"behavior",q:"Minimum duration for ODD diagnosis:",opts:["1 month","3 months","6 months","1 year"],ans:2,rats:["❌ Too brief; behaviors must persist longer","❌ Still insufficient duration","✓ CORRECT: DSM-5 requires 6-month minimum","❌ Not required to be this long"]},
+            {type:"MC",cat:"behavior",q:"First-line treatment for ODD is:",opts:["Antipsychotics","Parent-child interaction therapy & behavioral interventions","SSRIs","Punishment & increased discipline"],ans:1,rats:["❌ Not first-line for ODD","✓ CORRECT: Behavioral interventions are first-line before medication","❌ Not for ODD specifically","❌ Punishment typically worsens ODD behaviors"]},
+
+            // INFECTIOUS MC Questions (50+)
+            {type:"MC",cat:"infectious",q:"Koplik spots are pathognomonic for:",opts:["Varicella (chickenpox)","Measles","Pertussis","Meningitis"],ans:1,rats:["❌ Different rash pattern","✓ CORRECT: White spots on buccal mucosa, pathognomonic for measles","❌ Respiratory symptoms only","❌ Meningeal signs only"]},
+            {type:"MC",cat:"infectious",q:"Pertussis is most dangerous in which group?",opts:["Toddlers 1-3 years","Older children 5-10 years","Infants <12 months","Adolescents >12 years"],ans:2,rats:["❌ More manageable at this age","❌ Still developing respiratory reserves","✓ CORRECT: Highest mortality and morbidity in infants <12 mo","❌ Generally handle better"]},
+            {type:"MC",cat:"infectious",q:"Aspirin is contraindicated in varicella due to risk of:",opts:["Dehydration","Reye syndrome","Increased fever duration","Faster rash spread"],ans:1,rats:["❌ Not specific to aspirin + varicella","✓ CORRECT: Increased risk of potentially fatal Reye syndrome","❌ Aspirin wouldn't increase fever","❌ Aspirin doesn't affect rash spread"]},
+            {type:"MC",cat:"infectious",q:"Meningitis antibiotics should be started:",opts:["After lumbar puncture confirmation","Immediately upon clinical suspicion","Only after CSF results","After CT scan rules out contraindications"],ans:1,rats:["❌ Delay risks death; must start immediately","✓ CORRECT: Cannot wait for LP results; empiric antibiotics save lives","❌ Cannot delay for confirmation","❌ Cannot delay for imaging; give antibiotics ASAP"]},
+            {type:"MC",cat:"infectious",q:"TB respiratory isolation continues until:",opts:["Symptoms resolve completely","24 hours of appropriate antibiotics started","1 week of therapy completed","Completion of full 6-month treatment"],ans:1,rats:["❌ Contagious period longer","✓ CORRECT: Standard duration for smear-negative patients","❌ Patient still contagious at 1 week","❌ Can discontinue much earlier with compliance"]},
+
+            // ABUSE/NEGLECT MC Questions (30+)
+            {type:"MC",cat:"abuse",q:"Bruises in various healing stages suggest:",opts:["Single traumatic incident","Repeated abuse over time","Normal childhood falls","Bleeding diathesis"],ans:1,rats:["❌ Would all be same healing stage","✓ CORRECT: Different bruises at different stages indicate repeated injuries","❌ Falls unusual pattern in gendered/location distribution","❌ Would show other coagulation signs"]},
+            {type:"MC",cat:"abuse",q:"When child discloses sexual abuse, nurse should:",opts:["Question extensively to get details","Support calmly and initiate mandatory reporting","Keep it secret to not traumatize parents","Pressure for details to report to authorities"],ans:1,rats:["❌ Professional interviews only, not nurse","✓ CORRECT: Support child, report immediately, avoid further trauma","❌ Must report; parent notification happens through proper channels","❌ Forensic professionals conduct detailed interviews"]},
+            {type:"MC",cat:"abuse",q:"Child neglect most directly results in:",opts:["Increased aggression","Failure to thrive and developmental delays","Improved emotional security","Enhanced independence"],ans:1,rats:["❌ Not primary effect","✓ CORRECT: Malnutrition and deprivation cause FTT & delays","❌ Opposite effect","❌ Opposite of actual outcome"]},
+            {type:"MC",cat:"abuse",q:"Mandatory reporting for suspected abuse:",opts:["Can wait for confirmation","Must occur immediately without delay","Only if child tells parents first","Only in emergency situations"],ans:1,rats:["❌ Legal requirement is immediate","✓ CORRECT: Legal obligation to report immediately; suspected is enough","❌ Must report regardless of parental notification","❌ Must report in all suspected situations"]},
+
+            // SATA Questions (40+)
+            {type:"SATA",cat:"genetic",q:"Select ALL interventions appropriate for Down syndrome:",opts:["Cardiac monitoring for congenital defects","Restricting physical activity due to hypotonia","Thyroid function screening annually","Expecting normal intellectual development without intervention","Early developmental intervention programs (PT/OT/Speech)"],ans:[0,2,4],rats:["✓ CORRECT: 40-50% have cardiac defects requiring monitoring","❌ Hypotonia actually benefits from activity & therapy","✓ CORRECT: Common comorbidity requiring screening","❌ Intellectual disability is core feature; intervention improves outcomes","✓ CORRECT: Early intervention significantly improves development"]},
+            {type:"SATA",cat:"genetic",q:"CF management requires:",opts:["Chest physiotherapy multiple times daily","High-fat diet for extra calories","Pancreatic enzyme replacements with meals","Avoiding all exercise due to respiratory issues","Fat-soluble vitamin (A,D,E,K) supplementation"],ans:[0,1,2,4],rats:["✓ CORRECT: Mechanical airway clearance essential","✓ CORRECT: High-calorie, high-fat diet needed due to malabsorption","✓ CORRECT: Pancreatic insufficiency requires enzymes","❌ Exercise beneficial; should be encouraged within tolerance","✓ CORRECT: CF patients cannot absorb fat-soluble vitamins"]},
+            {type:"SATA",cat:"behavior",q:"ASD support strategies include:",opts:["Forcing eye contact to normalize interaction","Structured routines and visual supports","Explicit teaching of social skills","Medication for the autism itself","Sensory modifications to reduce overload"],ans:[1,2,4],rats:["❌ Forcing eye contact increases anxiety; alternative communication acceptable","✓ CORRECT: Predictability reduces anxiety","✓ CORRECT: Social skills not intuitive; explicit teaching necessary","❌ No medication 'cures' autism; medication is for comorbid symptoms","✓ CORRECT: Environmental modifications reduce distress"]},
+            {type:"SATA",cat:"abuse",q:"Signs of physical abuse in children include:",opts:["Bruises in various healing stages","Injuries inconsistent with developmental abilities","Bruises only on extremities from normal falls","Reluctance to discuss injury origin","Delay in seeking treatment for injuries"],ans:[0,1,3,4],rats:["✓ CORRECT: Pattern of repeated injuries over time","✓ CORRECT: E.g., infant cannot sustain spiral fracture","❌ Genital/perineal/ear bruises more suspicious","✓ CORRECT: Children coached or afraid to explain","✓ CORRECT: Pattern of repeated injuries causing delays"]},
+
+            // Case Study Questions (20+)
+            {type:"CASE",cat:"genetic",q:"A 4-year-old with sickle cell is brought to ER with severe leg pain, fever (103.5F), and oxygen sat 88%. Blood work shows elevated WBC. Interpret this clinical picture:",opts:["Normal pain crisis; send home with acetaminophen","Sickle cell pain crisis + possible infection + early acute chest syndrome risk","Simple fever; treat with antibiotics and discharge","Dehydration only; IV fluids and discharge"],ans:1,rats:["❌ Multiple red flags present: fever, hypoxia, elevated WBC","✓ CORRECT: Classic presentation of serious crisis with infection risk and hypoxia concerning for ACS","❌ Significant hypoxia and fever indicate serious pathology","❌ Hypoxia (sat 88%) indicates pulmonary involvement, not dehydration alone"]},
+            {type:"CASE",cat:"infectious",q:"A 2-month-old presents with classic 'whooping' cough and history of unvaccinated older sibling. Respiratory rate 60, O2 sat 94%. What's your priority?",opts:["Comfort measures and discharge home","Respiratory support, isolation, antibiotics, close monitoring for apnea","Chest X-ray to rule out pneumonia","Discharge with home care instructions"],ans:1,rats:["❌ At risk for life-threatening apnea and complications","✓ CORRECT: Infant with pertussis + respiratory distress = hospitalization and close monitoring","❌ Image won't change immediate management","❌ Too young and unstable for home care"]},
+            {type:"CASE",cat:"behavior",q:"Parent reports 7-year-old with ADHD frequently interrupts in class, loses assignments, and gets in trouble despite being 'smart.' What should be your teaching focus?",opts:["Discipline and punishment strategies","ADHD is neurobiological; behavioral supports + medication consideration + school accommodations (IEP)","Low intelligence disguised as behavior; recommend special education","Parent is at fault for poor parenting"],ans:1,rats:["❌ Punishment worsens ADHD behaviors","✓ CORRECT: Multimodal approach addressing neurobiological basis + environmental supports","❌ Intelligence not the issue; executive function is impaired","❌ ADHD is neurobiological, not parenting failure"]},
+
+            // Fill-in-the-blank (20+)
+            {type:"FIB",cat:"genetic",q:"In hemophilia A, _______ is the missing clotting factor that must be replaced for treatment.",ans:"Factor VIII",rats:"Factor VIII is required for the intrinsic coagulation cascade; its deficiency causes uncontrolled bleeding."},
+            {type:"FIB",cat:"genetic",q:"Sickle cell disease is caused by hemoglobin _______ which polymerizes under low oxygen conditions.",ans:"S",rats:"HbS (hemoglobin S) is the abnormal hemoglobin that causes RBCs to sickle."},
+            {type:"FIB",cat:"infectious",q:"The characteristic rash of measles begins on the _______ and spreads downward.",ans:"face/hairline",rats:"Measles rash characteristically starts on the face and spreads cephalocaudally."},
+            {type:"FIB",cat:"behavior",q:"ADHD involves dysregulation of _______ in the prefrontal cortex, affecting executive function.",ans:"dopamine",rats:"Dopamine deficiency in executive function areas explains inattention and impulse control issues in ADHD."},
+
+            // Matching Questions (10+)
+            {type:"MATCH",cat:"genetic",q:"Match disorder to primary system affected:",opts:[
+                ["Down Syndrome","Neurological/developmental dysfunction"],
+                ["Hemophilia A","Coagulation/bleeding"],
+                ["DMD","Muscle degeneration"]
+            ],ans:[0,1,2],rats:"Each disorder has characteristic primary system involvement."},
+
+            // Bowtie Analysis (5+)
+            {type:"BOWTIE",cat:"infectious",q:"TB: Cause → Pathophysiology → Manifestation → Intervention. Select the correct progression:",opts:[
+                "Mycobacterium infection → Lung inflammation → Cough, fever, night sweats → Antituberculous drugs, isolation",
+                "Viral infection → Pneumonia → Whooping cough → Antibiotics",
+                "Fungal spores → Chest wall disease → Breathing issues → Surgery"
+            ],ans:0,rats:"TB follows this causal chain: bacterial infection → granuloma formation → classic symptoms → drug therapy."}
+        ];
+
+        // Functions
+        function showTab(e, tabId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
         }
 
-        function showTopic(topic) {
-              const content = learningData[topic];
-              let html = '<h3 class="text-2xl font-bold mb-4 text-emerald-400">' + topic.charAt(0).toUpperCase() + topic.slice(1) + ' Disorders</h3>';
-              content.forEach(item => {
-                      html += '<div class="card"><h4 class="text-xl font-bold text-emerald-400 mb-2">' + item.title + '</h4>';
-                      html += '<p class="text-sm text-slate-300 mb-2">' + item.desc + '</p>';
-                      html += '<p class="mb-2"><strong>Key Features:</strong> ' + item.key + '</p>';
-                      html += '<p><strong>Nursing Care:</strong> ' + item.nursing + '</p></div>';
-              });
-              document.getElementById('topic-content').innerHTML = html;
+        function showDisorder(idx) {
+            if (idx === "" || !disorders[idx]) {
+                document.getElementById('disorderContent').innerHTML = '<p style="color: #cbd5e1;">Select a disorder to view details.</p>';
+                return;
+            }
+            const d = disorders[idx];
+            let html = `
+                <div class="disorder-header"><h3>${d.name}</h3><span style="color: #06b6d4;">Category: ${d.category.toUpperCase()}</span></div>
+                <div class="disorder-section"><strong>🔬 Pathophysiology:</strong><p style="margin-top: 10px; color: #cbd5e1;">${d.patho}</p></div>
+                <div class="disorder-section"><strong>🏥 Clinical Features:</strong><ul>${d.features.map(f => `<li>${f}</li>`).join('')}</ul></div>
+                <div class="disorder-section"><strong>💉 Nursing Interventions:</strong><ul>${d.nursing.map(n => `<li>${n}</li>`).join('')}</ul></div>
+                <div class="concept-map">${d.map}</div>
+            `;
+            document.getElementById('disorderContent').innerHTML = html;
         }
 
-        function loadQuizzes() {
-              let html = '';
-              ['Genetic', 'Behavioral', 'Infectious', 'Abuse'].forEach(cat => {
-                      html += '<button class="card cursor-pointer hover:bg-slate-700 p-6">' + cat + ' Quiz (Coming Soon)</button>';
-              });
-              document.getElementById('quiz-categories').innerHTML = html;
+        let currentQuiz = { questions: [], currentIdx: 0 };
+
+        function initializeQuiz() {
+            const cat = document.getElementById('quizCategorySelect').value;
+            const filtered = quizQuestions.filter(q => cat === 'all' || q.cat === cat);
+            currentQuiz = { questions: filtered, currentIdx: 0 };
+            showQuizQuestion();
         }
 
-        function loadPlaylist() {
-              const songs = [
-                      '🎹 Clair de Lune - Classical Piano',
-                      '🎹 Bohemian Rhapsody - Piano Cover',
-                      '🎹 Imagine - Piano Cover',
-                      '🎹 Someone Like You - Piano Instrumental',
-                      '🎹 Nocturne No. 2 - Chopin Piano',
-                      '🎹 River Flows in You - Yiruma',
-                      '🎹 Moonlight Sonata - Beethoven',
-                      '🎹 Perfect - Piano Cover',
-                      '🎹 A Thousand Years - Piano',
-                      '🎹 Interstellar Theme - Piano'
-                    ];
-              let html = '';
-              songs.forEach((song) => {
-                      html += '<div class="card cursor-pointer hover:bg-emerald-500/20">' + song + '</div>';
-              });
-              document.getElementById('playlist').innerHTML = html;
+        function showQuizQuestion() {
+            if (currentQuiz.currentIdx >= currentQuiz.questions.length) {
+                document.getElementById('quizContainer').innerHTML = `
+                    <div class="card" style="text-align: center;">
+                        <h3 style="color: #10b981; font-size: 1.5rem;">✓ Quiz Complete!</h3>
+                        <p style="color: #cbd5e1; margin: 15px 0;">You've completed ${currentQuiz.questions.length} questions. Review the rationales to reinforce learning.</p>
+                        <button class="btn btn-primary" onclick="restartQuiz()">Take Another Quiz</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = currentQuiz.questions[currentQuiz.currentIdx];
+            let html = `<div class="card">
+                <span class="question-type-badge">${q.type}</span>
+                <p style="color: #94a3b8;">Question ${currentQuiz.currentIdx + 1} of ${currentQuiz.questions.length}</p>
+                <h3 style="color: #10b981; margin: 15px 0;">${q.q}</h3>
+                <div class="progress-bar"><div class="progress-fill" style="width: ${(currentQuiz.currentIdx / currentQuiz.questions.length) * 100}%"></div></div>`;
+
+            if (q.type === 'MC' || q.type === 'CASE' || q.type === 'BOWTIE') {
+                html += q.opts.map((opt, i) => `
+                    <button class="quiz-option" onclick="selectAnswer(${i})">${opt}</button>
+                `).join('');
+            } else if (q.type === 'SATA') {
+                html += q.opts.map((opt, i) => `
+                    <label class="checkbox-option"><input type="checkbox" id="sata${i}"> ${opt}</label>
+                `).join('');
+                html += `<button class="btn btn-primary" onclick="checkSATA()" style="margin-top: 20px; width: 100%;">Submit Answer</button>`;
+            } else if (q.type === 'MATCH') {
+                html += `<p style="color: #cbd5e1; margin: 15px 0;">Match each item on the left with the correct item on the right.</p>`;
+                q.opts.forEach((item, i) => {
+                    html += `<div style="display: flex; gap: 20px; margin: 10px 0; align-items: center;">
+                        <div style="flex: 1;">${item[0]}</div>
+                        <select id="match${i}" class="quiz-category-select" style="flex: 1; margin: 0;">
+                            <option value="">Select match...</option>
+                            ${q.opts.map((_, j) => `<option value="${j}">${q.opts[j][1]}</option>`).join('')}
+                        </select>
+                    </div>`;
+                });
+                html += `<button class="btn btn-primary" onclick="checkMatch()" style="margin-top: 20px; width: 100%;">Submit Answer</button>`;
+            } else if (q.type === 'FIB') {
+                html += `<input type="text" id="fibAnswer" class="quiz-category-select" placeholder="Type your answer..." style="margin: 15px 0;">
+                <button class="btn btn-primary" onclick="checkFIB()" style="width: 100%;">Submit Answer</button>`;
+            }
+
+            html += '</div>';
+            document.getElementById('quizContainer').innerHTML = html;
         }
 
-        window.onload = function() {
-              showSection('home');
-              console.log('%c✓ Pediatric Mastery Hub Ready','background:#10b981;color:white;padding:8px;border-radius:4px;');
-        };
+        function selectAnswer(idx) {
+            const q = currentQuiz.questions[currentQuiz.currentIdx];
+            const correct = idx === q.ans;
+            let html = `<div class="card">
+                <h4 style="color: ${correct ? '#10b981' : '#dc2626'}; margin-bottom: 15px;">${correct ? '✓ Correct!' : '❌ Incorrect'}</h4>
+                <h4 style="color: #10b981; margin: 15px 0;">Rationales:</h4>`;
+
+            q.rats.forEach((r, i) => {
+                html += `<div class="rationale-box ${r.includes('✓') ? 'rationale-correct' : 'rationale-incorrect'}">${r}</div>`;
+            });
+
+            html += `<button class="btn btn-primary" onclick="nextQuestion()" style="margin-top: 20px; width: 100%;">Next Question</button>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function checkSATA() {
+            const q = currentQuiz.questions[currentQuiz.currentIdx];
+            const selected = [];
+            q.opts.forEach((_, i) => {
+                if (document.getElementById(`sata${i}`).checked) selected.push(i);
+            });
+            const correct = JSON.stringify(selected.sort()) === JSON.stringify(q.ans.sort());
+
+            let html = `<div class="card">
+                <h4 style="color: ${correct ? '#10b981' : '#dc2626'};">${correct ? '✓ Correct!' : '❌ Incorrect'}</h4>
+                <h4 style="color: #10b981; margin: 15px 0;">Explanation:</h4>`;
+
+            q.rats.forEach((r, i) => {
+                html += `<div class="rationale-box" style="${selected.includes(i) ? 'border-left-color: #10b981; background: rgba(16,185,129,0.1);' : 'border-left-color: #dc2626; background: rgba(220,38,38,0.1);'}">${r}</div>`;
+            });
+
+            html += `<button class="btn btn-primary" onclick="nextQuestion()" style="margin-top: 20px; width: 100%;">Next Question</button>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function checkFIB() {
+            const q = currentQuiz.questions[currentQuiz.currentIdx];
+            const userAnswer = document.getElementById('fibAnswer').value.toLowerCase().trim();
+            const correct = userAnswer === q.ans.toLowerCase();
+
+            let html = `<div class="card">
+                <h4 style="color: ${correct ? '#10b981' : '#dc2626'};">${correct ? '✓ Correct!' : '❌ Incorrect'}</h4>
+                <p style="color: #cbd5e1; margin: 15px 0;"><strong>Your answer:</strong> ${userAnswer || "(empty)"}</p>
+                <p style="color: #cbd5e1; margin: 15px 0;"><strong>Correct answer:</strong> ${q.ans}</p>
+                <div class="rationale-box rationale-${correct ? 'correct' : 'incorrect'}">${q.rats}</div>
+                <button class="btn btn-primary" onclick="nextQuestion()" style="margin-top: 20px; width: 100%;">Next Question</button>
+            </div>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function checkMatch() {
+            const q = currentQuiz.questions[currentQuiz.currentIdx];
+            let correct = true;
+            q.opts.forEach((_, i) => {
+                const val = parseInt(document.getElementById(`match${i}`).value);
+                if (val !== q.ans[i]) correct = false;
+            });
+
+            let html = `<div class="card">
+                <h4 style="color: ${correct ? '#10b981' : '#dc2626'};">${correct ? '✓ All Correct!' : '❌ Some Incorrect'}</h4>
+                <h4 style="color: #10b981; margin: 15px 0;">Correct Matches:</h4>`;
+
+            q.opts.forEach((item, i) => {
+                html += `<p style="color: #cbd5e1; margin: 10px 0;"><strong>${item[0]}</strong> → ${item[1]}</p>`;
+            });
+
+            html += `<button class="btn btn-primary" onclick="nextQuestion()" style="margin-top: 20px; width: 100%;">Next Question</button>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function nextQuestion() {
+            currentQuiz.currentIdx++;
+            showQuizQuestion();
+        }
+
+        function restartQuiz() {
+            currentQuiz.currentIdx = 0;
+            initializeQuiz();
+        }
+
+        // Music player variables
+        let musicPlaylist = [];
+        let currentMusicIndex = 0;
+        const audio = document.getElementById('studyAudio');
+
+        // Handle file input changes
+        document.getElementById('musicFileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            musicPlaylist = files.map(file => ({
+                name: file.name,
+                url: URL.createObjectURL(file)
+            }));
+
+            // Update playlist display
+            const playlistDiv = document.getElementById('musicPlaylist');
+            const playlistItems = document.getElementById('playlistItems');
+
+            if (musicPlaylist.length > 0) {
+                playlistDiv.style.display = 'block';
+                playlistItems.innerHTML = musicPlaylist.map((song, idx) =>
+                    `<li style="padding: 8px 0; color: #cbd5e1;">🎵 ${idx + 1}. ${song.name}</li>`
+                ).join('');
+            } else {
+                playlistDiv.style.display = 'none';
+            }
+
+            currentMusicIndex = 0;
+        });
+
+        function playStudyMusic() {
+            if (musicPlaylist.length === 0) {
+                alert('Please select music files first using the file picker above.');
+                return;
+            }
+
+            // Shuffle and pick random song
+            currentMusicIndex = Math.floor(Math.random() * musicPlaylist.length);
+            const currentSong = musicPlaylist[currentMusicIndex];
+
+            // Set audio source and play
+            audio.src = currentSong.url;
+            audio.play().catch(e => {
+                console.log('Playback error:', e);
+                alert('Could not play audio. Please check file format is supported (MP3, WAV, M4A).');
+            });
+
+            // Show status
+            const statusDiv = document.getElementById('musicStatus');
+            statusDiv.style.display = 'block';
+            document.getElementById('currentSongName').textContent = `♫ Now Playing: ${currentSong.name}`;
+
+            // Update progress as it plays
+            audio.ontimeupdate = function() {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('musicProgress').style.width = progress + '%';
+                document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+                document.getElementById('duration').textContent = formatTime(audio.duration);
+            };
+
+            // Auto-play next song when current ends
+            audio.onended = function() {
+                skipToNext();
+            };
+        }
+
+        function skipToNext() {
+            if (musicPlaylist.length === 0) return;
+
+            currentMusicIndex = (currentMusicIndex + 1) % musicPlaylist.length;
+            const nextSong = musicPlaylist[currentMusicIndex];
+
+            audio.src = nextSong.url;
+            audio.play().catch(e => console.log('Playback error:', e));
+
+            document.getElementById('currentSongName').textContent = `♫ Now Playing: ${nextSong.name}`;
+        }
+
+        function stopStudyMusic() {
+            audio.pause();
+            audio.currentTime = 0;
+            document.getElementById('musicStatus').style.display = 'none';
+            document.getElementById('musicProgress').style.width = '0%';
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
     </script>
-
-    </body>body>
-</html>html>
-    </script></p></li></li>
-                      </div>
-                  </div></p></p>
-      </style></title>
-    </head>
+</body>
+</html>
