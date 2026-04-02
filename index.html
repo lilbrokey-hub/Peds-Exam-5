@@ -25,6 +25,26 @@
         .music-track:hover { background: rgba(255,255,255,0.2); transform: translateX(8px); }
         .music-track.playing { background: rgba(255,255,255,0.3); border-left: 4px solid #fff; }
     </style>
+    <script>
+        function navigateToSection(section) {
+              document.querySelectorAll('[id^="section-"]').forEach(s => s.classList.add('hidden'));
+              document.getElementById(section).classList.remove('hidden');
+              document.querySelectorAll('[id^="nav-"]').forEach(nav => nav.classList.remove('active-nav'));
+              document.getElementById('nav-' + section).classList.add('active-nav');
+              document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
+        }
+        function showResourcesModal() {
+              document.getElementById('resources-modal').style.display = 'flex';
+        }
+        function hideResourcesModal() {
+              document.getElementById('resources-modal').classList.add('hidden');
+              document.getElementById('resources-modal').style.display = 'none';
+        }
+        function toggleMobileMenu() {
+              document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+    </script>
+    </script>
 </head>
 <body class="tail-container bg-slate-950 text-slate-200">
     <!-- NAVBAR -->
